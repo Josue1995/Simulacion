@@ -9,10 +9,6 @@ package Registros;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author User
- */
 public class ProgramCounter {
 
     private String direccion;
@@ -59,4 +55,5 @@ public class ProgramCounter {
         this.setDireccion(binario);
     }
     
+
 }
