@@ -7,7 +7,34 @@
 package Registros;
 
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 public class ProgramCounter {
+
+    private String direccion;
+
+    public ProgramCounter() {
+    }
     
+    public ProgramCounter(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+    
+    public String sumar(String dir){
+    int a = Integer.parseInt(dir, 2);
+    int b = Integer.parseInt("0001", 2);
+    int c = a + b;
+    String r = Integer.toString(c, 2);
+    System.out.println(r);
+    return r;
+    }
+
 }
