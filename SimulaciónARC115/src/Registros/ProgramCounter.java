@@ -40,4 +40,23 @@ public class ProgramCounter {
     System.out.println(r);
     return r;
     }
+    
+    public boolean verificar(String text){
+        try{
+            Integer.parseInt(text);
+            return true;
+            
+            
+        }catch (NumberFormatException nfe){
+            return false;
+        }
+        
+    }
+    
+    public void decimalABinario(String decimal){
+        int num = Integer.parseInt(decimal);
+        String binario = Integer.toBinaryString(num);
+        this.setDireccion(binario);
+    }
+    
 }

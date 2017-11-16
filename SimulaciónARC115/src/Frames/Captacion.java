@@ -10,7 +10,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-
+import Registros.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
 /**
  *
  * @author User
@@ -45,8 +51,11 @@ public class Captacion extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        direccionField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        iniciarSimulacion = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        marField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,9 +70,9 @@ public class Captacion extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Introduzca la dirección de la memoria");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        direccionField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                direccionFieldActionPerformed(evt);
             }
         });
 
@@ -71,20 +80,48 @@ public class Captacion extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Program Counter (PC):");
 
+        iniciarSimulacion.setText("Iniciar simulación");
+        iniciarSimulacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                iniciarSimulacionActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Memory Address Register (MAR):");
+
+        marField.setEditable(false);
+        marField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                marFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(42, 42, 42)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(542, Short.MAX_VALUE))
+                        .addGap(346, 346, 346)
+                        .addComponent(iniciarSimulacion))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel3)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(42, 42, 42)
+                                        .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(39, 39, 39)
+                                .addComponent(marField, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(323, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -95,8 +132,14 @@ public class Captacion extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(392, Short.MAX_VALUE))
+                    .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 147, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(marField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(106, 106, 106)
+                .addComponent(iniciarSimulacion)
+                .addGap(47, 47, 47))
         );
 
         pack();
@@ -108,9 +151,19 @@ public class Captacion extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void direccionFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_direccionFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_direccionFieldActionPerformed
+
+    private void iniciarSimulacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSimulacionActionPerformed
+         Hilo h = new Hilo();
+         h.start();
+         
+    }//GEN-LAST:event_iniciarSimulacionActionPerformed
+
+    private void marFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_marFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_marFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -146,11 +199,58 @@ public class Captacion extends javax.swing.JFrame {
             }
         });
     }
+    
+    private class Hilo extends Thread{
+        public void run(){
+            ProgramCounter pc = new ProgramCounter();
+            MemoryBufferRegister mbr = new MemoryBufferRegister();
+            MemoryAddressRegister mar = new MemoryAddressRegister();
+            MemoriaPrincipal mp = new MemoriaPrincipal();
+            InstructionRegister ir = new InstructionRegister();
+            boolean auxMAR = false;
+            try{
+            if (direccionField.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null, "El campo está vacío, por favor ingrese una dirección. :V", "error", JOptionPane.ERROR_MESSAGE);
+                direccionField.setText("");
+            }
+            pc.setDireccion(direccionField.getText());
+            if (pc.verificar(pc.getDireccion())){
+                pc.decimalABinario(pc.getDireccion());
+                direccionField.setText(pc.getDireccion());
+                auxMAR = true;
+            
+            }else{
+                JOptionPane.showMessageDialog(null, "El campo es una cadena o un decimal no un entero, por favor ingrese un numero entero. :V", "error", JOptionPane.ERROR_MESSAGE);
+                direccionField.setText("");
+                auxMAR = false;
+            }
+            Thread.sleep(3000);
+            }catch(InterruptedException ex1){
+                Logger.getLogger(Captacion.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            if(auxMAR){
+                mar.setPc(pc);
+                    try {
+                        marField.setText(mar.getPc().getDireccion());
+                        Thread.sleep(3000);
+                
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Captacion.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+            }
+            
+           
+            }
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField direccionField;
+    private javax.swing.JButton iniciarSimulacion;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JTextField marField;
     // End of variables declaration//GEN-END:variables
 }
