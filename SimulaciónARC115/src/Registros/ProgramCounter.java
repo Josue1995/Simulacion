@@ -54,6 +54,4 @@ public class ProgramCounter {
         String binario = Integer.toBinaryString(num);
         this.setDireccion(binario);
     }
-    
-
 }
