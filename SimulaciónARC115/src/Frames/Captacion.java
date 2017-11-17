@@ -11,8 +11,18 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import Registros.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.ImageObserver;
+import java.text.AttributedCharacterIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -38,6 +48,7 @@ public class Captacion extends javax.swing.JFrame {
         setResizable(false);
         setSize(1400,1000);
         setLocationRelativeTo(null);
+        
     }
 
     /**
@@ -156,7 +167,13 @@ public class Captacion extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    public void paint(Graphics g){
+        super.paint(g);
+        g.setColor(Color.GRAY);
+        g.fillRect(600, 50, 500, 500);
+    }
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         menu m = new menu();
         m.setVisible(true);
@@ -228,18 +245,20 @@ public class Captacion extends javax.swing.JFrame {
             if (direccionField.getText().isEmpty()){
                 JOptionPane.showMessageDialog(null, "El campo está vacío, por favor ingrese una dirección. :V", "error", JOptionPane.ERROR_MESSAGE);
                 direccionField.setText("");
-            }
-            pc.setDireccion(direccionField.getText());
-            if (pc.verificar(pc.getDireccion())){
-                pc.decimalABinario(pc.getDireccion());
-                direccionField.setText(pc.getDireccion());
-                auxMAR = true;
-            
             }else{
-                JOptionPane.showMessageDialog(null, "El campo es una cadena o un decimal no un entero, por favor ingrese un numero entero. :V", "error", JOptionPane.ERROR_MESSAGE);
-                direccionField.setText("");
-                auxMAR = false;
+                pc.setDireccion(direccionField.getText());
+                if (pc.verificar(pc.getDireccion())){
+                    pc.decimalABinario(pc.getDireccion());
+                    direccionField.setText(pc.getDireccion());
+                    auxMAR = true;
+            
+                }else{
+                    JOptionPane.showMessageDialog(null, "El campo es una cadena o un decimal no un entero, por favor ingrese un numero entero. :V", "error", JOptionPane.ERROR_MESSAGE);
+                    direccionField.setText("");
+                    auxMAR = false;
+                }
             }
+            
             Thread.sleep(3000);
             }catch(InterruptedException ex1){
                 Logger.getLogger(Captacion.class.getName()).log(Level.SEVERE, null, ex1);
@@ -248,6 +267,11 @@ public class Captacion extends javax.swing.JFrame {
                 mar.setPc(pc);
                     try {
                         marField.setText(mar.getPc().getDireccion());
+                        Graphics g= getGraphics();
+                        g.setColor(Color.blue);
+                        g.fillRect(650, 70, 100,50);
+                        g.setColor(Color.yellow);
+                        g.drawString("Program Counter", 651, 90);
                         Thread.sleep(3000);
                 
                     } catch (InterruptedException ex) {
@@ -255,8 +279,11 @@ public class Captacion extends javax.swing.JFrame {
                     }
             }
             
+            
            
             }
+        
+        
     }
     
 
