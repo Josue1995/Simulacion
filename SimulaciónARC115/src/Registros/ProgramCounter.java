@@ -7,15 +7,53 @@
 package Registros;
 
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
-/**
- *
- * @author User
- */
 public class ProgramCounter {
-    int a = Integer.parseInt("0111", 2);
+
+    private String direccion;
+
+    public ProgramCounter() {
+    }
+    
+    public ProgramCounter(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+    
+    public String sumar(String dir){
+    int a = Integer.parseInt(dir, 2);
     int b = Integer.parseInt("0001", 2);
     int c = a + b;
     String r = Integer.toString(c, 2);
-    System.out.println("Resultado: " + r);
+    System.out.println(r);
+    return r;
+    }
+    
+    public boolean verificar(String text){
+        try{
+            Integer.parseInt(text);
+            return true;
+            
+            
+        }catch (NumberFormatException nfe){
+            return false;
+        }
+        
+    }
+    
+    public void decimalABinario(String decimal){
+        int num = Integer.parseInt(decimal);
+        String binario = Integer.toBinaryString(num);
+        this.setDireccion(binario);
+    }
+    
+
 }
