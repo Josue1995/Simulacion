@@ -22,7 +22,11 @@ import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.ImageObserver;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.text.AttributedCharacterIterator;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -68,6 +72,8 @@ public class Captacion extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         marField = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        mbrField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,6 +123,17 @@ public class Captacion extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Memory Buffer Register (MBR): ");
+
+        mbrField.setEditable(false);
+        mbrField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mbrFieldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -133,15 +150,21 @@ public class Captacion extends javax.swing.JFrame {
                                 .addGap(42, 42, 42)
                                 .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(marField, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(297, 297, 297)
                         .addComponent(iniciarSimulacion)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2)))
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(mbrField))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(marField, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(327, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -158,7 +181,11 @@ public class Captacion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(marField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 232, Short.MAX_VALUE)
+                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(mbrField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 172, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(iniciarSimulacion)
                     .addComponent(jButton2))
@@ -197,6 +224,10 @@ public class Captacion extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void mbrFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mbrFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mbrFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -240,6 +271,7 @@ public class Captacion extends javax.swing.JFrame {
             MemoryAddressRegister mar = new MemoryAddressRegister();
             MemoriaPrincipal mp = new MemoriaPrincipal();
             InstructionRegister ir = new InstructionRegister();
+            mp.setN(inicializar());
             boolean auxMAR = false;
             try{
             if (direccionField.getText().isEmpty()){
@@ -273,6 +305,8 @@ public class Captacion extends javax.swing.JFrame {
                         g.setColor(Color.yellow);
                         g.drawString("Program Counter", 651, 90);
                         Thread.sleep(3000);
+                        
+                        mbrField.setText(mp.buscar(mbr.binarioDecimal(marField.getText())));
                 
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Captacion.class.getName()).log(Level.SEVERE, null, ex);
@@ -286,6 +320,38 @@ public class Captacion extends javax.swing.JFrame {
         
     }
     
+    private ArrayList<String> inicializar(){
+        ArrayList<String> array = new ArrayList<String>();
+        
+        File file = null;
+        FileReader read = null;
+        BufferedReader buff = null;
+        
+        try{
+            file = new File("src/Datos/datos.txt");
+            read = new FileReader(file);
+            buff = new BufferedReader(read);
+            String linea;
+            while((linea = buff.readLine()) != null ){
+                array.add(linea);
+            }
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            try{
+                if (null != read){
+                    read.close();
+                }
+            }catch(Exception e2){
+                e2.printStackTrace();
+            }
+        }
+        return array;
+    }
+    
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField direccionField;
@@ -295,6 +361,8 @@ public class Captacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField marField;
+    private javax.swing.JTextField mbrField;
     // End of variables declaration//GEN-END:variables
 }

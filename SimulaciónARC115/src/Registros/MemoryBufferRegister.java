@@ -28,7 +28,10 @@ public class MemoryBufferRegister {
         this.instruccion = instruccion;
     }
     
-    
+    public int binarioDecimal(String bin){
+        int decimal = Integer.parseInt(bin, 2);
+        return decimal;
+    }
    
     
 }

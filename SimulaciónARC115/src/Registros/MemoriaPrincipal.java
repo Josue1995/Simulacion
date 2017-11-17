@@ -26,6 +26,10 @@ public class MemoriaPrincipal {
         this.n = n;
     }
     
+    public String buscar(int s){
+        return this.n.get(s-1);
+    }
+    
     public void moverBuffer(){
         
     }
