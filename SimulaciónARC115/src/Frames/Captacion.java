@@ -76,6 +76,8 @@ public class Captacion extends javax.swing.JFrame {
         mbrField = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         irField = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaDeDatos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -147,6 +149,27 @@ public class Captacion extends javax.swing.JFrame {
             }
         });
 
+        tablaDeDatos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Program Counter", "Memory Address Register", "Memory Buffer Register", "Instruction Register"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablaDeDatos);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -154,35 +177,41 @@ public class Captacion extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(42, 42, 42)
-                                .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(297, 297, 297)
-                        .addComponent(iniciarSimulacion)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2))
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton1)
+                                    .addComponent(jLabel1)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(42, 42, 42)
+                                        .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(297, 297, 297)
+                                .addComponent(iniciarSimulacion)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(marField, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel5))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(mbrField, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                                            .addComponent(irField))))))
+                        .addGap(0, 607, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(marField, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(mbrField, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
-                                    .addComponent(irField))))))
-                .addContainerGap(327, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -206,7 +235,9 @@ public class Captacion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(irField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+                .addGap(357, 357, 357)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(iniciarSimulacion)
                     .addComponent(jButton2))
@@ -219,7 +250,11 @@ public class Captacion extends javax.swing.JFrame {
     public void paint(Graphics g){
         super.paint(g);
         g.setColor(Color.GRAY);
-        g.fillRect(500, 50, 800, 500);
+        g.fillRect(500, 50, 800, 600);
+        g.setColor(Color.orange);
+        g.fillRect(1000, 50, 25, 500);
+        g.fillRect(1050, 50, 25, 500);
+        g.fillRect(1100, 50, 25, 500);
     }
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -298,10 +333,6 @@ public class Captacion extends javax.swing.JFrame {
             InstructionRegister ir = new InstructionRegister();
             Graphics g= getGraphics();
             Graphics g1 = getGraphics();
-            int xpoints[] = {500, 145, 25, 145, 25};
-            int ypoints[] = {500, 25, 145, 145, 25};
-            int npoints = 5;
-
 
             mp.setN(inicializar());
             boolean auxMAR = false;
@@ -343,11 +374,18 @@ public class Captacion extends javax.swing.JFrame {
                         g.setColor(Color.blue);
                         g.drawRect(650, 70, 150, 50);
                         g1.setColor(Color.orange);
-                        g1.drawArc(500,100,100,80,50,80);
-                        g1.drawLine(158,103,163,110);
-                        g1.drawLine(155,111,163,110); 
-                        
+                        g1.fillRect(802, 87, 100, 25);
+                        g1.setColor(Color.green);
+                        g1.drawRect(802, 87, 100, 25);
+                        g1.setColor(Color.blue);
+                        g1.fillRect(903, 70, 150, 50);
+                        g1.setColor(Color.green);
+                        g1.drawRect(903, 70, 150, 50);
+                        g.setColor(Color.yellow);
+                        g.drawString("Memory Address Register", 904, 90);
+                        g.drawString( mar.getPc().getDireccion(), 904, 110);
                         marField.setText(mar.getPc().getDireccion());
+                        
                         
                         
                         Thread.sleep(3000);
@@ -430,7 +468,9 @@ public class Captacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField marField;
     private javax.swing.JTextField mbrField;
+    private javax.swing.JTable tablaDeDatos;
     // End of variables declaration//GEN-END:variables
 }
