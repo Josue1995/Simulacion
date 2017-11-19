@@ -55,6 +55,8 @@ public class Inicio extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
@@ -100,13 +102,25 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton1);
-        jButton1.setBounds(240, 470, 300, 23);
+        jButton1.setBounds(250, 500, 300, 23);
 
         jLabel7.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("CICLO II - 2017");
         getContentPane().add(jLabel7);
         jLabel7.setBounds(320, 250, 220, 30);
+
+        jLabel8.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Castro Figueroa, Vanessa Jeannette");
+        getContentPane().add(jLabel8);
+        jLabel8.setBounds(340, 410, 320, 22);
+
+        jLabel9.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Pérez López, William Orlando");
+        getContentPane().add(jLabel9);
+        jLabel9.setBounds(340, 450, 300, 22);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -161,5 +175,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables
 }

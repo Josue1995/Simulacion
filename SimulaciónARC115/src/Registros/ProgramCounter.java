@@ -28,13 +28,12 @@ public class ProgramCounter {
         this.direccion = direccion;
     }
     
-    public String sumar(String dir){
+    public void incrementar(String dir){
     int a = Integer.parseInt(dir, 2);
     int b = Integer.parseInt("0001", 2);
     int c = a + b;
     String r = Integer.toString(c, 2);
-    System.out.println(r);
-    return r;
+    this.setDireccion(r);
     }
     
     public boolean verificar(String text){
