@@ -6,9 +6,15 @@
 
 package Frames;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import Registros.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -44,6 +50,11 @@ public class Interrupcion extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        iniciarSimulacion = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        dirTextField = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,31 +65,92 @@ public class Interrupcion extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Salir");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        iniciarSimulacion.setText("Iniciar simulacion");
+        iniciarSimulacion.setName("iniciarSimulacion"); // NOI18N
+        iniciarSimulacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                iniciarSimulacionActionPerformed(evt);
+            }
+        });
+
+        dirTextField.setName("dirTextField"); // NOI18N
+
+        jLabel2.setText("jLabel2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
-                .addContainerGap(331, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(iniciarSimulacion)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(0, 108, Short.MAX_VALUE)
+                        .addComponent(dirTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(258, 258, 258))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton1)
-                .addContainerGap(266, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(dirTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addGap(18, 194, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(iniciarSimulacion))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void paint(Graphics gd) {
+        super.paint(gd);
+        gd.setColor(Color.red);
+        gd.fillRect(500, 50, 400, 400);
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         menu m = new menu();
         m.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void iniciarSimulacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarSimulacionActionPerformed
+        // TODO add your handling code here:
+        Hilo h = new Hilo();
+        h.start();
+    }//GEN-LAST:event_iniciarSimulacionActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -114,8 +186,43 @@ public class Interrupcion extends javax.swing.JFrame {
             }
         });
     }
+    
+    private class Hilo extends Thread {
+      
+        @Override
+        public void run(){
+            ProgramCounter pc = new ProgramCounter();
+            MemoryBufferRegister mbr = new MemoryBufferRegister();
+            MemoryAddressRegister mar = new MemoryAddressRegister();
+            MemoriaPrincipal mp = new MemoriaPrincipal();
+            
+            try{
+                if(dirTextField.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(null, "El campo esta vacio, por favpr ingrese una direccion");
+                    dirTextField.setText("");
+                }else{
+                    pc.setDireccion(dirTextField.getText());
+                    if (pc.verificar(pc.getDireccion())){
+                    pc.decimalABinario(pc.getDireccion());
+                    dirTextField.setText(pc.getDireccion());
+                }else{
+                    JOptionPane.showMessageDialog(null, "El campo es una cadena o un decimal no un entero, por favor ingrese un numero entero. :V", "error", JOptionPane.ERROR_MESSAGE);
+                    dirTextField.setText("");    
+                    }
+                }
+                Thread.sleep(300);
+            }catch(InterruptedException ex1){
+                 Logger.getLogger(Captacion.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField dirTextField;
+    private javax.swing.JButton iniciarSimulacion;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
 }
