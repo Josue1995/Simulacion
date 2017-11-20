@@ -9,6 +9,9 @@ package Frames;
 import java.awt.Color;
 import java.awt.Graphics;
 import Registros.*;
+import java.awt.BasicStroke;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -55,6 +58,10 @@ public class Interrupcion extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         dirTextField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        mbrTextField = new javax.swing.JTextField();
+        marTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,7 +89,11 @@ public class Interrupcion extends javax.swing.JFrame {
 
         dirTextField.setName("dirTextField"); // NOI18N
 
-        jLabel2.setText("jLabel2");
+        jLabel2.setText("Program Counter");
+
+        jLabel3.setText("Memory Buffer Register");
+
+        jLabel4.setText("Memory Address Register");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -90,8 +101,33 @@ public class Interrupcion extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
+<<<<<<< HEAD
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(mbrTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(28, 28, 28)
+                                .addComponent(dirTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(marTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(107, 107, 107)
+                .addComponent(iniciarSimulacion)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addGap(0, 271, Short.MAX_VALUE))
+=======
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 190, Short.MAX_VALUE)
                         .addComponent(iniciarSimulacion)
@@ -105,6 +141,7 @@ public class Interrupcion extends javax.swing.JFrame {
                             .addComponent(dirTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(20, 20, 20))
+>>>>>>> 0abb955295bd96d2b9c68585bcb7f89f0961352f
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,16 +149,34 @@ public class Interrupcion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jButton1)
                 .addGap(30, 30, 30)
+<<<<<<< HEAD
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(dirTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2))
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(marTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(mbrTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 232, Short.MAX_VALUE)
+=======
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(dirTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 206, Short.MAX_VALUE)
+>>>>>>> 0abb955295bd96d2b9c68585bcb7f89f0961352f
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(iniciarSimulacion))
-                .addContainerGap())
+                    .addComponent(iniciarSimulacion)
+                    .addComponent(jButton2))
+                .addGap(43, 43, 43))
         );
 
         pack();
@@ -129,8 +184,8 @@ public class Interrupcion extends javax.swing.JFrame {
 
     public void paint(Graphics gd) {
         super.paint(gd);
-        gd.setColor(Color.red);
-        gd.fillRect(500, 50, 400, 400);
+        gd.setColor(Color.MAGENTA);
+        gd.fillRect(600, 50, 500, 500);
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         menu m = new menu();
@@ -192,7 +247,7 @@ public class Interrupcion extends javax.swing.JFrame {
             MemoryBufferRegister mbr = new MemoryBufferRegister();
             MemoryAddressRegister mar = new MemoryAddressRegister();
             MemoriaPrincipal mp = new MemoriaPrincipal();
-            
+            boolean aux = false;
             try{
                 if(dirTextField.getText().isEmpty()){
                     JOptionPane.showMessageDialog(null, "El campo esta vacio, por favor ingrese una direccion");
@@ -202,14 +257,33 @@ public class Interrupcion extends javax.swing.JFrame {
                     if (pc.verificar(pc.getDireccion())){
                     pc.decimalABinario(pc.getDireccion());
                     dirTextField.setText(pc.getDireccion());
+                    aux = true;
                 }else{
                     JOptionPane.showMessageDialog(null, "El campo es una cadena o un decimal no un entero, por favor ingrese un numero entero. :V", "error", JOptionPane.ERROR_MESSAGE);
-                    dirTextField.setText("");    
+                    dirTextField.setText("");
+                    aux = false;
                     }
                 }
                 Thread.sleep(300);
             }catch(InterruptedException ex1){
                  Logger.getLogger(Captacion.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            
+            if(aux){
+               mbr.setDireccion(pc.getDireccion());
+               try{
+                   mbrTextField.setText(mbr.getDireccion());
+                   Graphics gd = getGraphics();
+                   gd.setColor(Color.BLUE);
+                   gd.fillRect(650, 70 ,100 ,50);
+                   gd.setColor(Color.black);
+                   gd.drawString("Program Counter", 651, 90);
+                   Thread.sleep(300);
+                   
+                   
+               }catch (InterruptedException ex) {
+                        Logger.getLogger(Captacion.class.getName()).log(Level.SEVERE, null, ex);
+                    }
             }
         }
     }
@@ -221,5 +295,9 @@ public class Interrupcion extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JTextField marTextField;
+    private javax.swing.JTextField mbrTextField;
     // End of variables declaration//GEN-END:variables
 }

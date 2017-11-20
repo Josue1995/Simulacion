@@ -12,13 +12,23 @@ package Registros;
  */
 public class MemoryBufferRegister {
     private String instruccion;
+    private String direccion;
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
 
      public MemoryBufferRegister() {
     } 
     
-    public MemoryBufferRegister(String instruccion) {
+    public MemoryBufferRegister(String instruccion, String direccion) {
         this.instruccion = instruccion;
-    }
+        this.direccion = direccion;
+     }
 
     public String getInstruccion() {
         return instruccion;

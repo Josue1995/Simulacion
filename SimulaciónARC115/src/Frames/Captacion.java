@@ -455,6 +455,7 @@ public class Captacion extends javax.swing.JFrame {
                     } 
                     
                     try{
+                        
                         g.setColor(Color.white);
                         g.drawRect(1200, 90, 95, 400);
                         g.setColor(Color.green);
