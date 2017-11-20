@@ -55,6 +55,11 @@ public class Inicio extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
@@ -63,7 +68,7 @@ public class Inicio extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("El Ciclo de Instrucción");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(260, 30, 248, 39);
+        jLabel1.setBounds(270, 180, 248, 39);
 
         jLabel2.setFont(new java.awt.Font("Adobe Devanagari", 3, 10)); // NOI18N
         getContentPane().add(jLabel2);
@@ -73,25 +78,25 @@ public class Inicio extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("ARQUITECTURA DE COMPUTADORAS");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(230, 110, 335, 22);
+        jLabel3.setBounds(210, 140, 335, 22);
 
         jLabel4.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Docente: Ing. Boris Montano");
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(270, 180, 250, 22);
+        jLabel4.setBounds(260, 270, 250, 22);
 
         jLabel5.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Estudiantes: Torres Artiaga, Josué Alfonso");
         getContentPane().add(jLabel5);
-        jLabel5.setBounds(230, 330, 370, 22);
+        jLabel5.setBounds(210, 320, 370, 22);
 
         jLabel6.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Torres Artiaga, Rodrigo Mauricio");
         getContentPane().add(jLabel6);
-        jLabel6.setBounds(340, 370, 300, 22);
+        jLabel6.setBounds(320, 350, 300, 22);
 
         jButton1.setText("Menú :V");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -100,13 +105,43 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton1);
-        jButton1.setBounds(240, 470, 300, 23);
+        jButton1.setBounds(230, 520, 300, 23);
 
         jLabel7.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("CICLO II - 2017");
         getContentPane().add(jLabel7);
-        jLabel7.setBounds(320, 250, 220, 30);
+        jLabel7.setBounds(320, 230, 220, 30);
+
+        jLabel8.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Castro Figueroa, Vanessa Jeannette");
+        getContentPane().add(jLabel8);
+        jLabel8.setBounds(320, 380, 320, 22);
+
+        jLabel9.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Pérez López, William Orlando");
+        getContentPane().add(jLabel9);
+        jLabel9.setBounds(320, 420, 300, 22);
+
+        jLabel10.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("Escuela de Ingenieria de Sistemas Informaticos");
+        getContentPane().add(jLabel10);
+        jLabel10.setBounds(170, 100, 440, 22);
+
+        jLabel11.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("Universidad de El Salvador");
+        getContentPane().add(jLabel11);
+        jLabel11.setBounds(230, 20, 260, 14);
+
+        jLabel12.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setText("Facultad de Ingenieria y Arquitectura");
+        getContentPane().add(jLabel12);
+        jLabel12.setBounds(190, 60, 360, 22);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -155,11 +190,16 @@ public class Inicio extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables
 }

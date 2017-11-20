@@ -74,6 +74,10 @@ public class Captacion extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         mbrField = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        irField = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaDeDatos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -134,6 +138,38 @@ public class Captacion extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Instruction Register (IR):");
+
+        irField.setEditable(false);
+        irField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                irFieldActionPerformed(evt);
+            }
+        });
+
+        tablaDeDatos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Program Counter", "Memory Address Register", "Memory Buffer Register", "Instruction Register"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablaDeDatos);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -141,31 +177,41 @@ public class Captacion extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(42, 42, 42)
-                                .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(297, 297, 297)
-                        .addComponent(iniciarSimulacion)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2))
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton1)
+                                    .addComponent(jLabel1)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addGap(42, 42, 42)
+                                        .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(297, 297, 297)
+                                .addComponent(iniciarSimulacion)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(marField, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel5))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(mbrField, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                                            .addComponent(irField))))))
+                        .addGap(0, 607, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
-                                .addComponent(mbrField))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(marField, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(327, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,7 +231,13 @@ public class Captacion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(mbrField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 172, Short.MAX_VALUE)
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(irField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(357, 357, 357)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(iniciarSimulacion)
                     .addComponent(jButton2))
@@ -198,7 +250,11 @@ public class Captacion extends javax.swing.JFrame {
     public void paint(Graphics g){
         super.paint(g);
         g.setColor(Color.GRAY);
-        g.fillRect(600, 50, 500, 500);
+        g.fillRect(500, 50, 800, 600);
+        g.setColor(Color.orange);
+        g.fillRect(1000, 50, 25, 500);
+        g.fillRect(1050, 50, 25, 500);
+        g.fillRect(1100, 50, 25, 500);
     }
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -228,6 +284,10 @@ public class Captacion extends javax.swing.JFrame {
     private void mbrFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mbrFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_mbrFieldActionPerformed
+
+    private void irFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_irFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_irFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -271,6 +331,9 @@ public class Captacion extends javax.swing.JFrame {
             MemoryAddressRegister mar = new MemoryAddressRegister();
             MemoriaPrincipal mp = new MemoriaPrincipal();
             InstructionRegister ir = new InstructionRegister();
+            Graphics g= getGraphics();
+            Graphics g1 = getGraphics();
+
             mp.setN(inicializar());
             boolean auxMAR = false;
             try{
@@ -283,6 +346,15 @@ public class Captacion extends javax.swing.JFrame {
                     pc.decimalABinario(pc.getDireccion());
                     direccionField.setText(pc.getDireccion());
                     auxMAR = true;
+                    
+                    g.setColor(Color.blue);
+                    g.fillRect(650, 70, 150,50);
+                    g.setColor(Color.green);
+                    g.drawRect(650, 70, 150, 50);
+                    g.setColor(Color.yellow);
+                    g.drawString("Program Counter", 652, 90);
+                    g.drawString(pc.getDireccion(), 652, 110);
+                        
             
                 }else{
                     JOptionPane.showMessageDialog(null, "El campo es una cadena o un decimal no un entero, por favor ingrese un numero entero. :V", "error", JOptionPane.ERROR_MESSAGE);
@@ -298,19 +370,51 @@ public class Captacion extends javax.swing.JFrame {
             if(auxMAR){
                 mar.setPc(pc);
                     try {
-                        marField.setText(mar.getPc().getDireccion());
-                        Graphics g= getGraphics();
+                        
                         g.setColor(Color.blue);
-                        g.fillRect(650, 70, 100,50);
+                        g.drawRect(650, 70, 150, 50);
+                        g1.setColor(Color.orange);
+                        g1.fillRect(802, 87, 100, 25);
+                        g1.setColor(Color.green);
+                        g1.drawRect(802, 87, 100, 25);
+                        g1.setColor(Color.blue);
+                        g1.fillRect(903, 70, 150, 50);
+                        g1.setColor(Color.green);
+                        g1.drawRect(903, 70, 150, 50);
                         g.setColor(Color.yellow);
-                        g.drawString("Program Counter", 651, 90);
+                        g.drawString("Memory Address Register", 904, 90);
+                        g.drawString( mar.getPc().getDireccion(), 904, 110);
+                        marField.setText(mar.getPc().getDireccion());
+                        
+                        
+                        
                         Thread.sleep(3000);
                         
-                        mbrField.setText(mp.buscar(mbr.binarioDecimal(marField.getText())));
+                        
+                        
                 
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Captacion.class.getName()).log(Level.SEVERE, null, ex);
+                    } 
+                    
+                    try{
+                        mbrField.setText(mp.buscar(mbr.binarioDecimal(marField.getText())));
+                        mbr.setInstruccion(mbrField.getText());
+                        pc.incrementar(pc.getDireccion());
+                        direccionField.setText(pc.getDireccion());
+                        Thread.sleep(3000);
+                    }catch (InterruptedException ex2) {
+                        Logger.getLogger(Captacion.class.getName()).log(Level.SEVERE, null, ex2);
+                    } 
+                    
+                    try{
+                        ir.setMbr(mbr);
+                        irField.setText(ir.getMbr().getInstruccion());
+                        Thread.sleep(3000);
+                    }catch (InterruptedException ex2) {
+                        Logger.getLogger(Captacion.class.getName()).log(Level.SEVERE, null, ex2);
                     }
+                    
             }
             
             
@@ -356,13 +460,17 @@ public class Captacion extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField direccionField;
     private javax.swing.JButton iniciarSimulacion;
+    private javax.swing.JTextField irField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField marField;
     private javax.swing.JTextField mbrField;
+    private javax.swing.JTable tablaDeDatos;
     // End of variables declaration//GEN-END:variables
 }
