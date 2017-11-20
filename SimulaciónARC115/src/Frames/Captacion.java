@@ -78,6 +78,7 @@ public class Captacion extends javax.swing.JFrame {
         irField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaDeDatos = new javax.swing.JTable();
+        borrarRegistros = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -170,12 +171,22 @@ public class Captacion extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tablaDeDatos);
 
+        borrarRegistros.setText("Borrar registros");
+        borrarRegistros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                borrarRegistrosActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -186,19 +197,15 @@ public class Captacion extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel2)
                                         .addGap(42, 42, 42)
-                                        .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(297, 297, 297)
-                                .addComponent(iniciarSimulacion)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton2))
+                                        .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                         .addComponent(jLabel3)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(marField, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(marField, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+                                        .addGap(19, 19, 19))
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel4)
@@ -206,11 +213,15 @@ public class Captacion extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(mbrField, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
-                                            .addComponent(irField))))))
-                        .addGap(0, 607, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1)))
+                                            .addComponent(irField)))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(297, 297, 297)
+                                .addComponent(iniciarSimulacion)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2)
+                                .addGap(30, 30, 30)
+                                .addComponent(borrarRegistros)))
+                        .addGap(0, 470, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -240,7 +251,8 @@ public class Captacion extends javax.swing.JFrame {
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(iniciarSimulacion)
-                    .addComponent(jButton2))
+                    .addComponent(jButton2)
+                    .addComponent(borrarRegistros))
                 .addContainerGap())
         );
 
@@ -251,10 +263,18 @@ public class Captacion extends javax.swing.JFrame {
         super.paint(g);
         g.setColor(Color.GRAY);
         g.fillRect(500, 50, 800, 600);
-        g.setColor(Color.orange);
-        g.fillRect(1000, 50, 25, 500);
-        g.fillRect(1050, 50, 25, 500);
-        g.fillRect(1100, 50, 25, 500);
+        g.setColor(Color.white);
+        g.fillRect(1000, 100, 35, 550);
+        g.fillRect(1070, 100, 35, 550);
+        g.fillRect(1140, 100, 35, 550);
+        g.setColor(Color.blue);
+        g.drawString("BusDi", 1000, 90);
+        g.drawString("BusD", 1070, 90);
+        g.drawString("BusC", 1140, 90);
+        g.setColor(Color.WHITE);
+        g.fillRect(1200, 90, 95, 400);
+        g.setColor(Color.black);
+        g.drawString("Memoria P.", 1215, 102);
     }
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -288,6 +308,28 @@ public class Captacion extends javax.swing.JFrame {
     private void irFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_irFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_irFieldActionPerformed
+
+    private void borrarRegistrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarRegistrosActionPerformed
+        direccionField.setText("");
+        marField.setText("");
+        mbrField.setText("");
+        irField.setText("");
+        Graphics g2 = getGraphics();
+        g2.setColor(Color.GRAY);
+        g2.fillRect(500, 50, 800, 600);
+        g2.setColor(Color.white);
+        g2.fillRect(1000, 100, 35, 550);
+        g2.fillRect(1070, 100, 35, 550);
+        g2.fillRect(1140, 100, 35, 550);
+        g2.setColor(Color.blue);
+        g2.drawString("BusDi", 1000, 90);
+        g2.drawString("BusD", 1070, 90);
+        g2.drawString("BusC", 1140, 90);
+        g2.setColor(Color.WHITE);
+        g2.fillRect(1200, 90, 95, 400);
+        g2.setColor(Color.black);
+        g2.drawString("Memoria P.", 1215, 102);
+    }//GEN-LAST:event_borrarRegistrosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -348,12 +390,12 @@ public class Captacion extends javax.swing.JFrame {
                     auxMAR = true;
                     
                     g.setColor(Color.blue);
-                    g.fillRect(650, 70, 150,50);
+                    g.fillRect(500,150,150,50);
                     g.setColor(Color.green);
-                    g.drawRect(650, 70, 150, 50);
+                    g.drawRect(500, 150, 150, 50);
                     g.setColor(Color.yellow);
-                    g.drawString("Program Counter", 652, 90);
-                    g.drawString(pc.getDireccion(), 652, 110);
+                    g.drawString("Program Counter", 502, 170);
+                    g.drawString(pc.getDireccion(), 502, 185);
                         
             
                 }else{
@@ -372,36 +414,71 @@ public class Captacion extends javax.swing.JFrame {
                     try {
                         
                         g.setColor(Color.blue);
-                        g.drawRect(650, 70, 150, 50);
+                        g.drawRect(500, 150, 150, 50);
                         g1.setColor(Color.orange);
-                        g1.fillRect(802, 87, 100, 25);
+                        g1.fillRect(653, 165, 100, 25);
                         g1.setColor(Color.green);
-                        g1.drawRect(802, 87, 100, 25);
+                        g1.drawRect(653, 165, 100, 25);
                         g1.setColor(Color.blue);
-                        g1.fillRect(903, 70, 150, 50);
+                        g1.fillRect(753, 150, 150, 50);
                         g1.setColor(Color.green);
-                        g1.drawRect(903, 70, 150, 50);
+                        g1.drawRect(753, 150, 150, 50);
                         g.setColor(Color.yellow);
-                        g.drawString("Memory Address Register", 904, 90);
-                        g.drawString( mar.getPc().getDireccion(), 904, 110);
+                        g.drawString("Memory Address Register", 755, 165);
+                        g.drawString( mar.getPc().getDireccion(), 755, 180);
                         marField.setText(mar.getPc().getDireccion());
                         
+                        Thread.sleep(3000);
+                        g.setColor(Color.blue);
+                        g.drawRect(753, 150, 150, 50);
+                        g.setColor(Color.orange);
+                        g.drawRect(653, 165, 100, 25);
+                        g.setColor(Color.orange);
                         
+                        g.fillRect(903, 165, 97, 25);
+                        g.setColor(Color.green);
+                        g.drawRect(903, 165, 97, 25);
+                        g.drawRect(1000, 100, 35, 550);
                         
                         Thread.sleep(3000);
                         
-                        
-                        
+                        g.setColor(Color.orange);
+                        g.fillRect(903, 165, 97, 26);
+                        g.setColor(Color.white);
+                        g.drawRect(1000, 100, 35, 550);
+                        g.setColor(Color.green);
+                        g.drawRect(1200, 90, 95, 400);
+                        Thread.sleep(3000);
                 
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Captacion.class.getName()).log(Level.SEVERE, null, ex);
                     } 
                     
                     try{
+                        g.setColor(Color.white);
+                        g.drawRect(1200, 90, 95, 400);
+                        g.setColor(Color.green);
+                        g.drawRect(1070, 100, 35, 550);
+                        Thread.sleep(3000);
+                        g.setColor(Color.white);
+                        g.drawRect(1070, 100, 35, 550);
+                        g.setColor(Color.blue);
+                        g.drawString(pc.getDireccion(), 502, 185);
+                        g.setColor(Color.white);
+                        g.drawRect(1070, 100, 35, 550);
                         mbrField.setText(mp.buscar(mbr.binarioDecimal(marField.getText())));
+                        g.setColor(Color.blue);
+                        g.fillRect(753, 250, 150, 50);
+                        g.setColor(Color.yellow);
+                        g.drawString("Memory Buffer Register", 753, 265); 
+                        g.drawString(mbrField.getText(), 753, 280);
+                        g.setColor(Color.green);
+                        g.drawRect(753, 250, 150, 50);
                         mbr.setInstruccion(mbrField.getText());
                         pc.incrementar(pc.getDireccion());
-                        direccionField.setText(pc.getDireccion());
+                        direccionField.setText(pc.getDireccion());  
+                        g.setColor(Color.yellow);
+                        g.drawString(pc.getDireccion(), 502, 185);
                         Thread.sleep(3000);
                     }catch (InterruptedException ex2) {
                         Logger.getLogger(Captacion.class.getName()).log(Level.SEVERE, null, ex2);
@@ -423,7 +500,7 @@ public class Captacion extends javax.swing.JFrame {
         
         
     }
-    
+//***************************************MÉTODO PARA CARGAR MEMORIA****************************************************
     private ArrayList<String> inicializar(){
         ArrayList<String> array = new ArrayList<String>();
         
@@ -458,6 +535,7 @@ public class Captacion extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton borrarRegistros;
     private javax.swing.JTextField direccionField;
     private javax.swing.JButton iniciarSimulacion;
     private javax.swing.JTextField irField;

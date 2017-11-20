@@ -90,13 +90,13 @@ public class Inicio extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Estudiantes: Torres Artiaga, Josué Alfonso");
         getContentPane().add(jLabel5);
-        jLabel5.setBounds(210, 320, 370, 22);
+        jLabel5.setBounds(150, 320, 370, 22);
 
         jLabel6.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Torres Artiaga, Rodrigo Mauricio");
         getContentPane().add(jLabel6);
-        jLabel6.setBounds(320, 350, 300, 22);
+        jLabel6.setBounds(260, 350, 300, 22);
 
         jButton1.setText("Menú :V");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -117,13 +117,13 @@ public class Inicio extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Castro Figueroa, Vanessa Jeannette");
         getContentPane().add(jLabel8);
-        jLabel8.setBounds(320, 380, 320, 22);
+        jLabel8.setBounds(260, 380, 320, 22);
 
         jLabel9.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Pérez López, William Orlando");
         getContentPane().add(jLabel9);
-        jLabel9.setBounds(320, 420, 300, 22);
+        jLabel9.setBounds(260, 410, 300, 22);
 
         jLabel10.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
