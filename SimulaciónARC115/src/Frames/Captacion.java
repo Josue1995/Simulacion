@@ -436,33 +436,51 @@ public class Captacion extends javax.swing.JFrame {
                         g.setColor(Color.orange);
                         
                         g.fillRect(903, 165, 97, 25);
+                        
                         g.setColor(Color.green);
                         g.drawRect(903, 165, 97, 25);
                         g.drawRect(1000, 100, 35, 550);
                         
                         Thread.sleep(3000);
-                        
                         g.setColor(Color.orange);
-                        g.fillRect(903, 165, 97, 26);
+                        g.drawRect(903, 165, 97, 25);
+                        g.setColor(Color.orange);
+                        g.fillRect(1035, 190, 165, 25);
+                        g.setColor(Color.green);
+                        g.drawRect(1035, 190, 165, 25);
+                        
                         g.setColor(Color.white);
                         g.drawRect(1000, 100, 35, 550);
                         g.setColor(Color.green);
                         g.drawRect(1200, 90, 95, 400);
                         Thread.sleep(3000);
+                       
                 
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Captacion.class.getName()).log(Level.SEVERE, null, ex);
                     } 
                     
                     try{
-                        
+                        g.setColor(Color.orange);
+                        g.drawRect(1035, 190, 165, 25);
                         g.setColor(Color.white);
                         g.drawRect(1200, 90, 95, 400);
+                        g.setColor(Color.orange);
+                        g.fillRect(1105, 250, 95, 25);
                         g.setColor(Color.green);
+                        g.drawRect(1105, 250, 95, 25);
+                        g.setColor(Color.green);
+                        
                         g.drawRect(1070, 100, 35, 550);
+                        
                         Thread.sleep(3000);
                         g.setColor(Color.white);
                         g.drawRect(1070, 100, 35, 550);
+                        g.setColor(Color.orange);
+                        g.drawRect(1105, 250, 95, 25);
+                        g.fillRect(903, 260, 167, 25);
+                        g.setColor(Color.green);
+                        g.drawRect(903, 260, 167, 25);
                         g.setColor(Color.blue);
                         g.drawString(pc.getDireccion(), 502, 185);
                         g.setColor(Color.white);
@@ -486,8 +504,23 @@ public class Captacion extends javax.swing.JFrame {
                     } 
                     
                     try{
+                        g.setColor(Color.orange);
+                        g.fillRect(903, 260, 167, 26);
+                        g.setColor(Color.blue);
+                        g.drawRect(753, 250, 150, 50);
+                        g.fillRect(500, 250, 150, 50);
+                        g.setColor(Color.green);
+                        g.drawRect(500, 250, 150, 50);
+                        g.setColor(Color.yellow);
+                        g.drawString("Instruction Register", 503, 264);
+                        g.setColor(Color.orange);
+                        g.fillRect(650, 260, 102, 25);
+                        g.setColor(Color.green);
+                        g.drawRect(650, 260, 102, 25);
                         ir.setMbr(mbr);
                         irField.setText(ir.getMbr().getInstruccion());
+                        g.setColor(Color.yellow);
+                        g.drawString(irField.getText(), 503, 278);
                         Thread.sleep(3000);
                     }catch (InterruptedException ex2) {
                         Logger.getLogger(Captacion.class.getName()).log(Level.SEVERE, null, ex2);
