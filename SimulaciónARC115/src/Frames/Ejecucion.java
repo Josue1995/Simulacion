@@ -37,7 +37,7 @@ public class Ejecucion extends javax.swing.JFrame {
         getLayeredPane().add(label, JLayeredPane.FRAME_CONTENT_LAYER);
         label.setBounds(0, 0, imagen.getIconWidth(), imagen.getIconHeight());
         setResizable(false);
-        setSize(1400,1000);
+        setSize(1400,800);
         setLocationRelativeTo(null);
     }
 
@@ -56,8 +56,6 @@ public class Ejecucion extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tablaDeDatos = new javax.swing.JTable();
         direccionField = new javax.swing.JTextField();
         marField = new javax.swing.JTextField();
         mbrField = new javax.swing.JTextField();
@@ -89,27 +87,6 @@ public class Ejecucion extends javax.swing.JFrame {
 
         jLabel5.setForeground(java.awt.Color.white);
         jLabel5.setText("Introduzca la dirección de la memoria");
-
-        tablaDeDatos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Program Counter", "Memory Address Register", "Memory Buffer Register", "Instruction Register"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tablaDeDatos);
 
         direccionField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -166,7 +143,6 @@ public class Ejecucion extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 887, Short.MAX_VALUE)
                     .addComponent(jButton1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
@@ -185,7 +161,7 @@ public class Ejecucion extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
                         .addComponent(mbrField, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addContainerGap(588, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(182, 182, 182)
                 .addComponent(jButton2)
@@ -218,9 +194,7 @@ public class Ejecucion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(irField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 331, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton3)
@@ -394,9 +368,7 @@ public class Ejecucion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField marField;
     private javax.swing.JTextField mbrField;
-    private javax.swing.JTable tablaDeDatos;
     // End of variables declaration//GEN-END:variables
 }
