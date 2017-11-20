@@ -10,6 +10,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import Registros.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
 
 /**
  *
@@ -30,7 +37,7 @@ public class Ejecucion extends javax.swing.JFrame {
         getLayeredPane().add(label, JLayeredPane.FRAME_CONTENT_LAYER);
         label.setBounds(0, 0, imagen.getIconWidth(), imagen.getIconHeight());
         setResizable(false);
-        setSize(800,400);
+        setSize(1400,1000);
         setLocationRelativeTo(null);
     }
 
@@ -44,6 +51,20 @@ public class Ejecucion extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaDeDatos = new javax.swing.JTable();
+        direccionField = new javax.swing.JTextField();
+        marField = new javax.swing.JTextField();
+        mbrField = new javax.swing.JTextField();
+        irField = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -54,31 +75,232 @@ public class Ejecucion extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setForeground(java.awt.Color.white);
+        jLabel1.setText("Program Counter (PC):");
+
+        jLabel2.setForeground(java.awt.Color.white);
+        jLabel2.setText("Memory Address Register (MAR):");
+
+        jLabel3.setForeground(java.awt.Color.white);
+        jLabel3.setText("Memory Buffer Register (MBR): ");
+
+        jLabel4.setForeground(java.awt.Color.white);
+        jLabel4.setText("Instruction Register (IR):");
+
+        jLabel5.setForeground(java.awt.Color.white);
+        jLabel5.setText("Introduzca la dirección de la memoria");
+
+        tablaDeDatos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Program Counter", "Memory Address Register", "Memory Buffer Register", "Instruction Register"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablaDeDatos);
+
+        direccionField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                direccionFieldActionPerformed(evt);
+            }
+        });
+
+        marField.setEditable(false);
+        marField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                marFieldActionPerformed(evt);
+            }
+        });
+
+        mbrField.setEditable(false);
+        mbrField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mbrFieldActionPerformed(evt);
+            }
+        });
+
+        irField.setEditable(false);
+        irField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                irFieldActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Iniciar simulación");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Salir");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Borrar registros");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
-                .addContainerGap(331, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 887, Short.MAX_VALUE)
+                    .addComponent(jButton1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(irField, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(marField, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(mbrField, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(182, 182, 182)
+                .addComponent(jButton2)
+                .addGap(77, 77, 77)
+                .addComponent(jButton3)
+                .addGap(82, 82, 82)
+                .addComponent(jButton4)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton1)
-                .addContainerGap(266, Short.MAX_VALUE))
+                .addGap(9, 9, 9)
+                .addComponent(jLabel5)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(marField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(mbrField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(irField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 331, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4))
+                .addGap(24, 24, 24))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void paint(Graphics g){
+        super.paint(g);
+        g.setColor(Color.GRAY);
+        g.fillRect(500, 50, 800, 600);
+        g.setColor(Color.white);
+        g.fillRect(1000, 100, 35, 550);
+        g.fillRect(1070, 100, 35, 550);
+        g.fillRect(1140, 100, 35, 550);
+        g.setColor(Color.blue);
+        g.drawString("BusDi", 1000, 90);
+        g.drawString("BusD", 1070, 90);
+        g.drawString("BusC", 1140, 90);
+        g.setColor(Color.WHITE);
+        g.fillRect(1200, 90, 95, 400);
+        g.setColor(Color.black);
+        g.drawString("Memoria P.", 1215, 102);
+    }
+ 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         menu m = new menu();
         m.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void direccionFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_direccionFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_direccionFieldActionPerformed
+
+    private void marFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_marFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_marFieldActionPerformed
+
+    private void mbrFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mbrFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mbrFieldActionPerformed
+
+    private void irFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_irFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_irFieldActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Hilo h = new Hilo();
+        h.start();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        direccionField.setText("");
+        marField.setText("");
+        mbrField.setText("");
+        irField.setText("");
+        Graphics g2 = getGraphics();
+        g2.setColor(Color.GRAY);
+        g2.fillRect(500, 50, 800, 600);
+        g2.setColor(Color.white);
+        g2.fillRect(1000, 100, 35, 550);
+        g2.fillRect(1070, 100, 35, 550);
+        g2.fillRect(1140, 100, 35, 550);
+        g2.setColor(Color.blue);
+        g2.drawString("BusDi", 1000, 90);
+        g2.drawString("BusD", 1070, 90);
+        g2.drawString("BusC", 1140, 90);
+        g2.setColor(Color.WHITE);
+        g2.fillRect(1200, 90, 95, 400);
+        g2.setColor(Color.black);
+        g2.drawString("Memoria P.", 1215, 102);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -115,7 +337,66 @@ public class Ejecucion extends javax.swing.JFrame {
         });
     }
 
+    private class Hilo extends Thread{
+        public void run(){
+            MemoryBufferRegister mbr = new MemoryBufferRegister();
+            MemoryAddressRegister mar = new MemoryAddressRegister();
+            InstructionRegister ir = new InstructionRegister();
+            MemoriaPrincipal mp = new MemoriaPrincipal();
+            ProgramCounter pc = new ProgramCounter();
+        
+            mp.setN(inicializar());
+            
+        }
+        
+    }
+ //***************************************MÉTODO PARA CARGAR MEMORIA****************************************************
+    private ArrayList<String> inicializar(){
+        ArrayList<String> array = new ArrayList<String>();
+        
+        File file = null;
+        FileReader read = null;
+        BufferedReader buff = null;
+        
+        try{
+            file = new File("src/Datos/datos.txt");
+            read = new FileReader(file);
+            buff = new BufferedReader(read);
+            String linea;
+            while((linea = buff.readLine()) != null ){
+                array.add(linea);
+            }
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            try{
+                if (null != read){
+                    read.close();
+                }
+            }catch(Exception e2){
+                e2.printStackTrace();
+            }
+        }
+        return array;
+    }
+    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField direccionField;
+    private javax.swing.JTextField irField;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField marField;
+    private javax.swing.JTextField mbrField;
+    private javax.swing.JTable tablaDeDatos;
     // End of variables declaration//GEN-END:variables
 }
