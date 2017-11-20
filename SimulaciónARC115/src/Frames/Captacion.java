@@ -495,6 +495,11 @@ public class Captacion extends javax.swing.JFrame {
                         g.drawRect(650, 260, 102, 25);
                         g.setColor(Color.blue);
                         g.drawRect(500, 250, 150, 50);
+                        Thread.sleep(10000);
+                        Ejecucion e = new Ejecucion();
+                        e.setVisible(true);
+                        e.registerIR.setText(irField.getText());
+                        dispose();
                         Thread.sleep(1000);
                     }catch (InterruptedException ex2) {
                         Logger.getLogger(Captacion.class.getName()).log(Level.SEVERE, null, ex2);

@@ -55,11 +55,9 @@ public class Ejecucion extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        direccionField = new javax.swing.JTextField();
-        marField = new javax.swing.JTextField();
-        mbrField = new javax.swing.JTextField();
-        irField = new javax.swing.JTextField();
+        marField1 = new javax.swing.JTextField();
+        mbrField1 = new javax.swing.JTextField();
+        registerIR = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -74,7 +72,6 @@ public class Ejecucion extends javax.swing.JFrame {
         });
 
         jLabel1.setForeground(java.awt.Color.white);
-        jLabel1.setText("Program Counter (PC):");
 
         jLabel2.setForeground(java.awt.Color.white);
         jLabel2.setText("Memory Address Register (MAR):");
@@ -85,33 +82,24 @@ public class Ejecucion extends javax.swing.JFrame {
         jLabel4.setForeground(java.awt.Color.white);
         jLabel4.setText("Instruction Register (IR):");
 
-        jLabel5.setForeground(java.awt.Color.white);
-        jLabel5.setText("Introduzca la dirección de la memoria");
-
-        direccionField.addActionListener(new java.awt.event.ActionListener() {
+        marField1.setEditable(false);
+        marField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                direccionFieldActionPerformed(evt);
+                marField1ActionPerformed(evt);
             }
         });
 
-        marField.setEditable(false);
-        marField.addActionListener(new java.awt.event.ActionListener() {
+        mbrField1.setEditable(false);
+        mbrField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                marFieldActionPerformed(evt);
+                mbrField1ActionPerformed(evt);
             }
         });
 
-        mbrField.setEditable(false);
-        mbrField.addActionListener(new java.awt.event.ActionListener() {
+        registerIR.setEditable(false);
+        registerIR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mbrFieldActionPerformed(evt);
-            }
-        });
-
-        irField.setEditable(false);
-        irField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                irFieldActionPerformed(evt);
+                registerIRActionPerformed(evt);
             }
         });
 
@@ -141,60 +129,55 @@ public class Ejecucion extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(irField, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel5)
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
+                            .addComponent(jLabel1)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(182, 182, 182)
+                        .addComponent(jButton2)
+                        .addGap(77, 77, 77)
+                        .addComponent(jButton3)
+                        .addGap(82, 82, 82)
+                        .addComponent(jButton4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel4))
+                            .addComponent(jLabel3))
+                        .addGap(23, 23, 23)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(mbrField1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(registerIR, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(marField, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(mbrField, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(588, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(182, 182, 182)
-                .addComponent(jButton2)
-                .addGap(77, 77, 77)
-                .addComponent(jButton3)
-                .addGap(82, 82, 82)
-                .addComponent(jButton4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(marField1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(293, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton1)
-                .addGap(9, 9, 9)
-                .addComponent(jLabel5)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(marField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(mbrField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(38, 38, 38)
+                .addComponent(jLabel1)
+                .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(irField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
+                    .addComponent(registerIR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(mbrField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(42, 42, 42)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(marField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 211, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton3)
@@ -229,21 +212,17 @@ public class Ejecucion extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void direccionFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_direccionFieldActionPerformed
+    private void marField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_marField1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_direccionFieldActionPerformed
+    }//GEN-LAST:event_marField1ActionPerformed
 
-    private void marFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_marFieldActionPerformed
+    private void mbrField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mbrField1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_marFieldActionPerformed
+    }//GEN-LAST:event_mbrField1ActionPerformed
 
-    private void mbrFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mbrFieldActionPerformed
+    private void registerIRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerIRActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_mbrFieldActionPerformed
-
-    private void irFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_irFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_irFieldActionPerformed
+    }//GEN-LAST:event_registerIRActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         System.exit(0);
@@ -255,10 +234,9 @@ public class Ejecucion extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        direccionField.setText("");
-        marField.setText("");
-        mbrField.setText("");
-        irField.setText("");
+        marField1.setText("");
+        mbrField1.setText("");
+        registerIR.setText("");
         Graphics g2 = getGraphics();
         g2.setColor(Color.GRAY);
         g2.fillRect(500, 50, 800, 600);
@@ -318,47 +296,15 @@ public class Ejecucion extends javax.swing.JFrame {
             InstructionRegister ir = new InstructionRegister();
             MemoriaPrincipal mp = new MemoriaPrincipal();
             ProgramCounter pc = new ProgramCounter();
-        
-            mp.setN(inicializar());
+            
+            
             
         }
         
     }
- //***************************************MÉTODO PARA CARGAR MEMORIA****************************************************
-    private ArrayList<String> inicializar(){
-        ArrayList<String> array = new ArrayList<String>();
-        
-        File file = null;
-        FileReader read = null;
-        BufferedReader buff = null;
-        
-        try{
-            file = new File("src/Datos/datos.txt");
-            read = new FileReader(file);
-            buff = new BufferedReader(read);
-            String linea;
-            while((linea = buff.readLine()) != null ){
-                array.add(linea);
-            }
-            
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally{
-            try{
-                if (null != read){
-                    read.close();
-                }
-            }catch(Exception e2){
-                e2.printStackTrace();
-            }
-        }
-        return array;
-    }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField direccionField;
-    private javax.swing.JTextField irField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -367,8 +313,8 @@ public class Ejecucion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField marField;
-    private javax.swing.JTextField mbrField;
+    private javax.swing.JTextField marField1;
+    private javax.swing.JTextField mbrField1;
+    public javax.swing.JTextField registerIR;
     // End of variables declaration//GEN-END:variables
 }
