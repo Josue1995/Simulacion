@@ -372,7 +372,7 @@ public class Captacion extends javax.swing.JFrame {
                 }
             }
             
-            Thread.sleep(3000);
+            Thread.sleep(1000);
             }catch(InterruptedException ex1){
                 Logger.getLogger(Captacion.class.getName()).log(Level.SEVERE, null, ex1);
             }
@@ -395,7 +395,7 @@ public class Captacion extends javax.swing.JFrame {
                         g.drawString( mar.getPc().getDireccion(), 755, 180);
                         marField.setText(mar.getPc().getDireccion());
                         
-                        Thread.sleep(3000);
+                        Thread.sleep(1000);
                         g.setColor(Color.blue);
                         g.drawRect(753, 150, 150, 50);
                         g.setColor(Color.orange);
@@ -408,7 +408,7 @@ public class Captacion extends javax.swing.JFrame {
                         g.drawRect(903, 165, 97, 25);
                         g.drawRect(1000, 100, 35, 550);
                         
-                        Thread.sleep(3000);
+                        Thread.sleep(1000);
                         g.setColor(Color.orange);
                         g.drawRect(903, 165, 97, 25);
                         g.setColor(Color.orange);
@@ -420,7 +420,7 @@ public class Captacion extends javax.swing.JFrame {
                         g.drawRect(1000, 100, 35, 550);
                         g.setColor(Color.green);
                         g.drawRect(1200, 90, 95, 400);
-                        Thread.sleep(3000);
+                        Thread.sleep(1000);
                        
                 
                     } catch (InterruptedException ex) {
@@ -440,7 +440,7 @@ public class Captacion extends javax.swing.JFrame {
                         
                         g.drawRect(1070, 100, 35, 550);
                         
-                        Thread.sleep(3000);         
+                        Thread.sleep(1000);         
                         g.setColor(Color.white);
                         g.drawRect(1070, 100, 35, 550);                       
                         g.setColor(Color.orange);
@@ -467,7 +467,7 @@ public class Captacion extends javax.swing.JFrame {
                         g.drawString(pc.getDireccion(), 502, 185);
                         g.setColor(Color.orange);
                         g.fillRect(1035, 190, 165, 25);
-                        Thread.sleep(3000);
+                        Thread.sleep(1000);
                     }catch (InterruptedException ex2) {
                         Logger.getLogger(Captacion.class.getName()).log(Level.SEVERE, null, ex2);
                     } 
@@ -490,12 +490,12 @@ public class Captacion extends javax.swing.JFrame {
                         irField.setText(ir.getMbr().getInstruccion());
                         g.setColor(Color.yellow);
                         g.drawString(irField.getText(), 503, 278);
-                        Thread.sleep(3000);
+                        Thread.sleep(1000);
                         g.setColor(Color.orange);
                         g.drawRect(650, 260, 102, 25);
                         g.setColor(Color.blue);
                         g.drawRect(500, 250, 150, 50);
-                        Thread.sleep(10000);
+                        Thread.sleep(1000);
                         Ejecucion e = new Ejecucion();
                         e.setVisible(true);
                         e.registerIR.setText(irField.getText());

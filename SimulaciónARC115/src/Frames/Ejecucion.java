@@ -17,6 +17,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -61,6 +64,10 @@ public class Ejecucion extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        acumulador = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        accion = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,12 +80,15 @@ public class Ejecucion extends javax.swing.JFrame {
 
         jLabel1.setForeground(java.awt.Color.white);
 
+        jLabel2.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
         jLabel2.setForeground(java.awt.Color.white);
         jLabel2.setText("Memory Address Register (MAR):");
 
+        jLabel3.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
         jLabel3.setForeground(java.awt.Color.white);
         jLabel3.setText("Memory Buffer Register (MBR): ");
 
+        jLabel4.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
         jLabel4.setForeground(java.awt.Color.white);
         jLabel4.setText("Instruction Register (IR):");
 
@@ -124,6 +134,23 @@ public class Ejecucion extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("AC:");
+
+        acumulador.setEditable(false);
+        acumulador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                acumuladorActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Accion en ejecución:");
+
+        accion.setEditable(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -152,10 +179,19 @@ public class Ejecucion extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(mbrField1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(registerIR, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(marField1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(accion, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(18, 18, 18)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(marField1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(acumulador, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(293, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -177,7 +213,15 @@ public class Ejecucion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(marField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 211, Short.MAX_VALUE)
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(acumulador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(accion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton3)
@@ -254,6 +298,10 @@ public class Ejecucion extends javax.swing.JFrame {
         g2.drawString("Memoria P.", 1215, 102);
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void acumuladorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acumuladorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_acumuladorActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -295,16 +343,132 @@ public class Ejecucion extends javax.swing.JFrame {
             MemoryAddressRegister mar = new MemoryAddressRegister();
             InstructionRegister ir = new InstructionRegister();
             MemoriaPrincipal mp = new MemoriaPrincipal();
+            mp.setN(inicializar());
+            AC ac = new AC();
             ProgramCounter pc = new ProgramCounter();
-            
-            
+            String codOp = "";
+            String dir = "";
+            try {
+                String s = registerIR.getText();
+                for(int x = 0; x <= 3; x++){
+                    codOp += s.charAt(x);
+                }
+                for(int y = 4; y<=15; y++){
+                    dir += s.charAt(y);
+                }
+                switch(codOp){
+                    case "0000":
+                        
+                        marField1.setText(dir);
+                        Thread.sleep(3000);
+                        
+                        accion.setText("Sumar a AC el operando referenciado");                      
+                        Thread.sleep(3000);
+                        String auxDato = mp.buscar(ac.binarioDecimal(dir));                        
+                        ac.incrementar(auxDato);
+                        JOptionPane.showMessageDialog(null, ac.getDato());
+                        acumulador.setText(ac.getDato());
+                        Thread.sleep(3000);
+                        
+                        break;
+                    case "0001":
+                        marField1.setText(dir);
+                        Thread.sleep(3000);
+                        
+                        accion.setText("Restar a AC el operando referenciado");                      
+                        Thread.sleep(3000);
+                        
+                        ac.setDato(mp.buscar(ac.binarioDecimal(dir)));
+                        JOptionPane.showMessageDialog(null, ac.getDato());
+                        break;
+                    case "0010":
+                        marField1.setText(dir);
+                        break;
+                    case "0011":
+                        marField1.setText(dir);
+                        break;
+                    case "0100":
+                        marField1.setText(dir);
+                        break;
+                    case "0101":
+                        marField1.setText(dir);
+                        break;
+                    case "0110":
+                        marField1.setText(dir);
+                        break;
+                    case "0111":
+                        marField1.setText(dir);
+                        break;
+                    case "1000":
+                        marField1.setText(dir);
+                        break;
+                    case "1001":
+                        marField1.setText(dir);
+                        break;
+                    case "1010":
+                        marField1.setText(dir);
+                        break;
+                    case "1011":
+                        marField1.setText(dir);
+                        break;
+                    case "1100":
+                        marField1.setText(dir);
+                        break;
+                    case "1101":
+                        marField1.setText(dir);
+                        break;
+                    case "1110":
+                        marField1.setText(dir);
+                        break;
+                    case "1111":
+                        marField1.setText(dir);
+                        break;
+                      
+                }
+                Thread.sleep(3000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
         }
         
     }
+    //***************************************MÉTODO PARA CARGAR MEMORIA****************************************************
+    private ArrayList<String> inicializar(){
+        ArrayList<String> array = new ArrayList<String>();
+        
+        File file = null;
+        FileReader read = null;
+        BufferedReader buff = null;
+        
+        try{
+            file = new File("src/Datos/datos.txt");
+            read = new FileReader(file);
+            buff = new BufferedReader(read);
+            String linea;
+            while((linea = buff.readLine()) != null ){
+                array.add(linea);
+            }
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            try{
+                if (null != read){
+                    read.close();
+                }
+            }catch(Exception e2){
+                e2.printStackTrace();
+            }
+        }
+        return array;
+    }
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField accion;
+    private javax.swing.JTextField acumulador;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -313,6 +477,8 @@ public class Ejecucion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField marField1;
     private javax.swing.JTextField mbrField1;
     public javax.swing.JTextField registerIR;
