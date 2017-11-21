@@ -6,6 +6,8 @@
 
 package Registros;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author User
@@ -40,7 +42,7 @@ public class AC {
     }
     
     
-    public void incrementar(String dir){
+    public void sumar(String dir){
     int a = Integer.parseInt(dir, 2);
     if(this.dato == null)
     {
@@ -54,5 +56,46 @@ public class AC {
     this.setDato(r);
     } 
  }
-    
+    public void restar(String dir){
+        int a = Integer.parseInt(dir, 2);
+    if(this.dato == null)
+    {
+        int c = a;
+        String r = Integer.toString(c, 2);
+        this.setDato(r);
+    }else{
+    int b = Integer.parseInt(this.dato, 2);
+    int c = a - b;
+    String r = Integer.toString(c, 2);
+    this.setDato(r);
+    }
+ }
+    public void multiplicar(String dir){
+        int a = Integer.parseInt(dir, 2);
+    if(this.dato == null)
+    {
+        int c = a;
+        String r = Integer.toString(c, 2);
+        this.setDato(r);
+    }else{
+    int b = Integer.parseInt(this.dato, 2);
+    int c = a * b;
+    String r = Integer.toString(c, 2);
+    this.setDato(r);
+    }
+  }
+    public void dividir(String dir){
+        int a = Integer.parseInt(dir, 2);
+    if(this.dato == null)
+    {
+        int c = a;
+        String r = Integer.toString(c, 2);
+        this.setDato(r);
+    }else{
+    int b = Integer.parseInt(this.dato, 2);
+    int c = a / b;
+    String r = Integer.toString(c, 2);
+    this.setDato(r);
+    }
+  }
 }

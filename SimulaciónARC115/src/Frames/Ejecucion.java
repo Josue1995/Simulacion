@@ -364,8 +364,9 @@ public class Ejecucion extends javax.swing.JFrame {
                         
                         accion.setText("Sumar a AC el operando referenciado");                      
                         Thread.sleep(3000);
-                        String auxDato = mp.buscar(ac.binarioDecimal(dir));                        
-                        ac.incrementar(auxDato);
+                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));       
+                        mbrField1.setText(mbr.getDireccion());
+                        ac.sumar(mbr.getDireccion());                        
                         JOptionPane.showMessageDialog(null, ac.getDato());
                         acumulador.setText(ac.getDato());
                         Thread.sleep(3000);
@@ -377,15 +378,38 @@ public class Ejecucion extends javax.swing.JFrame {
                         
                         accion.setText("Restar a AC el operando referenciado");                      
                         Thread.sleep(3000);
-                        
-                        ac.setDato(mp.buscar(ac.binarioDecimal(dir)));
+                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
+                        mbrField1.setText(mbr.getDireccion());
+                        ac.restar(mbr.getDireccion());                        
                         JOptionPane.showMessageDialog(null, ac.getDato());
+                        acumulador.setText(ac.getDato());
+                        Thread.sleep(1000);
                         break;
                     case "0010":
                         marField1.setText(dir);
+                        Thread.sleep(3000);
+                        
+                        accion.setText("Multiplicar a AC el operando referenciado");                      
+                        Thread.sleep(3000);
+                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
+                        mbrField1.setText(mbr.getDireccion());
+                        ac.multiplicar(mbr.getDireccion());                        
+                        JOptionPane.showMessageDialog(null, ac.getDato());
+                        acumulador.setText(ac.getDato());
+                        Thread.sleep(1000);
                         break;
                     case "0011":
                         marField1.setText(dir);
+                        Thread.sleep(3000);
+                        
+                        accion.setText("Dividir a AC el operando referenciado");                      
+                        Thread.sleep(3000);
+                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
+                        mbrField1.setText(mbr.getDireccion());
+                        ac.dividir(mbr.getDireccion());                        
+                        JOptionPane.showMessageDialog(null, ac.getDato());
+                        acumulador.setText(ac.getDato());
+                        Thread.sleep(1000);
                         break;
                     case "0100":
                         marField1.setText(dir);
