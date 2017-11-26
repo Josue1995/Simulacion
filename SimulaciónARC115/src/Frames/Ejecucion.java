@@ -281,6 +281,8 @@ public class Ejecucion extends javax.swing.JFrame {
         marField1.setText("");
         mbrField1.setText("");
         registerIR.setText("");
+        acumulador.setText("");
+        accion.setText("");
         Graphics g2 = getGraphics();
         g2.setColor(Color.GRAY);
         g2.fillRect(500, 50, 800, 600);
@@ -413,6 +415,12 @@ public class Ejecucion extends javax.swing.JFrame {
                         break;
                     case "0100":
                         marField1.setText(dir);
+                        accion.setText("Cargar en AC desde memoria (LOAD)");
+                        Thread.sleep(3000);
+                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
+                        mbrField1.setText(mbr.getDireccion());
+                        ac.setDato(mbr.getDireccion());
+                        acumulador.setText(ac.getDato());
                         break;
                     case "0101":
                         marField1.setText(dir);
