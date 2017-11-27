@@ -421,24 +421,70 @@ public class Ejecucion extends javax.swing.JFrame {
                         mbrField1.setText(mbr.getDireccion());
                         ac.setDato(mbr.getDireccion());
                         acumulador.setText(ac.getDato());
+                        Thread.sleep(3000);
                         break;
                     case "0101":
                         marField1.setText(dir);
+                        accion.setText("Incrementar el contenido de MBR en uno y guardar en AC");
+                        Thread.sleep(3000);
+                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
+                        mbrField1.setText(mbr.getDireccion());
+                        ac.inc(mbr.getDireccion());
+                        acumulador.setText(ac.getDato());
+                        Thread.sleep(3000);
                         break;
                     case "0110":
                         marField1.setText(dir);
+                        accion.setText("Decrementar el contenido de MBR en uno y guardar en AC");
+                        Thread.sleep(3000);
+                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
+                        mbrField1.setText(mbr.getDireccion());
+                        ac.dec(mbr.getDireccion());
+                        acumulador.setText(ac.getDato());
+                        Thread.sleep(3000);
                         break;
                     case "0111":
                         marField1.setText(dir);
+                        accion.setText("Negar: Cambiar cada bit del registro MBR");
+                        Thread.sleep(3000);
+                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
+                        mbrField1.setText(mbr.getDireccion());
+                        ac.negar(mbr.getDireccion());
+                        acumulador.setText(ac.getDato());
+                        Thread.sleep(3000);
                         break;
                     case "1000":
                         marField1.setText(dir);
+                        accion.setText("Clear: Reinicia a ceros el contenido en MBR");
+                        Thread.sleep(3000);
+                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
+                        mbrField1.setText(mbr.getDireccion());
+                        mbr.clear();
+                        Thread.sleep(3000);
+                        mbrField1.setText(mbr.getDireccion());
+                        Thread.sleep(3000);
+                        
                         break;
                     case "1001":
                         marField1.setText(dir);
+                        accion.setText("Set: Pone a unos el contenido en MBR");
+                        Thread.sleep(3000);
+                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
+                        mbrField1.setText(mbr.getDireccion());
+                        mbr.set();
+                        Thread.sleep(3000);
+                        mbrField1.setText(mbr.getDireccion());
+                        Thread.sleep(3000);
                         break;
                     case "1010":
                         marField1.setText(dir);
+                        accion.setText("Valor absoluto del registro AC");
+                        Thread.sleep(3000);
+                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
+                        mbrField1.setText(mbr.getDireccion());
+                        ac.vAbsoluto(mbr.getDireccion());
+                        acumulador.setText(ac.getDato());
+                        Thread.sleep(3000);
                         break;
                     case "1011":
                         marField1.setText(dir);

@@ -43,5 +43,16 @@ public class MemoryBufferRegister {
         return decimal;
     }
    
+    public void clear(){
+        String aux = "0000000000000000";
+        this.setDireccion(aux);
+        
+    }
+    
+    public void set(){
+        String aux = "1111111111111111";
+        this.setDireccion(aux);
+    }
+            
     
 }

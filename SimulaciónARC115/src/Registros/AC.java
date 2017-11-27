@@ -50,10 +50,10 @@ public class AC {
         String r = Integer.toString(c, 2);
         this.setDato(r);
     }else{
-    int b = Integer.parseInt(this.dato, 2);
-    int c = a + b;
-    String r = Integer.toString(c, 2);
-    this.setDato(r);
+        int b = Integer.parseInt(this.dato, 2);
+        int c = a + b;
+        String r = Integer.toString(c, 2);
+        this.setDato(r);
     } 
  }
     public void restar(String dir){
@@ -64,10 +64,10 @@ public class AC {
         String r = Integer.toString(c, 2);
         this.setDato(r);
     }else{
-    int b = Integer.parseInt(this.dato, 2);
-    int c = a - b;
-    String r = Integer.toString(c, 2);
-    this.setDato(r);
+        int b = Integer.parseInt(this.dato, 2);
+        int c = a - b;
+        String r = Integer.toString(c, 2);
+        this.setDato(r);
     }
  }
     public void multiplicar(String dir){
@@ -78,10 +78,10 @@ public class AC {
         String r = Integer.toString(c, 2);
         this.setDato(r);
     }else{
-    int b = Integer.parseInt(this.dato, 2);
-    int c = a * b;
-    String r = Integer.toString(c, 2);
-    this.setDato(r);
+        int b = Integer.parseInt(this.dato, 2);
+        int c = a * b;
+        String r = Integer.toString(c, 2);
+        this.setDato(r);
     }
   }
     public void dividir(String dir){
@@ -92,11 +92,48 @@ public class AC {
         String r = Integer.toString(c, 2);
         this.setDato(r);
     }else{
-    int b = Integer.parseInt(this.dato, 2);
-    int c = a / b;
-    String r = Integer.toString(c, 2);
-    this.setDato(r);
+        int b = Integer.parseInt(this.dato, 2);
+        int c = a / b;
+        String r = Integer.toString(c, 2);
+        this.setDato(r);
     }
+    
   }
+    public void inc(String dir){
+        int a = Integer.parseInt(dir, 2);
+        int b = Integer.parseInt("0001", 2);
+        int c = a + b;
+        String r = Integer.toString(c, 2);
+        this.setDato(r);
+    }
+    
+    public void dec(String dir){
+        int a = Integer.parseInt(dir, 2);
+        int b = Integer.parseInt("0001", 2);
+        int c = a - b;
+        String r = Integer.toString(c, 2);
+        this.setDato(r);
+    }
   
+    public void negar(String dir){
+        String y = dir;
+        String c = "";
+        for(int x = 0; x <= 15; x++){
+                if(y.charAt(x) == '0'){
+                    c += "1";
+                }else{
+                    c += "0";
+                }
+             }
+        this.setDato(c);
+    }
+    public void vAbsoluto(String dir){
+        String mem = dir;
+        String c = "";
+        c += "0";
+        for(int x = 1; x <= 15; x++){
+            c += mem.charAt(x);
+        }
+        this.setDato(c);
+    }
 }
