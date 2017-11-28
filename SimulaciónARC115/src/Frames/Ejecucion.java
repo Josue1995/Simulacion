@@ -350,6 +350,7 @@ public class Ejecucion extends javax.swing.JFrame {
             ProgramCounter pc = new ProgramCounter();
             String codOp = "";
             String dir = "";
+            Graphics g= getGraphics();
             try {
                 String s = registerIR.getText();
                 for(int x = 0; x <= 3; x++){
@@ -360,11 +361,42 @@ public class Ejecucion extends javax.swing.JFrame {
                 }
                 switch(codOp){
                     case "0000":
-                        
+                        g.setColor(Color.yellow);
+                        g.fillRect(500, 200, 100, 25);
+                        g.setColor(Color.green);
+                        g.drawRect(500, 200, 100, 25);
+                        g.setColor(Color.yellow);
+                        g.drawRect(500, 200, 100, 25);
+                        g.setColor(Color.BLUE);
+                        g.fillRect(600, 190, 150, 50);
+                        g.setColor(Color.orange);
+                        g.drawString("IR", 640, 200);
+                        g.drawString(registerIR.getText(), 600, 215);
+                        g.setColor(Color.green);
+                        g.drawRect(600, 190, 150, 50);
+                        Thread.sleep(1000);
+                        g.setColor(Color.BLUE);
+                        g.drawRect(600, 190, 150, 50);
+                        g.setColor(Color.yellow);
+                        g.fillRect(750, 200, 80, 25);
+                        g.setColor(Color.green);
+                        g.drawRect(750, 200, 80, 25);
+                        Thread.sleep(500);
+                        g.setColor(Color.yellow);
+                        g.drawRect(750, 200, 80, 25);
+                        g.setColor(Color.blue);
+                        g.fillRect(830, 190, 150, 50);
+                        g.setColor(Color.green);
+                        g.drawRect(830, 190, 150, 50);
+                        g.setColor(Color.orange);
+                        g.drawString("MAR", 835, 200);
                         marField1.setText(dir);
-                        Thread.sleep(3000);
-                        
+                        g.drawString(marField1.getText(), 835, 215);
+                        Thread.sleep(3000);                     
                         accion.setText("Sumar a AC el operando referenciado");                      
+                        Thread.sleep(500);
+                        g.setColor(Color.blue);
+                        g.drawRect(830, 190, 150, 50);
                         Thread.sleep(3000);
                         mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));       
                         mbrField1.setText(mbr.getDireccion());
@@ -488,9 +520,17 @@ public class Ejecucion extends javax.swing.JFrame {
                         break;
                     case "1011":
                         marField1.setText(dir);
+                        accion.setText("Convertir: Convierte a decimal el valor que se encuentra en el registro MBR");
+                        Thread.sleep(3000);
+                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
+                        mbrField1.setText(mbr.getDireccion());
+                        ac.setDato(Integer.toString(mbr.binarioDecimal(mbr.getDireccion())));
+                        acumulador.setText(ac.getDato());
+                        Thread.sleep(3000);
                         break;
                     case "1100":
                         marField1.setText(dir);
+                        
                         break;
                     case "1101":
                         marField1.setText(dir);
