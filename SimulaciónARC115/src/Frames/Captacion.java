@@ -21,6 +21,8 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.ImageObserver;
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,13 +31,14 @@ import java.text.AttributedCharacterIterator;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 /**
  *
  * @author User
  */
-public class Captacion extends javax.swing.JFrame {
+public class Captacion extends JFrame{
 
     /**
      * Creates new form Captacion
@@ -53,6 +56,7 @@ public class Captacion extends javax.swing.JFrame {
         setSize(1400, 800);
         setLocationRelativeTo(null);
         
+      
     }
 
     /**
@@ -76,11 +80,11 @@ public class Captacion extends javax.swing.JFrame {
         mbrField = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         irField = new javax.swing.JTextField();
-        borrarRegistros = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Menú");
+        jButton1.setText("Inicio");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -148,57 +152,62 @@ public class Captacion extends javax.swing.JFrame {
             }
         });
 
-        borrarRegistros.setText("Borrar registros");
-        borrarRegistros.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                borrarRegistrosActionPerformed(evt);
-            }
-        });
+        jLabel6.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("CICLO DE CAPTACIÓN");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(marField, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(marField, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(mbrField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(11, 11, 11)
+                                        .addComponent(irField, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(mbrField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(11, 11, 11)
-                                .addComponent(irField, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel1)
+                                .addComponent(jButton1)
+                                .addGap(69, 69, 69)
+                                .addComponent(jLabel6))
+                            .addComponent(jLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(42, 42, 42)
+                                .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(42, 42, 42)
-                        .addComponent(direccionField, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(297, 297, 297)
-                .addComponent(iniciarSimulacion)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addGap(30, 30, 30)
-                .addComponent(borrarRegistros))
+                        .addGap(297, 297, 297)
+                        .addComponent(iniciarSimulacion)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2)))
+                .addGap(137, 137, 137))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jButton1)
-                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel6)))
+                .addGap(36, 36, 36)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -219,8 +228,7 @@ public class Captacion extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(iniciarSimulacion)
-                    .addComponent(jButton2)
-                    .addComponent(borrarRegistros))
+                    .addComponent(jButton2))
                 .addContainerGap())
         );
 
@@ -246,8 +254,8 @@ public class Captacion extends javax.swing.JFrame {
     }
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        menu m = new menu();
-        m.setVisible(true);
+        InterfaceDeCodigo cod = new InterfaceDeCodigo();
+        cod.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -276,28 +284,6 @@ public class Captacion extends javax.swing.JFrame {
     private void irFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_irFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_irFieldActionPerformed
-
-    private void borrarRegistrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarRegistrosActionPerformed
-        direccionField.setText("");
-        marField.setText("");
-        mbrField.setText("");
-        irField.setText("");
-        Graphics g2 = getGraphics();
-        g2.setColor(Color.GRAY);
-        g2.fillRect(500, 50, 800, 600);
-        g2.setColor(Color.white);
-        g2.fillRect(1000, 100, 35, 550);
-        g2.fillRect(1070, 100, 35, 550);
-        g2.fillRect(1140, 100, 35, 550);
-        g2.setColor(Color.blue);
-        g2.drawString("BusDi", 1000, 90);
-        g2.drawString("BusD", 1070, 90);
-        g2.drawString("BusC", 1140, 90);
-        g2.setColor(Color.WHITE);
-        g2.fillRect(1200, 90, 95, 400);
-        g2.setColor(Color.black);
-        g2.drawString("Memoria P.", 1215, 102);
-    }//GEN-LAST:event_borrarRegistrosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -333,6 +319,7 @@ public class Captacion extends javax.swing.JFrame {
             }
         });
     }
+
     
     private class Hilo extends Thread{
         public void run(){
@@ -452,7 +439,7 @@ public class Captacion extends javax.swing.JFrame {
                         g.drawString(pc.getDireccion(), 502, 185);
                         g.setColor(Color.white);
                         g.drawRect(1070, 100, 35, 550);
-                        mbrField.setText(mp.buscar(mbr.binarioDecimal(marField.getText())));
+                        mbrField.setText(mp.buscar(mbr.binarioDecimal(marField.getText()) + 1));
                         g.setColor(Color.blue);
                         g.fillRect(753, 250, 150, 50);
                         g.setColor(Color.yellow);
@@ -522,7 +509,7 @@ public class Captacion extends javax.swing.JFrame {
         BufferedReader buff = null;
         
         try{
-            file = new File("src/Datos/datos.txt");
+            file = new File("src/Datos/MemoriaPrincipal");
             read = new FileReader(file);
             buff = new BufferedReader(read);
             String linea;
@@ -548,8 +535,7 @@ public class Captacion extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton borrarRegistros;
-    private javax.swing.JTextField direccionField;
+    public javax.swing.JTextField direccionField;
     private javax.swing.JButton iniciarSimulacion;
     private javax.swing.JTextField irField;
     private javax.swing.JButton jButton1;
@@ -559,6 +545,7 @@ public class Captacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField marField;
     private javax.swing.JTextField mbrField;
     // End of variables declaration//GEN-END:variables

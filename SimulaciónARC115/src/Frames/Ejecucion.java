@@ -13,6 +13,9 @@ import javax.swing.JPanel;
 import Registros.*;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.TextField;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -25,13 +28,14 @@ import javax.swing.JOptionPane;
  *
  * @author User
  */
-public class Ejecucion extends javax.swing.JFrame {
+public class Ejecucion extends javax.swing.JFrame implements KeyListener{
 
     /**
      * Creates new form Ejecucion
      */
     public Ejecucion() {
         initComponents();
+        
         this.setLocationRelativeTo(null);
         ((JPanel)getContentPane()).setOpaque(false);
         ImageIcon imagen = new ImageIcon(this.getClass().getResource("/Img/fondo.jpg"));
@@ -42,7 +46,12 @@ public class Ejecucion extends javax.swing.JFrame {
         setResizable(false);
         setSize(1400,800);
         setLocationRelativeTo(null);
+        addKeyListener(this);
+        setFocusable(true);
+        setFocusTraversalKeysEnabled(false);
     }
+    Hilo h = new Hilo();
+    boolean banIn = false;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,15 +72,16 @@ public class Ejecucion extends javax.swing.JFrame {
         registerIR = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         acumulador = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         accion = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        btnI = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Menú");
+        jButton1.setText("Inicio");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -80,15 +90,15 @@ public class Ejecucion extends javax.swing.JFrame {
 
         jLabel1.setForeground(java.awt.Color.white);
 
-        jLabel2.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
         jLabel2.setForeground(java.awt.Color.white);
         jLabel2.setText("Memory Address Register (MAR):");
 
-        jLabel3.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
         jLabel3.setForeground(java.awt.Color.white);
         jLabel3.setText("Memory Buffer Register (MBR): ");
 
-        jLabel4.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
         jLabel4.setForeground(java.awt.Color.white);
         jLabel4.setText("Instruction Register (IR):");
 
@@ -127,14 +137,7 @@ public class Ejecucion extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("Borrar registros");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
-        jLabel5.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("AC:");
 
@@ -145,11 +148,22 @@ public class Ejecucion extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Arial", 3, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Accion en ejecución:");
+        jLabel6.setText("Acción en ejecución:");
 
         accion.setEditable(false);
+
+        jLabel7.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("CICLO DE EJECUCIÓN");
+
+        btnI.setText("Interrupción");
+        btnI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -158,47 +172,54 @@ public class Ejecucion extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(jLabel1)))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(182, 182, 182)
                         .addComponent(jButton2)
                         .addGap(77, 77, 77)
                         .addComponent(jButton3)
-                        .addGap(82, 82, 82)
-                        .addComponent(jButton4))
+                        .addGap(68, 68, 68)
+                        .addComponent(btnI))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel4))
-                            .addComponent(jLabel3))
-                        .addGap(23, 23, 23)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(mbrField1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(registerIR, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel6)
+                        .addGap(18, 18, 18)
+                        .addComponent(accion, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(marField1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(accion, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(marField1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(acumulador, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(293, Short.MAX_VALUE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jButton1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel7))
+                                .addComponent(jLabel1)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(mbrField1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .addComponent(jLabel4)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(registerIR, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(11, 11, 11)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(acumulador, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(323, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jLabel7))
                 .addGap(38, 38, 38)
                 .addComponent(jLabel1)
                 .addGap(7, 7, 7)
@@ -220,22 +241,23 @@ public class Ejecucion extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(accion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
+                    .addComponent(accion, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(btnI))
                 .addGap(24, 24, 24))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    @Override
     public void paint(Graphics g){
         super.paint(g);
         g.setColor(Color.GRAY);
-        g.fillRect(500, 50, 800, 600);
+        g.fillRect(400, 50, 1000, 600);
         g.setColor(Color.white);
         g.fillRect(1000, 100, 35, 550);
         g.fillRect(1070, 100, 35, 550);
@@ -248,11 +270,37 @@ public class Ejecucion extends javax.swing.JFrame {
         g.fillRect(1200, 90, 95, 400);
         g.setColor(Color.black);
         g.drawString("Memoria P.", 1215, 102);
-    }
+        g.setColor(Color.black);
+        g.fillRect(410, 500, 550, 110);
+        g.setColor(Color.white);
+        g.drawLine(410, 520, 960, 520);
+        g.drawLine(547, 500, 547, 610);
+        g.drawLine(684, 500, 684, 610);
+        g.drawLine(821, 500, 821, 610);
+        g.drawString("AX", 460, 500);
+        g.drawString("BX", 605, 500);
+        g.drawString("CX", 735, 500);
+        g.drawString("DX", 870, 500);
+        g.drawString("AH", 430, 518);
+        g.drawString("AL", 490, 518);
+        g.drawString("BH", 575, 518);
+        g.drawString("BL", 635, 518);
+        g.drawString("CH", 705, 518);
+        g.drawString("CL", 765, 518);
+        g.drawString("DH", 840, 518);
+        g.drawString("DL", 900, 518);
+        g.drawLine(465, 521, 465, 610);
+        g.drawLine(610, 521, 610, 610);
+        g.drawLine(740, 521, 740, 610);
+        g.drawLine(875, 521, 875,610);
+    
+        }
+    
+    
  
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        menu m = new menu();
-        m.setVisible(true);
+        InterfaceDeCodigo cod = new InterfaceDeCodigo();
+        cod.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -273,36 +321,18 @@ public class Ejecucion extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Hilo h = new Hilo();
+        
         h.start();
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        marField1.setText("");
-        mbrField1.setText("");
-        registerIR.setText("");
-        acumulador.setText("");
-        accion.setText("");
-        Graphics g2 = getGraphics();
-        g2.setColor(Color.GRAY);
-        g2.fillRect(500, 50, 800, 600);
-        g2.setColor(Color.white);
-        g2.fillRect(1000, 100, 35, 550);
-        g2.fillRect(1070, 100, 35, 550);
-        g2.fillRect(1140, 100, 35, 550);
-        g2.setColor(Color.blue);
-        g2.drawString("BusDi", 1000, 90);
-        g2.drawString("BusD", 1070, 90);
-        g2.drawString("BusC", 1140, 90);
-        g2.setColor(Color.WHITE);
-        g2.fillRect(1200, 90, 95, 400);
-        g2.setColor(Color.black);
-        g2.drawString("Memoria P.", 1215, 102);
-    }//GEN-LAST:event_jButton4ActionPerformed
 
     private void acumuladorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acumuladorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_acumuladorActionPerformed
+
+    private void btnIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIActionPerformed
+         h.stop();
+         
+    }//GEN-LAST:event_btnIActionPerformed
 
     /**
      * @param args the command line arguments
@@ -339,6 +369,24 @@ public class Ejecucion extends javax.swing.JFrame {
         });
     }
 
+    @Override
+    public void keyTyped(KeyEvent ke) {
+        
+    }
+
+    @Override
+    public void keyPressed(KeyEvent ke) {
+        if(ke.getKeyCode() == KeyEvent.VK_ALT){
+            this.banIn = true;
+        }
+        
+    }
+
+    @Override
+    public void keyReleased(KeyEvent ke) {
+        
+    }
+
     private class Hilo extends Thread{
         public void run(){
             MemoryBufferRegister mbr = new MemoryBufferRegister();
@@ -346,211 +394,4794 @@ public class Ejecucion extends javax.swing.JFrame {
             InstructionRegister ir = new InstructionRegister();
             MemoriaPrincipal mp = new MemoriaPrincipal();
             mp.setN(inicializar());
+            int a;
+            int b;
+            int c;
+            int auxNeg;
+            String r = "";
             AC ac = new AC();
+            AX ax = new AX();
+            BX bx = new BX();
+            CX cx = new CX();
+            DX dx = new DX();
+            SS ss = new SS();
+            
+            ax.setContent("0000000000000000");
+            ax.setAh("00000000");
+            ax.setAl("00000000");
+            bx.setContent("0000000000000000");
+            bx.setBh("00000000");
+            bx.setBl("00000000");
+            cx.setContent("0000000000000000");
+            cx.setCh("00000000");
+            cx.setCl("00000000");
+            dx.setContent("0000000000000000");
+            dx.setDh("00000000");
+            dx.setDl("00000000");
+            ArrayList<String> load = new ArrayList<String>();
             ProgramCounter pc = new ProgramCounter();
             String codOp = "";
-            String dir = "";
-            Graphics g= getGraphics();
+            String reg1 = "";
+            String reg2 = "";
+            String w = "";
+            String negado = "";
+            String clear = "";
+            String abs = "";
+            String j = "";
+            int h = 0;
+            int l = 0;
+            int f = 1;
             try {
                 String s = registerIR.getText();
                 for(int x = 0; x <= 3; x++){
                     codOp += s.charAt(x);
                 }
-                for(int y = 4; y<=15; y++){
-                    dir += s.charAt(y);
+                for(int y = 4; y<=9; y++){
+                    reg1 += s.charAt(y);
                 }
+                for(int z = 10; z<=15; z++){
+                    reg2 += s.charAt(z);
+                }
+                Graphics g =  getGraphics();
+                g.setColor(Color.BLUE);
+                g.fillRect(400, 150, 150, 50);
+                g.setColor(Color.orange);
+                g.drawString("IR", 450, 165);
+                g.drawString(registerIR.getText(), 415, 175);
+                g.setColor(Color.green);
+                g.drawRect(400, 150, 150, 50);             
+                Thread.sleep(1000);
+                g.setColor(Color.BLUE);
+                g.drawRect(400, 150, 150, 50);
+                g.setColor(Color.yellow);
+                g.fillRect(551, 165, 75, 25);
+                g.setColor(Color.green);
+                g.drawRect(551, 165, 75, 25);
+                g.setColor(Color.blue);
+                g.fillRect(627, 150, 150, 50);
+                g.setColor(Color.green);
+                g.drawRect(627, 150, 150, 50);
+                String suma = reg1 + reg2;
+                g.setColor(Color.yellow);
+                g.drawString("MAR", 650, 165);
+                g.drawString(suma, 635, 175);
+                Thread.sleep(1000);
+                
+                g.setColor(Color.blue);
+                g.drawRect(627, 150, 150, 50);
+                g.setColor(Color.yellow);
+                g.drawRect(551, 165, 75, 25);
+                Thread.sleep(1000);
+                g.setColor(Color.white);
+                g.fillRect(400, 250, 550, 200);
+                
+                
+                
                 switch(codOp){
+                    //SUMA
                     case "0000":
-                        g.setColor(Color.yellow);
-                        g.fillRect(500, 200, 100, 25);
-                        g.setColor(Color.green);
-                        g.drawRect(500, 200, 100, 25);
-                        g.setColor(Color.yellow);
-                        g.drawRect(500, 200, 100, 25);
-                        g.setColor(Color.BLUE);
-                        g.fillRect(600, 190, 150, 50);
-                        g.setColor(Color.orange);
-                        g.drawString("IR", 640, 200);
-                        g.drawString(registerIR.getText(), 600, 215);
-                        g.setColor(Color.green);
-                        g.drawRect(600, 190, 150, 50);
-                        Thread.sleep(1000);
-                        g.setColor(Color.BLUE);
-                        g.drawRect(600, 190, 150, 50);
-                        g.setColor(Color.yellow);
-                        g.fillRect(750, 200, 80, 25);
-                        g.setColor(Color.green);
-                        g.drawRect(750, 200, 80, 25);
-                        Thread.sleep(500);
-                        g.setColor(Color.yellow);
-                        g.drawRect(750, 200, 80, 25);
-                        g.setColor(Color.blue);
-                        g.fillRect(830, 190, 150, 50);
-                        g.setColor(Color.green);
-                        g.drawRect(830, 190, 150, 50);
-                        g.setColor(Color.orange);
-                        g.drawString("MAR", 835, 200);
-                        marField1.setText(dir);
-                        g.drawString(marField1.getText(), 835, 215);
-                        Thread.sleep(3000);                     
-                        accion.setText("Sumar a AC el operando referenciado");                      
-                        Thread.sleep(500);
-                        g.setColor(Color.blue);
-                        g.drawRect(830, 190, 150, 50);
-                        Thread.sleep(3000);
-                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));       
-                        mbrField1.setText(mbr.getDireccion());
-                        ac.sumar(mbr.getDireccion());                        
-                        JOptionPane.showMessageDialog(null, ac.getDato());
-                        acumulador.setText(ac.getDato());
-                        Thread.sleep(3000);
+                        
+                        switch(reg1){
+                            //Registro AX
+                            case "000001":
+                                switch(reg2){
+                                    case "000010":
+                                       
+                                        dibujarCadenas("AX", "BX", ax.getContent(), bx.getContent(), "+");
+                                        Thread.sleep(1000);
+                                        ax.setContent(sumar(ax.getContent(), bx.getContent()));
+                                        accion.setText("Sumando a AX el contenido de BX");
+                                        dibujarResultado(ax.getContent(), "AX");
+                                        break;
+                                    case "000011":
+                                        dibujarCadenas("AX", "CX", ax.getContent(), cx.getContent(), "+");
+                                        Thread.sleep(1000);
+                                        ax.setContent(sumar(ax.getContent(), cx.getContent()));
+                                        accion.setText("Sumando a AX el contenido de CX");
+                                        dibujarResultado(ax.getContent(), "AX");
+                                        break;
+                                    case "000100":
+                                        
+                                        dibujarCadenas("AX", "DX", ax.getContent(), dx.getContent(), "+");
+                                        Thread.sleep(1000);
+                                        ax.setContent(sumar(ax.getContent(), dx.getContent()));
+                                        accion.setText("Sumando a AX el contenido de DX");
+                                        dibujarResultado(ax.getContent(), "AX");
+                                        break;
+                                }
+                                break;
+                                //Registro BX
+                            case "000010":
+                                switch(reg2){
+                                    case "000001":
+                                        
+                                        dibujarCadenas("BX", "AX", bx.getContent(), ax.getContent(), "+");
+                                        Thread.sleep(1000);
+                                        bx.setContent(sumar(bx.getContent(), ax.getContent()));
+                                        accion.setText("Sumando a BX el contenido de AX");
+                                        dibujarResultado(bx.getContent(), "BX");
+                                        break;
+                                    case "000011":
+                                        
+                                        dibujarCadenas("BX", "CX", bx.getContent(), cx.getContent(), "+");
+                                        Thread.sleep(1000);
+                                        bx.setContent(sumar(bx.getContent(), cx.getContent()));
+                                        accion.setText("Sumando a BX el contenido de CX");
+                                        dibujarResultado(bx.getContent(), "BX");
+                                        break;
+                                    case "000100":
+                                        
+                                        dibujarCadenas("BX", "DX", bx.getContent(), dx.getContent(), "+");
+                                        Thread.sleep(1000);
+                                        bx.setContent(sumar(bx.getContent(), dx.getContent()));
+                                        accion.setText("Sumando a BX el contenido de DX");
+                                        dibujarResultado(bx.getContent(), "BX");
+                                        break;
+                                }
+                                break;
+                                //Registro CX
+                            case "000011":
+                                switch(reg2){
+                                    case "000001":
+                                        
+                                        dibujarCadenas("CX", "AX", cx.getContent(), ax.getContent(), "+");
+                                        Thread.sleep(1000);
+                                        cx.setContent(sumar(cx.getContent(), ax.getContent()));
+                                        accion.setText("Sumando a CX el contenido de AX");
+                                        dibujarResultado(cx.getContent(), "CX");
+                                        break;
+                                    case "000010":
+                                        
+                                        dibujarCadenas("CX", "BX", cx.getContent(), bx.getContent(), "+");
+                                        Thread.sleep(1000);
+                                        cx.setContent(sumar(cx.getContent(), bx.getContent()));
+                                        accion.setText("Sumando a CX el contenido de BX");
+                                        dibujarResultado(cx.getContent(), "CX");
+                                        break;
+                                    case "000100":
+                                        dibujarCadenas("CX", "DX", cx.getContent(), dx.getContent(), "+");
+                                        Thread.sleep(1000);
+                                        cx.setContent(sumar(cx.getContent(), dx.getContent()));
+                                        accion.setText("Sumando a CX el contenido de DX");
+                                        dibujarResultado(cx.getContent(), "CX");
+                                        break;
+                                }
+                                break;
+                                //Registro DX
+                             case "000100":
+                                switch(reg2){
+                                    case "000001":
+                                        
+                                        dibujarCadenas("DX", "AX", dx.getContent(), ax.getContent(), "+");
+                                        Thread.sleep(1000);
+                                        dx.setContent(sumar(dx.getContent(), ax.getContent()));
+                                        accion.setText("Sumando a DX el contenido de AX");
+                                        dibujarResultado(dx.getContent(), "DX");
+                                        break;
+                                    case "000010":
+                                        
+                                        dibujarCadenas("DX", "BX", dx.getContent(), bx.getContent(), "+");
+                                        Thread.sleep(1000);
+                                        dx.setContent(sumar(dx.getContent(), bx.getContent()));
+                                        accion.setText("Sumando a DX el contenido de BX");
+                                        dibujarResultado(dx.getContent(), "DX");
+                                        break;
+                                    case "000011":
+                                        
+                                        dibujarCadenas("DX", "CX", dx.getContent(), cx.getContent(), "+");
+                                        Thread.sleep(1000);
+                                        dx.setContent(sumar(dx.getContent(), cx.getContent()));
+                                        accion.setText("Sumando a DX el contenido de CX");
+                                        dibujarResultado(dx.getContent(), "DX");
+                                        break;
+                                }
+                                break;
+                                 //Registro AH
+                             case "000101":
+                                 switch(reg2){
+                                     case "000110":
+                                       
+                                        dibujarCadenas("AH", "AL", ax.getAh(), ax.getAl(), "+");
+                                        Thread.sleep(1000);
+                                        ax.setAh(sumar(ax.getAh(), ax.getAl()));
+                                        accion.setText("Sumando a AH el contenido de AL");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "000111":
+                                        
+                                        dibujarCadenas("AH", "BH", ax.getAh(), bx.getBh(), "+");
+                                        Thread.sleep(1000);
+                                        ax.setAh(sumar(ax.getAh(), bx.getBh()));
+                                        accion.setText("Sumando a AH el contenido de BH");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001000":
+                                        
+                                        dibujarCadenas("AH", "BL", ax.getAh(), bx.getBl(), "+");
+                                        Thread.sleep(1000);
+                                        ax.setAh(sumar(ax.getAh(), bx.getBl()));
+                                        accion.setText("Sumando a AH el contenido de BL");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001001":
+                                        
+                                        dibujarCadenas("AH", "CH", ax.getAh(), cx.getCh(), "+");
+                                        Thread.sleep(1000);
+                                        ax.setAh(sumar(ax.getAh(), cx.getCh()));
+                                        accion.setText("Sumando a AH el contenido de CH");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001010":
+                                        
+                                        dibujarCadenas("AH", "CL", ax.getAh(), cx.getCl(), "+");
+                                        Thread.sleep(1000);
+                                        ax.setAh(sumar(ax.getAh(), cx.getCl()));
+                                        accion.setText("Sumando a AH el contenido de CL");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001011":
+                                        
+                                        dibujarCadenas("AH", "DH", ax.getAh(), dx.getDh(), "+");
+                                        Thread.sleep(1000);
+                                        ax.setAh(sumar(ax.getAh(), dx.getDh()));
+                                        accion.setText("Sumando a AH el contenido de DH");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001100":
+                                        
+                                        dibujarCadenas("AH", "DL", ax.getAh(), dx.getDl(), "+");
+                                        Thread.sleep(1000);
+                                        ax.setAh(sumar(ax.getAh(), dx.getDl()));
+                                        accion.setText("Sumando a AH el contenido de DL");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                               
+                                 }
+                             //Registro AL
+                             case "000110":
+                                 switch(reg2){
+                                     case "000101":
+                                        
+                                        dibujarCadenas("AL", "AH", ax.getAl(), ax.getAh(), "+");
+                                        Thread.sleep(1000);
+                                        ax.setAl(sumar(ax.getAl(), ax.getAh()));
+                                        accion.setText("Sumando a AL el contenido de AH");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "000111":
+                                        
+                                        dibujarCadenas("AL", "BH", ax.getAl(), bx.getBh(), "+");
+                                        Thread.sleep(1000);
+                                        ax.setAl(sumar(ax.getAl(), bx.getBh()));
+                                        accion.setText("Sumando a AH el contenido de BH");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001000":
+                                        dibujarCadenas("AL", "BL", ax.getAl(), bx.getBl(), "+");
+                                        Thread.sleep(1000);
+                                        ax.setAl(sumar(ax.getAl(), bx.getBl()));
+                                        accion.setText("Sumando a AH el contenido de BL");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001001":
+                                        
+                                        dibujarCadenas("AL", "CH", ax.getAl(), cx.getCh(), "+");
+                                        Thread.sleep(1000);
+                                        ax.setAl(sumar(ax.getAl(), cx.getCh()));
+                                        accion.setText("Sumando a AH el contenido de CH");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001010":
+                                        
+                                        dibujarCadenas("AL", "CL", ax.getAl(), cx.getCl(), "+");
+                                        Thread.sleep(1000);
+                                        ax.setAl(sumar(ax.getAl(), cx.getCl()));
+                                        accion.setText("Sumando a AH el contenido de CL");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001011":
+                                        
+                                        dibujarCadenas("AL", "DH", ax.getAl(), dx.getDh(), "+");
+                                        Thread.sleep(1000);
+                                        ax.setAl(sumar(ax.getAl(), dx.getDh()));
+                                        accion.setText("Sumando a AH el contenido de DH");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001100":
+                                        dibujarCadenas("AL", "DL", ax.getAl(), dx.getDl(), "+");
+                                        Thread.sleep(1000);
+                                        ax.setAl(sumar(ax.getAl(), dx.getDl()));
+                                        accion.setText("Sumando a AH el contenido de DL");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                 }
+                             //Registro BH
+                             case "000111":
+                                 switch(reg2){
+                                     case "000101":
+                                        
+                                        dibujarCadenas("BH", "AH", bx.getBh(), ax.getAh(), "+");
+                                        Thread.sleep(1000);
+                                        bx.setBh(sumar(bx.getBh(), ax.getAh()));
+                                        accion.setText("Sumando a BH el contenido de AH");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "000110":
+                                        
+                                        dibujarCadenas("BH", "AL", bx.getBh(), ax.getAl(), "+");
+                                        Thread.sleep(1000);
+                                        bx.setBh(sumar(bx.getBh(), ax.getAl()));
+                                        accion.setText("Sumando a BH el contenido de AL");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001000":
+                                        
+                                        dibujarCadenas("BH", "BL", bx.getBh(), bx.getBl(), "+");
+                                        Thread.sleep(1000);
+                                        bx.setBh(sumar(bx.getBh(), bx.getBl()));
+                                        accion.setText("Sumando a BH el contenido de BL");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001001":
+                                        
+                                        dibujarCadenas("BH", "CH", bx.getBh(), cx.getCh(), "+");
+                                        Thread.sleep(1000);
+                                        bx.setBh(sumar(bx.getBh(), cx.getCh()));
+                                        accion.setText("Sumando a BH el contenido de CH");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001010":
+                                        
+                                        dibujarCadenas("BH", "CL", bx.getBh(), cx.getCl(), "+");
+                                        Thread.sleep(1000);
+                                        bx.setBh(sumar(bx.getBh(), cx.getCl()));
+                                        accion.setText("Sumando a BH el contenido de CL");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001011":
+                                        
+                                        dibujarCadenas("BH", "DH", bx.getBh(), dx.getDh(), "+");
+                                        Thread.sleep(1000);
+                                        bx.setBh(sumar(bx.getBh(), dx.getDh()));
+                                        accion.setText("Sumando a BH el contenido de DH");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001100":
+                                        
+                                        dibujarCadenas("BH", "DL", bx.getBh(), dx.getDl(), "+");
+                                        Thread.sleep(1000);
+                                        bx.setBh(sumar(bx.getBh(), dx.getDl()));
+                                        accion.setText("Sumando a BH el contenido de DL");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                 }
+                             //Registro BL
+                             case "001000":
+                                 switch(reg2){
+                                     case "000101":
+                                        
+                                        dibujarCadenas("BL", "AH", bx.getBl(), ax.getAh(), "+");
+                                        Thread.sleep(1000);
+                                        bx.setBl(sumar(bx.getBl(), ax.getAh()));
+                                        accion.setText("Sumando a BL el contenido de AH");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "000110":
+                                        
+                                        dibujarCadenas("BL", "AL", bx.getBl(), ax.getAl(), "+");
+                                        Thread.sleep(1000);
+                                        bx.setBl(sumar(bx.getBl(), ax.getAl()));
+                                        accion.setText("Sumando a BL el contenido de AL");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "000111":
+                                        
+                                        dibujarCadenas("BL", "BH", bx.getBl(), bx.getBh(), "+");
+                                        Thread.sleep(1000);
+                                        bx.setBl(sumar(bx.getBl(), bx.getBh()));
+                                        accion.setText("Sumando a BL el contenido de BH");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "001001":
+                                        dibujarCadenas("BL", "CH", bx.getBl(), cx.getCh(), "+");
+                                        Thread.sleep(1000);
+                                        bx.setBl(sumar(bx.getBl(), cx.getCh()));
+                                        accion.setText("Sumando a BL el contenido de CH");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "001010":
+                                        
+                                        dibujarCadenas("BL", "CL", bx.getBl(), cx.getCl(), "+");
+                                        Thread.sleep(1000);
+                                        bx.setBl(sumar(bx.getBl(), cx.getCl()));
+                                        accion.setText("Sumando a BL el contenido de CL");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "001011":
+                                        
+                                        dibujarCadenas("BL", "DH", bx.getBl(), dx.getDh(), "+");
+                                        Thread.sleep(1000);
+                                        bx.setBl(sumar(bx.getBl(), dx.getDh()));
+                                        accion.setText("Sumando a BL el contenido de DH");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "001100":
+                                        
+                                        dibujarCadenas("BL", "DL", bx.getBl(), dx.getDl(), "+");
+                                        Thread.sleep(1000);
+                                        bx.setBl(sumar(bx.getBl(), dx.getDl()));
+                                        accion.setText("Sumando a BL el contenido de DL");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                 }
+                             // Registro CH
+                             case "001001":
+                                 switch(reg2){
+                                     case "000101":
+                                        
+                                        dibujarCadenas("CH", "AH", cx.getCh(), ax.getAh(), "+");
+                                        Thread.sleep(1000);
+                                        cx.setCh(sumar(cx.getCh(), ax.getAh()));
+                                        accion.setText("Sumando a CH el contenido de AH");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "000110":
+                                        dibujarCadenas("CH", "AL", cx.getCh(), ax.getAl(), "+");
+                                        Thread.sleep(1000);
+                                        cx.setCh(sumar(cx.getCh(), ax.getAl()));
+                                        accion.setText("Sumando a CH el contenido de AL");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "000111":
+                                        
+                                        dibujarCadenas("CH", "BH", cx.getCh(), bx.getBh(), "+");
+                                        Thread.sleep(1000);
+                                        cx.setCh(sumar(cx.getCh(), bx.getBh()));
+                                        accion.setText("Sumando a CH el contenido de BH");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "001000":
+                                        
+                                        dibujarCadenas("CH", "BL", cx.getCh(), bx.getBl(), "+");
+                                        Thread.sleep(1000);
+                                        cx.setCh(sumar(cx.getCh(), bx.getBl()));
+                                        accion.setText("Sumando a CH el contenido de BL");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "001010":
+                                        
+                                        dibujarCadenas("CH", "CL", cx.getCh(), cx.getCl(), "+");
+                                        Thread.sleep(1000);
+                                        cx.setCh(sumar(cx.getCh(), cx.getCl()));
+                                        accion.setText("Sumando a CH el contenido de CL");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "001011":
+                                        
+                                        dibujarCadenas("CH", "DH", cx.getCh(), dx.getDh(), "+");
+                                        Thread.sleep(1000);
+                                        cx.setCh(sumar(cx.getCh(), dx.getDh()));
+                                        accion.setText("Sumando a CH el contenido de DH");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "001100":
+                                        
+                                        dibujarCadenas("CH", "DL", cx.getCh(), dx.getDl(), "+");
+                                        Thread.sleep(1000);
+                                        cx.setCh(sumar(cx.getCh(), dx.getDl()));
+                                        accion.setText("Sumando a CH el contenido de DL");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                 }
+                             //Registro CL
+                             case "001010":
+                                 switch(reg2){
+                                     case "000101":
+                                        dibujarCadenas("CL", "AH", cx.getCl(), ax.getAh(), "+");
+                                        Thread.sleep(1000);
+                                        cx.setCl(sumar(cx.getCl(), ax.getAh()));
+                                        accion.setText("Sumando a CL el contenido de AH");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "000110":
+                                        
+                                        dibujarCadenas("CL", "AL", cx.getCl(), ax.getAl(), "+");
+                                        Thread.sleep(1000);
+                                        cx.setCl(sumar(cx.getCl(), ax.getAl()));
+                                        accion.setText("Sumando a CL el contenido de AL");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "000111":
+                                        
+                                        dibujarCadenas("CL", "BH", cx.getCl(), bx.getBh(), "+");
+                                        Thread.sleep(1000);
+                                        cx.setCl(sumar(cx.getCl(), bx.getBh()));
+                                        accion.setText("Sumando a CL el contenido de BH");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "001000":
+                                        
+                                        dibujarCadenas("CL", "BL", cx.getCl(), bx.getBl(), "+");
+                                        Thread.sleep(1000);
+                                        cx.setCl(sumar(cx.getCl(), bx.getBl()));
+                                        accion.setText("Sumando a CL el contenido de BL");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "001001":
+                                        
+                                        dibujarCadenas("CL", "CH", cx.getCl(), cx.getCh(), "+");
+                                        Thread.sleep(1000);
+                                        cx.setCl(sumar(cx.getCl(), cx.getCh()));
+                                        accion.setText("Sumando a CL el contenido de CH");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "001011":
+                                        
+                                        dibujarCadenas("CL", "DH", cx.getCl(), dx.getDh(), "+");
+                                        Thread.sleep(1000);
+                                        cx.setCl(sumar(cx.getCl(), dx.getDh()));
+                                        accion.setText("Sumando a CL el contenido de DH");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "001100":
+                                        
+                                        dibujarCadenas("CL", "DL", cx.getCl(), dx.getDl(), "+");
+                                        Thread.sleep(1000);
+                                        cx.setCl(sumar(cx.getCl(), dx.getDl()));
+                                        accion.setText("Sumando a CL el contenido de DL");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                 }
+                             //Registro DH
+                             case "001011":
+                                 switch(reg2){
+                                     case "000101":
+                                        
+                                        dibujarCadenas("DH", "AH", dx.getDh(), ax.getAh(), "+");
+                                        Thread.sleep(1000);
+                                        dx.setDh(sumar(dx.getDh(), ax.getAh()));
+                                        accion.setText("Sumando a DH el contenido de AH");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "000110":
+                                        
+                                        dibujarCadenas("DH", "AL", dx.getDh(), ax.getAl(), "+");
+                                        Thread.sleep(1000);
+                                        dx.setDh(sumar(dx.getDh(), ax.getAl()));
+                                        accion.setText("Sumando a DH el contenido de AL");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "000111":
+                                        
+                                        dibujarCadenas("DH", "BH", dx.getDh(), bx.getBh(), "+");
+                                        Thread.sleep(1000);
+                                        dx.setDh(sumar(dx.getDh(), bx.getBh()));
+                                        accion.setText("Sumando a DH el contenido de BH");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "001000":
+                                        
+                                        dibujarCadenas("DH", "BL", dx.getDh(), bx.getBl(), "+");
+                                        Thread.sleep(1000);
+                                        dx.setDh(sumar(dx.getDh(), bx.getBl()));
+                                        accion.setText("Sumando a DH el contenido de BL");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "001001":
+                                        
+                                        dibujarCadenas("DH", "CH", dx.getDh(), cx.getCh(), "+");
+                                        Thread.sleep(1000);
+                                        dx.setDh(sumar(dx.getDh(), cx.getCh()));
+                                        accion.setText("Sumando a DH el contenido de CH");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "001010":
+                                        
+                                        dibujarCadenas("DH", "CL", dx.getDh(), cx.getCl(), "+");
+                                        Thread.sleep(1000);
+                                        dx.setDh(sumar(dx.getDh(), cx.getCl()));
+                                        accion.setText("Sumando a DH el contenido de CL");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "001100":
+                                        
+                                        dibujarCadenas("DH", "DL", dx.getDh(), dx.getDl(), "+");
+                                        Thread.sleep(1000);
+                                        dx.setDh(sumar(dx.getDh(), dx.getDl()));
+                                        accion.setText("Sumando a DH el contenido de DL");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                 }
+                             //Registro DL
+                             case "001100":
+                                 switch(reg2){
+                                     case "000101":
+                                        
+                                        dibujarCadenas("DL", "AH", dx.getDl(), ax.getAh(), "+");
+                                        Thread.sleep(1000);
+                                        dx.setDl(sumar(dx.getDl(), ax.getAh()));
+                                        accion.setText("Sumando a DL el contenido de AH");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "000110":
+                                        
+                                        dibujarCadenas("DL", "AL", dx.getDl(), ax.getAl(), "+");
+                                        Thread.sleep(1000);
+                                        dx.setDl(sumar(dx.getDl(), ax.getAl()));
+                                        accion.setText("Sumando a DL el contenido de AL");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "000111":
+                                        dibujarCadenas("DL", "BH", dx.getDl(), bx.getBh(), "+");
+                                        Thread.sleep(1000);
+                                        dx.setDl(sumar(dx.getDl(), bx.getBh()));
+                                        accion.setText("Sumando a DL el contenido de BH");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "001000":
+                                        dibujarCadenas("DL", "BL", dx.getDl(), bx.getBl(), "+");
+                                        Thread.sleep(1000);
+                                        dx.setDl(sumar(dx.getDl(), bx.getBl()));
+                                        accion.setText("Sumando a DL el contenido de BL");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "001001":
+                                        
+                                        dibujarCadenas("DL", "CH", dx.getDl(), cx.getCh(), "+");
+                                        Thread.sleep(1000);
+                                        dx.setDl(sumar(dx.getDl(), cx.getCh()));
+                                        accion.setText("Sumando a DL el contenido de CH");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "001010":
+                                        dibujarCadenas("DL", "CL", dx.getDl(), cx.getCl(), "+");
+                                        Thread.sleep(1000);
+                                        dx.setDl(sumar(dx.getDl(), cx.getCl()));
+                                        accion.setText("Sumando a DL el contenido de CL");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "001011":
+                                        
+                                        dibujarCadenas("DL", "DH", dx.getDl(), dx.getDh(), "+");
+                                        Thread.sleep(1000);
+                                        dx.setDl(sumar(dx.getDl(), dx.getDh()));
+                                        accion.setText("Sumando a DL el contenido de DH");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                 }
+                             
+                        }
+                        
+                        
                         
                         break;
+                        //RESTA
                     case "0001":
-                        marField1.setText(dir);
-                        Thread.sleep(3000);
-                        
-                        accion.setText("Restar a AC el operando referenciado");                      
-                        Thread.sleep(3000);
-                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
-                        mbrField1.setText(mbr.getDireccion());
-                        ac.restar(mbr.getDireccion());                        
-                        JOptionPane.showMessageDialog(null, ac.getDato());
-                        acumulador.setText(ac.getDato());
-                        Thread.sleep(1000);
+                        switch(reg1){
+                            //Registro AX
+                            case "000001":
+                                switch(reg2){
+                                    case "000010":
+                                                                               
+                                        dibujarCadenas("AX", "BX", ax.getContent(), bx.getContent(), "-");
+                                        Thread.sleep(1000);
+                                        ax.setContent(restar(ax.getContent(), bx.getContent()));
+                                        accion.setText("Restando a AX el contenido de BX");
+                                        dibujarResultado(ax.getContent(), "AX");
+                                        break;
+                                    case "000011":
+                                        dibujarCadenas("AX", "CX", ax.getContent(), cx.getContent(), "-");
+                                        Thread.sleep(1000);
+                                        ax.setContent(restar(ax.getContent(), cx.getContent()));
+                                        accion.setText("Restando a AX el contenido de CX");
+                                        dibujarResultado(ax.getContent(), "AX");
+                                        break;
+                                    case "000100":
+                                        dibujarCadenas("AX", "DX", ax.getContent(), dx.getContent(), "-");
+                                        Thread.sleep(1000);
+                                        ax.setContent(restar(ax.getContent(), dx.getContent()));
+                                        accion.setText("Restando a AX el contenido de DX");
+                                        dibujarResultado(ax.getContent(), "AX");
+                                        break;
+                                }
+                                break;
+                                //Registro BX
+                            case "000010":
+                                switch(reg2){
+                                    case "000001":
+                                        dibujarCadenas("BX", "AX", bx.getContent(), ax.getContent(), "-");
+                                        Thread.sleep(1000);
+                                        bx.setContent(restar(bx.getContent(), ax.getContent()));
+                                        accion.setText("Restando a BX el contenido de AX");
+                                        dibujarResultado(bx.getContent(), "BX");
+                                        break;
+                                    case "000011":
+                                        dibujarCadenas("BX", "CX", bx.getContent(), cx.getContent(), "-");
+                                        Thread.sleep(1000);
+                                        bx.setContent(restar(bx.getContent(), cx.getContent()));
+                                        accion.setText("Restando a BX el contenido de CX");
+                                        dibujarResultado(bx.getContent(), "BX");
+                                        break;
+                                    case "000100":
+                                        dibujarCadenas("BX", "DX", bx.getContent(), dx.getContent(), "-");
+                                        Thread.sleep(1000);
+                                        bx.setContent(restar( bx.getContent(), dx.getContent()));
+                                        accion.setText("Restando a BX el contenido de DX");
+                                        dibujarResultado(bx.getContent(), "BX");
+                                        break;
+                                }
+                                break;
+                                //Registro CX
+                            case "000011":
+                                switch(reg2){
+                                    case "000001":
+                                        dibujarCadenas("CX", "AX", cx.getContent(), ax.getContent(), "-");
+                                        Thread.sleep(1000);
+                                        cx.setContent(restar(cx.getContent(), ax.getContent()));
+                                        accion.setText("Restando a CX el contenido de AX");
+                                        dibujarResultado(cx.getContent(), "CX");
+                                        break;
+                                    case "000010":
+                                        dibujarCadenas("CX", "BX", cx.getContent(), bx.getContent(), "-");
+                                        Thread.sleep(1000);
+                                        cx.setContent(restar(cx.getContent(), bx.getContent()));
+                                        accion.setText("Restando a CX el contenido de BX");
+                                        dibujarResultado(cx.getContent(), "CX");
+                                        break;
+                                    case "000100":
+                                        dibujarCadenas("CX", "DX", cx.getContent(), dx.getContent(), "-");
+                                        Thread.sleep(1000);
+                                        cx.setContent(restar(cx.getContent(), dx.getContent()));
+                                        accion.setText("Restando a CX el contenido de DX");
+                                        dibujarResultado(cx.getContent(), "CX");
+                                        break;
+                                }
+                                break;
+                                //Registro DX
+                             case "000100":
+                                switch(reg2){
+                                    case "000001":
+                                        dibujarCadenas("DX", "AX", dx.getContent(), ax.getContent(), "-");
+                                        Thread.sleep(1000);
+                                        dx.setContent(restar(dx.getContent(), ax.getContent()));
+                                        accion.setText("Restando a DX el contenido de AX");
+                                        dibujarResultado(dx.getContent(), "DX");
+                                        break;
+                                    case "000010":
+                                        dibujarCadenas("DX", "BX", dx.getContent(), bx.getContent(), "-");
+                                        Thread.sleep(1000);
+                                        dx.setContent(restar(dx.getContent(), bx.getContent()));
+                                        accion.setText("Restando a DX el contenido de BX");
+                                        dibujarResultado(dx.getContent(), "DX");
+                                        break;
+                                    case "000011":
+                                        dibujarCadenas("DX", "CX", dx.getContent(), cx.getContent(), "-");
+                                        Thread.sleep(1000);
+                                        dx.setContent(restar(dx.getContent(), cx.getContent()));
+                                        accion.setText("Restando a DX el contenido de CX");
+                                        dibujarResultado(dx.getContent(), "DX");
+                                        break;
+                                }
+                                break;
+                                 //Registro AH
+                             case "000101":
+                                 switch(reg2){
+                                     case "000110":
+                                        dibujarCadenas("AH", "AL", ax.getAh(), ax.getAl(), "-");
+                                        Thread.sleep(1000);
+                                        ax.setAh(restar(ax.getAh(), ax.getAl()));
+                                        accion.setText("Restando a AH el contenido de AL");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "000111":
+                                        dibujarCadenas("AH", "BH", ax.getAh(), bx.getBh(), "-");
+                                        Thread.sleep(1000);
+                                        ax.setAh(restar(ax.getAh(), bx.getBh()));
+                                        accion.setText("Restando a AH el contenido de BH");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001000":
+                                        dibujarCadenas("AH", "BL", ax.getAh(), bx.getBl(), "-");
+                                        Thread.sleep(1000);
+                                        ax.setAh(restar( ax.getAh(), bx.getBl()));
+                                        accion.setText("Restando a AH el contenido de BL");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001001":
+                                        dibujarCadenas("AH", "CH", ax.getAh(), cx.getCh(), "-");
+                                        Thread.sleep(1000);
+                                        ax.setAh(restar(ax.getAh(), cx.getCh()));
+                                        accion.setText("Restando a AH el contenido de CH");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001010":
+                                        dibujarCadenas("AH", "CL", ax.getAh(), cx.getCl(), "-");
+                                        Thread.sleep(1000);
+                                        ax.setAh(restar(ax.getAh(), cx.getCl()));
+                                        accion.setText("Restando a AH el contenido de CL");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001011":
+                                        dibujarCadenas("AH", "DH", ax.getAh(), dx.getDh(), "-");
+                                        Thread.sleep(1000);
+                                        ax.setAh(restar(ax.getAh(), dx.getDh()));
+                                        accion.setText("Restando a AH el contenido de DH");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001100":
+                                        dibujarCadenas("AH", "DL", ax.getAh(), dx.getDl(), "-");
+                                        Thread.sleep(1000);
+                                        ax.setAh(restar(ax.getAh(), dx.getDl()));
+                                        accion.setText("Restando a AH el contenido de DL");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                               
+                                 }
+                             //Registro AL
+                             case "000110":
+                                 switch(reg2){
+                                     case "000101":
+                                        dibujarCadenas("AL", "AH", ax.getAl(), ax.getAh(), "-");
+                                        Thread.sleep(1000);
+                                        ax.setAl(restar(ax.getAl(), ax.getAh()));
+                                        accion.setText("Restando a AL el contenido de AH");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "000111":
+                                        dibujarCadenas("AL", "BH", ax.getAl(), bx.getBh(), "-");
+                                        Thread.sleep(1000);
+                                        ax.setAl(restar(ax.getAl(), bx.getBh()));
+                                        accion.setText("Restando a AL el contenido de BH");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001000":
+                                        dibujarCadenas("AL", "BL", ax.getAl(), bx.getBl(), "-");
+                                        Thread.sleep(1000);
+                                        ax.setAl(restar(ax.getAl(), bx.getBl()));
+                                        accion.setText("Restando a AL el contenido de BL");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001001":
+                                        dibujarCadenas("AL", "CH", ax.getAl(), cx.getCh(), "-");
+                                        Thread.sleep(1000);
+                                        ax.setAl(restar(ax.getAl(), cx.getCh()));
+                                        accion.setText("Restando a AL el contenido de CH");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001010":
+                                        dibujarCadenas("AL", "CL", ax.getAl(), cx.getCl(), "-");
+                                        Thread.sleep(1000);
+                                        ax.setAl(restar(ax.getAl(), cx.getCl()));
+                                        accion.setText("Restando a AL el contenido de CL");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001011":
+                                        dibujarCadenas("AL", "DH", ax.getAl(), dx.getDh(), "-");
+                                        Thread.sleep(1000);
+                                        ax.setAl(restar(ax.getAl(), dx.getDh()));
+                                        accion.setText("Restando a AL el contenido de DH");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001100":
+                                        dibujarCadenas("AL", "DL", ax.getAl(), dx.getDl(), "-");
+                                        Thread.sleep(1000);
+                                        ax.setAl(restar(ax.getAl(), dx.getDl()));
+                                        accion.setText("Restando a AL el contenido de DL");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                 }
+                             //Registro BH
+                             case "000111":
+                                 switch(reg2){
+                                     case "000101":
+                                        dibujarCadenas("BH", "AH", bx.getBh(), ax.getAh(), "-");
+                                        Thread.sleep(1000);
+                                        bx.setBh(restar(bx.getBh(), ax.getAh()));
+                                        accion.setText("Restando a BH el contenido de AH");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "000110":
+                                        dibujarCadenas("BH", "AL", bx.getBh(), ax.getAl(), "-");
+                                        Thread.sleep(1000);
+                                        bx.setBh(restar(bx.getBh(), ax.getAl()));
+                                        accion.setText("Restando a BH el contenido de AL");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001000":
+                                        dibujarCadenas("BH", "BL", bx.getBh(), bx.getBl(), "-");
+                                        Thread.sleep(1000);
+                                        bx.setBh(restar(bx.getBh(), bx.getBl()));
+                                        accion.setText("Restando a BH el contenido de BL");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001001":
+                                        dibujarCadenas("BH", "CH", bx.getBh(), cx.getCh(), "-");
+                                        Thread.sleep(1000);
+                                        bx.setBh(restar(bx.getBh(), cx.getCh()));
+                                        accion.setText("Restando a BH el contenido de CH");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001010":
+                                        dibujarCadenas("BH", "CL", bx.getBh(), cx.getCl(), "-");
+                                        Thread.sleep(1000);
+                                        bx.setBh(restar( bx.getBh(), cx.getCl()));
+                                        accion.setText("Restando a BH el contenido de CL");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001011":
+                                        dibujarCadenas("BH", "DH", bx.getBh(), dx.getDh(), "-");
+                                        Thread.sleep(1000);
+                                        bx.setBh(restar(bx.getBh(), dx.getDh()));
+                                        accion.setText("Restando a BH el contenido de DH");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001100":
+                                        dibujarCadenas("BH", "DL", bx.getBh(), dx.getDl(), "-");
+                                        Thread.sleep(1000);
+                                        bx.setBh(restar(bx.getBh(), dx.getDl()));
+                                        accion.setText("Restando a BH el contenido de DL");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                 }
+                             //Registro BL
+                             case "001000":
+                                 switch(reg2){
+                                     case "000101":
+                                        dibujarCadenas("BL", "AH", bx.getBl(), ax.getAh(), "-");
+                                        Thread.sleep(1000);
+                                        bx.setBl(restar( bx.getBl(), ax.getAh()));
+                                        accion.setText("Restando a BL el contenido de AH");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "000110":
+                                        dibujarCadenas("BL", "AL", bx.getBl(), ax.getAl(), "-");
+                                        Thread.sleep(1000);
+                                        bx.setBl(restar(bx.getBl(), ax.getAl()));
+                                        accion.setText("Restando a BL el contenido de AL");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "000111":
+                                        dibujarCadenas("BL", "BH", bx.getBl(), bx.getBh(), "-");
+                                        Thread.sleep(1000);
+                                        bx.setBl(restar(bx.getBl(), bx.getBh()));
+                                        accion.setText("Restando a BL el contenido de BH");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "001001":
+                                        dibujarCadenas("BL", "CH", bx.getBl(), cx.getCh(), "-");
+                                        Thread.sleep(1000);
+                                        bx.setBl(restar( bx.getBl(), cx.getCh()));
+                                        accion.setText("Restando a BL el contenido de CH");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "001010":
+                                        dibujarCadenas("BL", "CL", bx.getBl(), cx.getCl(), "-");
+                                        Thread.sleep(1000);
+                                        bx.setBl(restar(bx.getBl(), cx.getCl()));
+                                        accion.setText("Restando a BL el contenido de CL");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "001011":
+                                        dibujarCadenas("BL", "DH", bx.getBl(), dx.getDh(), "-");
+                                        Thread.sleep(1000);
+                                        bx.setBl(restar(bx.getBl(), dx.getDh()));
+                                        accion.setText("Restando a BL el contenido de DH");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "001100":
+                                        dibujarCadenas("BL", "DL", bx.getBl(), dx.getDl(), "-");
+                                        Thread.sleep(1000);
+                                        bx.setBl(restar(bx.getBl(), dx.getDl()));
+                                        accion.setText("Restando a BL el contenido de DL");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                 }
+                             // Registro CH
+                             case "001001":
+                                 switch(reg2){
+                                     case "000101":
+                                        dibujarCadenas("CH", "AH", cx.getCh(), ax.getAh(), "-");
+                                        Thread.sleep(1000);
+                                        cx.setCh(restar(cx.getCh(), ax.getAh()));
+                                        accion.setText("Restando a CH el contenido de AH");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "000110":
+                                        dibujarCadenas("CH", "AL", cx.getCh(), ax.getAl(), "-");
+                                        Thread.sleep(1000);
+                                        cx.setCh(restar(cx.getCh(), ax.getAl()));
+                                        accion.setText("Restando a CH el contenido de AL");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "000111":
+                                        dibujarCadenas("CH", "BH", cx.getCh(), bx.getBh(), "-");
+                                        Thread.sleep(1000);
+                                        cx.setCh(restar(cx.getCh(), bx.getBh()));
+                                        accion.setText("Restando a CH el contenido de BH");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "001000":
+                                        dibujarCadenas("CH", "BL", cx.getCh(), bx.getBl(), "-");
+                                        Thread.sleep(1000);
+                                        cx.setCh(restar(cx.getCh(), bx.getBl()));
+                                        accion.setText("Restando a CH el contenido de BL");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "001010":
+                                        dibujarCadenas("CH", "CL", cx.getCh(), cx.getCl(), "-");
+                                        Thread.sleep(1000);
+                                        cx.setCh(restar(cx.getCh(), cx.getCl()));
+                                        accion.setText("Restando a CH el contenido de CL");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "001011":
+                                        dibujarCadenas("CH", "DH", cx.getCh(), dx.getDh(), "-");
+                                        Thread.sleep(1000);
+                                        cx.setCh(restar(cx.getCh(), dx.getDh()));
+                                        accion.setText("Restando a CH el contenido de DH");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "001100":
+                                        dibujarCadenas("CH", "DL", cx.getCh(), dx.getDl(), "-");
+                                        Thread.sleep(1000);
+                                        cx.setCh(restar(cx.getCh(), dx.getDl()));
+                                        accion.setText("Restando a CH el contenido de DL");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                 }
+                             //Registro CL
+                             case "001010":
+                                 switch(reg2){
+                                     case "000101":
+                                        dibujarCadenas("CL", "AH", cx.getCl(), ax.getAh(), "-");
+                                        Thread.sleep(1000);
+                                        cx.setCl(restar(cx.getCl(), ax.getAh()));
+                                        accion.setText("Restando a CL el contenido de AH");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "000110":
+                                        dibujarCadenas("CL", "AL", cx.getCl(), ax.getAl(), "-");
+                                        Thread.sleep(1000);
+                                        cx.setCl(restar(cx.getCl(), ax.getAl()));
+                                        accion.setText("Restando a CL el contenido de AL");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "000111":
+                                        dibujarCadenas("CL", "BH", cx.getCl(), bx.getBh(), "-");
+                                        Thread.sleep(1000);
+                                        cx.setCl(restar(cx.getCl(), bx.getBh()));
+                                        accion.setText("Restando a CL el contenido de BH");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "001000":
+                                        dibujarCadenas("CL", "BL", cx.getCl(), bx.getBl(), "-");
+                                        Thread.sleep(1000);
+                                        cx.setCl(restar(cx.getCl(), bx.getBl()));
+                                        accion.setText("Restando a CL el contenido de BL");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "001001":
+                                        dibujarCadenas("CL", "CH", cx.getCl(), cx.getCh(), "-");
+                                        Thread.sleep(1000);
+                                        cx.setCl(restar(cx.getCl(), cx.getCh()));
+                                        accion.setText("Restando a CL el contenido de CH");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "001011":
+                                        dibujarCadenas("CL", "DH", cx.getCl(), dx.getDh(), "-");
+                                        Thread.sleep(1000);
+                                        cx.setCl(restar(cx.getCl(), dx.getDh()));
+                                        accion.setText("Restando a CL el contenido de DH");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "001100":
+                                        dibujarCadenas("CL", "DL", cx.getCl(), dx.getDl(), "-");
+                                        Thread.sleep(1000);
+                                        cx.setCl(restar(cx.getCl(), dx.getDl()));
+                                        accion.setText("Restando a CL el contenido de DL");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                 }
+                             //Registro DH
+                             case "001011":
+                                 switch(reg2){
+                                     case "000101":
+                                        dibujarCadenas("DH", "AH", dx.getDh(), ax.getAh(), "-");
+                                        Thread.sleep(1000);
+                                        dx.setDh(restar(dx.getDh(), ax.getAh()));
+                                        accion.setText("Restando a DH el contenido de AH");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "000110":
+                                        dibujarCadenas("DH", "AL", dx.getDh(), ax.getAl(), "-");
+                                        Thread.sleep(1000);
+                                        dx.setDh(restar(dx.getDh(), ax.getAl()));
+                                        accion.setText("Restando a DH el contenido de AL");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "000111":
+                                        dibujarCadenas("DH", "BH", dx.getDh(), bx.getBh(), "-");
+                                        Thread.sleep(1000);
+                                        dx.setDh(restar(dx.getDh(), bx.getBh()));
+                                        accion.setText("Restando a DH el contenido de BH");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "001000":
+                                        dibujarCadenas("DH", "BL", dx.getDh(), bx.getBl(), "-");
+                                        Thread.sleep(1000);
+                                        dx.setDh(restar(dx.getDh(), bx.getBl()));
+                                        accion.setText("Restando a DH el contenido de BL");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "001001":
+                                        dibujarCadenas("DH", "CH", dx.getDh(), cx.getCh(), "-");
+                                        Thread.sleep(1000);
+                                        dx.setDh(restar(dx.getDh(), cx.getCh()));
+                                        accion.setText("Restando a DH el contenido de CH");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "001010":
+                                        dibujarCadenas("DH", "CL", dx.getDh(), cx.getCl(), "-");
+                                        Thread.sleep(1000);
+                                        dx.setDh(restar(dx.getDh(), cx.getCl()));
+                                        accion.setText("Restando a DH el contenido de CL");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "001100":
+                                        dibujarCadenas("DH", "DL", dx.getDh(), dx.getDl(), "-");
+                                        Thread.sleep(1000);
+                                        dx.setDh(restar(dx.getDh(), dx.getDl()));
+                                        accion.setText("Restando a DH el contenido de DL");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                 }
+                             //Registro DL
+                             case "001100":
+                                 switch(reg2){
+                                     case "000101":
+                                        dibujarCadenas("DL", "AH", dx.getDl(), ax.getAh(), "-");
+                                        Thread.sleep(1000);
+                                        dx.setDl(restar(dx.getDl(), ax.getAh()));
+                                        accion.setText("Restando a DL el contenido de AH");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "000110":
+                                        dibujarCadenas("DL", "AL", dx.getDl(), ax.getAl(), "-");
+                                        Thread.sleep(1000);
+                                        dx.setDl(restar(dx.getDl(), ax.getAl()));
+                                        accion.setText("Restando a DL el contenido de AL");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "000111":
+                                        dibujarCadenas("DL", "BH", dx.getDl(), bx.getBh(), "-");
+                                        Thread.sleep(1000);
+                                        dx.setDl(restar(dx.getDl(), bx.getBh()));
+                                        accion.setText("Restando a DL el contenido de BH");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "001000":
+                                        dibujarCadenas("DL", "BL", dx.getDl(), bx.getBl(), "-");
+                                        Thread.sleep(1000);
+                                        dx.setDl(restar(dx.getDl(), bx.getBl()));
+                                        accion.setText("Restando a DL el contenido de BL");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "001001":
+                                        dibujarCadenas("DL", "CH", dx.getDl(), cx.getCh(), "-");
+                                        Thread.sleep(1000);
+                                        dx.setDl(restar(dx.getDl(), cx.getCh()));
+                                        accion.setText("Restando a DL el contenido de CH");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "001010":
+                                        dibujarCadenas("DL", "CL", dx.getDl(), cx.getCl(), "-");
+                                        Thread.sleep(1000);
+                                        dx.setDl(restar(dx.getDl(), cx.getCl()));
+                                        accion.setText("Restando a DL el contenido de CL");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "001011":
+                                        dibujarCadenas("DL", "DH", dx.getDl(), dx.getDh(), "-");
+                                        Thread.sleep(1000);
+                                        dx.setDl(restar(dx.getDl(), dx.getDh()));
+                                        accion.setText("Restando a DL el contenido de DH");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                 }
+                             
+                        }
                         break;
                     case "0010":
-                        marField1.setText(dir);
-                        Thread.sleep(3000);
-                        
-                        accion.setText("Multiplicar a AC el operando referenciado");                      
-                        Thread.sleep(3000);
-                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
-                        mbrField1.setText(mbr.getDireccion());
-                        ac.multiplicar(mbr.getDireccion());                        
-                        JOptionPane.showMessageDialog(null, ac.getDato());
-                        acumulador.setText(ac.getDato());
-                        Thread.sleep(1000);
+                        //MULTIPLICACIÓN
+                        switch(reg1){
+                            //Registro AX
+                            case "000001":
+                                switch(reg2){
+                                    case "000010":
+                                        a = Integer.parseInt(ax.getContent(), 2);
+                                        b = Integer.parseInt(bx.getContent(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AX", "BX", ax.getContent(), bx.getContent(), "*");
+                                        Thread.sleep(1000);
+                                        ax.setContent(r);
+                                        accion.setText("Multiplicando AX con BX");
+                                        dibujarResultado(ax.getContent(), "AX");
+                                        break;
+                                    case "000011":
+                                        a = Integer.parseInt(ax.getContent(), 2);
+                                        b = Integer.parseInt(cx.getContent(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AX", "CX", ax.getContent(), cx.getContent(), "*");
+                                        Thread.sleep(1000);
+                                        ax.setContent(r);
+                                        accion.setText("Multiplicando AX con CX");
+                                        dibujarResultado(ax.getContent(), "AX");
+                                        break;
+                                    case "000100":
+                                        a = Integer.parseInt(ax.getContent(), 2);
+                                        b = Integer.parseInt(dx.getContent(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AX", "DX", ax.getContent(), dx.getContent(), "*");
+                                        Thread.sleep(1000);
+                                        ax.setContent(r);
+                                        accion.setText("Multiplicando AX con DX");
+                                        dibujarResultado(ax.getContent(), "AX");
+                                        break;
+                                }
+                                break;
+                                //Registro BX
+                            case "000010":
+                                switch(reg2){
+                                    case "000001":
+                                        a = Integer.parseInt(bx.getContent(), 2);
+                                        b = Integer.parseInt(ax.getContent(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BX", "AX", bx.getContent(), ax.getContent(), "*");
+                                        Thread.sleep(1000);
+                                        bx.setContent(r);
+                                        accion.setText("Multiplicando BX con AX");
+                                        dibujarResultado(bx.getContent(), "BX");
+                                        break;
+                                    case "000011":
+                                        a = Integer.parseInt(bx.getContent(), 2);
+                                        b = Integer.parseInt(cx.getContent(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BX", "CX", bx.getContent(), cx.getContent(), "*");
+                                        Thread.sleep(1000);
+                                        bx.setContent(r);
+                                        accion.setText("Multiplicando BX con CX");
+                                        dibujarResultado(bx.getContent(), "BX");
+                                        break;
+                                    case "000100":
+                                        a = Integer.parseInt(bx.getContent(), 2);
+                                        b = Integer.parseInt(dx.getContent(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BX", "DX", bx.getContent(), dx.getContent(), "*");
+                                        Thread.sleep(1000);
+                                        bx.setContent(r);
+                                        accion.setText("Multiplicando BX con DX");
+                                        dibujarResultado(bx.getContent(), "BX");
+                                        break;
+                                }
+                                break;
+                                //Registro CX
+                            case "000011":
+                                switch(reg2){
+                                    case "000001":
+                                        a = Integer.parseInt(cx.getContent(), 2);
+                                        b = Integer.parseInt(ax.getContent(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CX", "AX", cx.getContent(), ax.getContent(), "*");
+                                        Thread.sleep(1000);
+                                        cx.setContent(r);
+                                        accion.setText("Multiplicando CX con AX");
+                                        dibujarResultado(cx.getContent(), "CX");
+                                        break;
+                                    case "000010":
+                                        a = Integer.parseInt(cx.getContent(), 2);
+                                        b = Integer.parseInt(bx.getContent(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CX", "BX", cx.getContent(), bx.getContent(), "*");
+                                        Thread.sleep(1000);
+                                        cx.setContent(r);
+                                        accion.setText("Multiplicando CX con BX");
+                                        dibujarResultado(cx.getContent(), "CX");
+                                        break;
+                                    case "000100":
+                                        a = Integer.parseInt(cx.getContent(), 2);
+                                        b = Integer.parseInt(dx.getContent(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CX", "DX", cx.getContent(), dx.getContent(), "*");
+                                        Thread.sleep(1000);
+                                        cx.setContent(r);
+                                        accion.setText("Multiplicando CX con DX");
+                                        dibujarResultado(cx.getContent(), "CX");
+                                        break;
+                                }
+                                break;
+                                //Registro DX
+                             case "000100":
+                                switch(reg2){
+                                    case "000001":
+                                        a = Integer.parseInt(dx.getContent(), 2);
+                                        b = Integer.parseInt(ax.getContent(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DX", "AX", dx.getContent(), ax.getContent(), "*");
+                                        Thread.sleep(1000);
+                                        dx.setContent(r);
+                                        accion.setText("Multiplicando DX con AX");
+                                        dibujarResultado(dx.getContent(), "DX");
+                                        break;
+                                    case "000010":
+                                        a = Integer.parseInt(dx.getContent(), 2);
+                                        b = Integer.parseInt(bx.getContent(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DX", "BX", dx.getContent(), bx.getContent(), "*");
+                                        Thread.sleep(1000);
+                                        dx.setContent(r);
+                                        accion.setText("Multiplicando DX con BX");
+                                        dibujarResultado(dx.getContent(), "DX");
+                                        break;
+                                    case "000011":
+                                        a = Integer.parseInt(dx.getContent(), 2);
+                                        b = Integer.parseInt(cx.getContent(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DX", "CX", dx.getContent(), cx.getContent(), "*");
+                                        Thread.sleep(1000);
+                                        dx.setContent(r);
+                                        accion.setText("Multiplicando DX con CX");
+                                        dibujarResultado(dx.getContent(), "DX");
+                                        break;
+                                }
+                                break;
+                                 //Registro AH
+                             case "000101":
+                                 switch(reg2){
+                                     case "000110":
+                                        a = Integer.parseInt(ax.getAh(), 2);
+                                        b = Integer.parseInt(ax.getAl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AH", "AL", ax.getAh(), ax.getAl(), "*");
+                                        Thread.sleep(1000);
+                                        ax.setAh(r);
+                                        accion.setText("Multiplicando AH con AL");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "000111":
+                                        a = Integer.parseInt(ax.getAh(), 2);
+                                        b = Integer.parseInt(bx.getBh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AH", "BH", ax.getAh(), bx.getBh(), "*");
+                                        Thread.sleep(1000);
+                                        ax.setAh(r);
+                                        accion.setText("Multiplicando AH con BH");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001000":
+                                        a = Integer.parseInt(ax.getAh(), 2);
+                                        b = Integer.parseInt(bx.getBl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AH", "BL", ax.getAh(), bx.getBl(), "*");
+                                        Thread.sleep(1000);
+                                        ax.setAh(r);
+                                        accion.setText("Multiplicando AH con BL");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001001":
+                                        a = Integer.parseInt(ax.getAh(), 2);
+                                        b = Integer.parseInt(cx.getCh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AH", "CH", ax.getAh(), cx.getCh(), "*");
+                                        Thread.sleep(1000);
+                                        ax.setAh(r);
+                                        accion.setText("Multiplicando AH con CH");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001010":
+                                        a = Integer.parseInt(ax.getAh(), 2);
+                                        b = Integer.parseInt(cx.getCl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AH", "CL", ax.getAh(), cx.getCl(), "*");
+                                        Thread.sleep(1000);
+                                        ax.setAh(r);
+                                        accion.setText("Multiplicando AH con CL");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001011":
+                                        a = Integer.parseInt(ax.getAh(), 2);
+                                        b = Integer.parseInt(dx.getDh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AH", "DH", ax.getAh(), dx.getDh(), "*");
+                                        Thread.sleep(1000);
+                                        ax.setAh(r);
+                                        accion.setText("Multiplicando AH con DH");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001100":
+                                        a = Integer.parseInt(ax.getAh(), 2);
+                                        b = Integer.parseInt(dx.getDl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AH", "DL", ax.getAh(), dx.getDl(), "*");
+                                        Thread.sleep(1000);
+                                        ax.setAh(r);
+                                        accion.setText("Multiplicando AH con DL");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                               
+                                 }
+                             //Registro AL
+                             case "000110":
+                                 switch(reg2){
+                                     case "000101":
+                                        a = Integer.parseInt(ax.getAl(), 2);
+                                        b = Integer.parseInt(ax.getAh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AL", "AH", ax.getAl(), ax.getAh(), "*");
+                                        Thread.sleep(1000);
+                                        ax.setAl(r);
+                                        accion.setText("Multiplicando Al con AH");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "000111":
+                                        a = Integer.parseInt(ax.getAl(), 2);
+                                        b = Integer.parseInt(bx.getBh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AL", "BH", ax.getAl(), bx.getBh(), "*");
+                                        Thread.sleep(1000);
+                                        ax.setAl(r);
+                                        accion.setText("Multiplicando Al con BH");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001000":
+                                        a = Integer.parseInt(ax.getAl(), 2);
+                                        b = Integer.parseInt(bx.getBl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AL", "BL", ax.getAl(), bx.getBl(), "*");
+                                        Thread.sleep(1000);
+                                        ax.setAl(r);
+                                        accion.setText("Multiplicando Al con BL");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001001":
+                                        a = Integer.parseInt(ax.getAl(), 2);
+                                        b = Integer.parseInt(cx.getCh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AL", "CH", ax.getAl(), cx.getCh(), "*");
+                                        Thread.sleep(1000);
+                                        ax.setAl(r);
+                                        accion.setText("Multiplicando AL con CH");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001010":
+                                        a = Integer.parseInt(ax.getAl(), 2);
+                                        b = Integer.parseInt(cx.getCl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AL", "CL", ax.getAl(), cx.getCl(), "*");
+                                        Thread.sleep(1000);
+                                        ax.setAl(r);
+                                        accion.setText("Multiplicando Al con CL");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001011":
+                                        a = Integer.parseInt(ax.getAl(), 2);
+                                        b = Integer.parseInt(dx.getDh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AL", "DH", ax.getAl(), dx.getDh(), "*");
+                                        Thread.sleep(1000);
+                                        ax.setAl(r);
+                                        accion.setText("Multiplicando Al con DH");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001100":
+                                        a = Integer.parseInt(ax.getAl(), 2);
+                                        b = Integer.parseInt(dx.getDl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AL", "DL", ax.getAl(), dx.getDl(), "*");
+                                        Thread.sleep(1000);
+                                        ax.setAl(r);
+                                        accion.setText("Multiplicando Al con DL");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                 }
+                             //Registro BH
+                             case "000111":
+                                 switch(reg2){
+                                     case "000101":
+                                        a = Integer.parseInt(bx.getBh(), 2);
+                                        b = Integer.parseInt(ax.getAh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BH", "AH", bx.getBh(), ax.getAh(), "*");
+                                        Thread.sleep(1000);
+                                        bx.setBh(r);
+                                        accion.setText("Multiplicando BH con AH");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "000110":
+                                        a = Integer.parseInt(bx.getBh(), 2);
+                                        b = Integer.parseInt(ax.getAl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BH", "AL", bx.getBh(), ax.getAl(), "*");
+                                        Thread.sleep(1000);
+                                        bx.setBh(r);
+                                        accion.setText("Multiplicando BH con AL");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001000":
+                                        a = Integer.parseInt(bx.getBh(), 2);
+                                        b = Integer.parseInt(bx.getBl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BH", "BL", bx.getBh(), bx.getBl(), "*");
+                                        Thread.sleep(1000);
+                                        bx.setBh(r);
+                                        accion.setText("Multiplicando BH con BL");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001001":
+                                        a = Integer.parseInt(bx.getBh(), 2);
+                                        b = Integer.parseInt(cx.getCh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BH", "CH", bx.getBh(), cx.getCh(), "*");
+                                        Thread.sleep(1000);
+                                        bx.setBh(r);
+                                        accion.setText("Multiplicando BH con CH");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001010":
+                                        a = Integer.parseInt(bx.getBh(), 2);
+                                        b = Integer.parseInt(cx.getCl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BH", "CL", bx.getBh(), cx.getCl(), "*");
+                                        Thread.sleep(1000);
+                                        bx.setBh(r);
+                                        accion.setText("Multiplicando BH con CL");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001011":
+                                        a = Integer.parseInt(bx.getBh(), 2);
+                                        b = Integer.parseInt(dx.getDh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BH", "DH", bx.getBh(), dx.getDh(), "*");
+                                        Thread.sleep(1000);
+                                        bx.setBh(r);
+                                        accion.setText("Multiplicando BH con DH");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001100":
+                                        a = Integer.parseInt(bx.getBh(), 2);
+                                        b = Integer.parseInt(dx.getDl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BH", "DL", bx.getBh(), dx.getDl(), "*");
+                                        Thread.sleep(1000);
+                                        bx.setBh(r);
+                                        accion.setText("Multiplicando BH con DL");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                 }
+                             //Registro BL
+                             case "001000":
+                                 switch(reg2){
+                                     case "000101":
+                                        a = Integer.parseInt(bx.getBl(), 2);
+                                        b = Integer.parseInt(ax.getAh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BL", "AH", bx.getBl(), ax.getAh(), "*");
+                                        Thread.sleep(1000);
+                                        bx.setBl(r);
+                                        accion.setText("Multiplicando BL con AH");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "000110":
+                                        a = Integer.parseInt(bx.getBl(), 2);
+                                        b = Integer.parseInt(ax.getAl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BL", "AL", bx.getBl(), ax.getAl(), "*");
+                                        Thread.sleep(1000);
+                                        bx.setBl(r);
+                                        accion.setText("Multiplicando BL con AL");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "000111":
+                                        a = Integer.parseInt(bx.getBl(), 2);
+                                        b = Integer.parseInt(bx.getBh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BL", "CH", bx.getBl(), cx.getCh(), "*");
+                                        Thread.sleep(1000);
+                                        bx.setBl(r);
+                                        accion.setText("Multiplicando BL con BH");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "001001":
+                                        a = Integer.parseInt(bx.getBl(), 2);
+                                        b = Integer.parseInt(cx.getCh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BL", "CH", bx.getBl(), ax.getAh(), "*");
+                                        Thread.sleep(1000);
+                                        bx.setBl(r);
+                                        accion.setText("Multiplicando BL con CH");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "001010":
+                                        a = Integer.parseInt(bx.getBl(), 2);
+                                        b = Integer.parseInt(cx.getCl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BL", "CL", bx.getBl(), cx.getCl(), "*");
+                                        Thread.sleep(1000);
+                                        bx.setBl(r);
+                                        accion.setText("Multiplicando BL con CL");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "001011":
+                                        a = Integer.parseInt(bx.getBl(), 2);
+                                        b = Integer.parseInt(dx.getDh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BL", "DH", bx.getBl(), dx.getDh(), "*");
+                                        Thread.sleep(1000);
+                                        bx.setBl(r);
+                                        accion.setText("Multiplicando BL con DH");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "001100":
+                                        a = Integer.parseInt(bx.getBl(), 2);
+                                        b = Integer.parseInt(dx.getDl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BL", "DL", bx.getBl(), dx.getDl(), "*");
+                                        Thread.sleep(1000);
+                                        bx.setBl(r);
+                                        accion.setText("Multiplicando BL con DL");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                 }
+                             // Registro CH
+                             case "001001":
+                                 switch(reg2){
+                                     case "000101":
+                                        a = Integer.parseInt(cx.getCh(), 2);
+                                        b = Integer.parseInt(ax.getAh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CH", "AH", cx.getCh(), ax.getAh(), "*");
+                                        Thread.sleep(1000);
+                                        cx.setCh(r);
+                                        accion.setText("Multiplicando CH con AH");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "000110":
+                                        a = Integer.parseInt(cx.getCh(), 2);
+                                        b = Integer.parseInt(ax.getAl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CH", "AL", cx.getCh(), ax.getAl(), "*");
+                                        Thread.sleep(1000);
+                                        cx.setCh(r);
+                                        accion.setText("Multiplicando CH con AL");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "000111":
+                                        a = Integer.parseInt(cx.getCh(), 2);
+                                        b = Integer.parseInt(bx.getBh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CH", "BH", cx.getCh(), bx.getBh(), "*");
+                                        Thread.sleep(1000);
+                                        cx.setCh(r);
+                                        accion.setText("Multiplicando CH con BH");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "001000":
+                                        a = Integer.parseInt(cx.getCh(), 2);
+                                        b = Integer.parseInt(bx.getBl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CH", "BL", cx.getCh(), bx.getBl(), "*");
+                                        Thread.sleep(1000);
+                                        cx.setCh(r);
+                                        accion.setText("Multiplicando CH con BL");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "001010":
+                                        a = Integer.parseInt(cx.getCh(), 2);
+                                        b = Integer.parseInt(cx.getCl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CH", "CL", cx.getCh(), cx.getCl(), "*");
+                                        Thread.sleep(1000);
+                                        cx.setCh(r);
+                                        accion.setText("Multiplicando CH con CL");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "001011":
+                                        a = Integer.parseInt(cx.getCh(), 2);
+                                        b = Integer.parseInt(dx.getDh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CH", "DH", cx.getCh(), dx.getDh(), "*");
+                                        Thread.sleep(1000);
+                                        cx.setCh(r);
+                                        accion.setText("Multiplicando CH con DH");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "001100":
+                                        a = Integer.parseInt(cx.getCh(), 2);
+                                        b = Integer.parseInt(dx.getDl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CH", "DL", cx.getCh(), dx.getDl(), "*");
+                                        Thread.sleep(1000);
+                                        cx.setCh(r);
+                                        accion.setText("Multiplicando CH con DL");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                 }
+                             //Registro CL
+                             case "001010":
+                                 switch(reg2){
+                                     case "000101":
+                                        a = Integer.parseInt(cx.getCl(), 2);
+                                        b = Integer.parseInt(ax.getAh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CL", "AH", cx.getCl(), ax.getAh(), "*");
+                                        Thread.sleep(1000);
+                                        cx.setCl(r);
+                                        accion.setText("Multiplicando CL con AH");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "000110":
+                                        a = Integer.parseInt(cx.getCl(), 2);
+                                        b = Integer.parseInt(ax.getAl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CL", "AL", cx.getCl(), ax.getAl(), "*");
+                                        Thread.sleep(1000);
+                                        cx.setCl(r);
+                                        accion.setText("Multiplicando CL con AL");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "000111":
+                                        a = Integer.parseInt(cx.getCl(), 2);
+                                        b = Integer.parseInt(bx.getBh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CL", "BH", cx.getCl(), bx.getBh(), "*");
+                                        Thread.sleep(1000);
+                                        cx.setCl(r);
+                                        accion.setText("Multiplicando CL con BH");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "001000":
+                                        a = Integer.parseInt(cx.getCl(), 2);
+                                        b = Integer.parseInt(bx.getBl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CL", "BL", cx.getCl(), bx.getBl(), "*");
+                                        Thread.sleep(1000);
+                                        cx.setCl(r);
+                                        accion.setText("Multiplicando CL con BL");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "001001":
+                                        a = Integer.parseInt(cx.getCl(), 2);
+                                        b = Integer.parseInt(cx.getCh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CL", "CH", cx.getCl(), cx.getCh(), "*");
+                                        Thread.sleep(1000);
+                                        cx.setCl(r);
+                                        accion.setText("Multiplicando CL con CH");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "001011":
+                                        a = Integer.parseInt(cx.getCl(), 2);
+                                        b = Integer.parseInt(dx.getDh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CL", "DH", cx.getCl(), dx.getDh(), "*");
+                                        Thread.sleep(1000);
+                                        cx.setCl(r);
+                                        accion.setText("Multiplicando CL con DH");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "001100":
+                                        a = Integer.parseInt(cx.getCl(), 2);
+                                        b = Integer.parseInt(dx.getDl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CL", "CL", cx.getCl(), dx.getDl(), "*");
+                                        Thread.sleep(1000);
+                                        cx.setCl(r);
+                                        accion.setText("Multiplicando CL con DL");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                 }
+                             //Registro DH
+                             case "001011":
+                                 switch(reg2){
+                                     case "000101":
+                                        a = Integer.parseInt(dx.getDh(), 2);
+                                        b = Integer.parseInt(ax.getAh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DH", "AH", dx.getDh(), ax.getAh(), "*");
+                                        Thread.sleep(1000);
+                                        dx.setDh(r);
+                                        accion.setText("Multiplicando DH con AH");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "000110":
+                                        a = Integer.parseInt(dx.getDh(), 2);
+                                        b = Integer.parseInt(ax.getAl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DH", "AL", dx.getDh(), ax.getAl(), "*");
+                                        Thread.sleep(1000);
+                                        dx.setDh(r);
+                                        accion.setText("Multiplicando DH con AL");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "000111":
+                                        a = Integer.parseInt(dx.getDh(), 2);
+                                        b = Integer.parseInt(bx.getBh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DH", "BH", dx.getDh(), bx.getBh(), "*");
+                                        Thread.sleep(1000);
+                                        dx.setDh(r);
+                                        accion.setText("Multiplicando DH con BH");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "001000":
+                                        a = Integer.parseInt(dx.getDh(), 2);
+                                        b = Integer.parseInt(bx.getBl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DH", "BL", dx.getDh(), bx.getBl(), "*");
+                                        Thread.sleep(1000);
+                                        dx.setDh(r);
+                                        accion.setText("Multiplicando DH con BL");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "001001":
+                                        a = Integer.parseInt(dx.getDh(), 2);
+                                        b = Integer.parseInt(cx.getCh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DH", "CH", dx.getDh(), cx.getCh(), "*");
+                                        Thread.sleep(1000);
+                                        dx.setDh(r);
+                                        accion.setText("Multiplicando DH con CH");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "001010":
+                                        a = Integer.parseInt(dx.getDh(), 2);
+                                        b = Integer.parseInt(cx.getCl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DH", "CL", dx.getDh(), cx.getCl(), "*");
+                                        Thread.sleep(1000);
+                                        dx.setDh(r);
+                                        accion.setText("Multiplicando DH con CL");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "001100":
+                                        a = Integer.parseInt(dx.getDh(), 2);
+                                        b = Integer.parseInt(dx.getDl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DH", "DL", dx.getDh(), dx.getDl(), "*");
+                                        Thread.sleep(1000);
+                                        dx.setDh(r);
+                                        accion.setText("Multiplicando DH con DL");
+                                        dibujarResultado(dx.getDh(), "DH");
+
+                                         break;
+                                 }
+                             //Registro DL
+                             case "001100":
+                                 switch(reg2){
+                                     case "000101":
+                                        a = Integer.parseInt(dx.getDl(), 2);
+                                        b = Integer.parseInt(ax.getAh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DL", "AH", dx.getDl(), ax.getAh(), "*");
+                                        Thread.sleep(1000);
+                                        dx.setDl(r);
+                                        accion.setText("Multiplicando DL con AH");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "000110":
+                                        a = Integer.parseInt(dx.getDl(), 2);
+                                        b = Integer.parseInt(ax.getAl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DL", "AL", dx.getDl(), ax.getAl(), "*");
+                                        Thread.sleep(1000);
+                                        dx.setDl(r);
+                                        accion.setText("Multiplicando DL con AL");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "000111":
+                                        a = Integer.parseInt(dx.getDl(), 2);
+                                        b = Integer.parseInt(bx.getBh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DL", "BH", dx.getDl(), bx.getBh(), "*");
+                                        Thread.sleep(1000);
+                                        dx.setDl(r);
+                                        accion.setText("Multiplicando DL con BH");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "001000":
+                                        a = Integer.parseInt(dx.getDl(), 2);
+                                        b = Integer.parseInt(bx.getBl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DL", "BL", dx.getDl(), bx.getBl(), "*");
+                                        Thread.sleep(1000);
+                                        dx.setDl(r);
+                                        accion.setText("Multiplicando DL con BL");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "001001":
+                                        a = Integer.parseInt(dx.getDl(), 2);
+                                        b = Integer.parseInt(cx.getCh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DL", "CH", dx.getDl(), cx.getCh(), "*");
+                                        Thread.sleep(1000);
+                                        dx.setDl(r);
+                                        accion.setText("Multiplicando DL con CH");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "001010":
+                                        a = Integer.parseInt(dx.getDl(), 2);
+                                        b = Integer.parseInt(cx.getCl(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DL", "CL", dx.getDl(), cx.getCl(), "*");
+                                        Thread.sleep(1000);
+                                        dx.setDl(r);
+                                        accion.setText("Multiplicando DL con CL");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "001011":
+                                        a = Integer.parseInt(dx.getDl(), 2);
+                                        b = Integer.parseInt(dx.getDh(), 2);
+                                        c = a * b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DL", "DH", dx.getDl(), dx.getDh(), "*");
+                                        Thread.sleep(1000);
+                                        dx.setDl(r);
+                                        accion.setText("Multiplicando DL con DH");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                 }
+                             
+                        }
                         break;
                     case "0011":
-                        marField1.setText(dir);
-                        Thread.sleep(3000);
-                        
-                        accion.setText("Dividir a AC el operando referenciado");                      
-                        Thread.sleep(3000);
-                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
-                        mbrField1.setText(mbr.getDireccion());
-                        ac.dividir(mbr.getDireccion());                        
-                        JOptionPane.showMessageDialog(null, ac.getDato());
-                        acumulador.setText(ac.getDato());
-                        Thread.sleep(1000);
+                        //DIV
+                        switch(reg1){
+                            //Registro AX
+                            case "000001":
+                                switch(reg2){
+                                    case "000010":
+                                        a = Integer.parseInt(ax.getContent(), 2);
+                                        b = Integer.parseInt(bx.getContent(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AX", "BX", ax.getContent(), bx.getContent(), "/");
+                                        Thread.sleep(1000);
+                                        ax.setContent(r);
+                                        accion.setText("Dividir el registro AX con BX");
+                                        dibujarResultado(ax.getContent(), "AX");
+                                        break;
+                                    case "000011":
+                                        a = Integer.parseInt(ax.getContent(), 2);
+                                        b = Integer.parseInt(cx.getContent(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AX", "CX", ax.getContent(), cx.getContent(), "/");
+                                        Thread.sleep(1000);
+                                        ax.setContent(r);
+                                        accion.setText("Dividir el registro AX con CX");
+                                        dibujarResultado(ax.getContent(), "AX");
+                                        break;
+                                    case "000100":
+                                        a = Integer.parseInt(ax.getContent(), 2);
+                                        b = Integer.parseInt(dx.getContent(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AX", "DX", ax.getContent(), dx.getContent(), "/");
+                                        Thread.sleep(1000);
+                                        ax.setContent(r);
+                                        accion.setText("Dividir el registro AX con DX");
+                                        dibujarResultado(ax.getContent(), "AX");
+                                        break;
+                                }
+                                break;
+                                //Registro BX
+                            case "000010":
+                                switch(reg2){
+                                    case "000001":
+                                        a = Integer.parseInt(bx.getContent(), 2);
+                                        b = Integer.parseInt(ax.getContent(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BX", "AX", bx.getContent(), ax.getContent(), "/");
+                                        Thread.sleep(1000);
+                                        bx.setContent(r);
+                                        accion.setText("Dividir el registro BX con AX");
+                                        dibujarResultado(bx.getContent(), "BX");
+                                        break;
+                                    case "000011":
+                                        a = Integer.parseInt(bx.getContent(), 2);
+                                        b = Integer.parseInt(cx.getContent(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BX", "CX", bx.getContent(), cx.getContent(), "/");
+                                        Thread.sleep(1000);
+                                        bx.setContent(r);
+                                        accion.setText("Dividir el registro BX con CX");
+                                        dibujarResultado(bx.getContent(), "BX");
+                                        break;
+                                    case "000100":
+                                        a = Integer.parseInt(bx.getContent(), 2);
+                                        b = Integer.parseInt(dx.getContent(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BX", "DX", bx.getContent(), dx.getContent(), "/");
+                                        Thread.sleep(1000);
+                                        bx.setContent(r);
+                                        accion.setText("Dividir el registro BX con DX");
+                                        dibujarResultado(bx.getContent(), "BX");
+                                        
+                                        break;
+                                }
+                                break;
+                                //Registro CX
+                            case "000011":
+                                switch(reg2){
+                                    case "000001":
+                                        a = Integer.parseInt(cx.getContent(), 2);
+                                        b = Integer.parseInt(ax.getContent(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CX", "AX", cx.getContent(), ax.getContent(), "/");
+                                        Thread.sleep(1000);
+                                        cx.setContent(r);
+                                        accion.setText("Dividir el registro CX con AX");
+                                        dibujarResultado(cx.getContent(), "CX");
+                                        break;
+                                    case "000010":
+                                        a = Integer.parseInt(cx.getContent(), 2);
+                                        b = Integer.parseInt(bx.getContent(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CX", "AB", cx.getContent(), bx.getContent(), "/");
+                                        Thread.sleep(1000);
+                                        cx.setContent(r);
+                                        accion.setText("Dividir el registro CX con BX");
+                                        dibujarResultado(cx.getContent(), "CX");
+                                        break;
+                                    case "000100":
+                                        a = Integer.parseInt(cx.getContent(), 2);
+                                        b = Integer.parseInt(dx.getContent(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CX", "DX", cx.getContent(), dx.getContent(), "/");
+                                        Thread.sleep(1000);
+                                        cx.setContent(r);
+                                        accion.setText("Dividir el registro CX con DX");
+                                        dibujarResultado(cx.getContent(), "CX");
+                                        break;
+                                }
+                                break;
+                                //Registro DX
+                             case "000100":
+                                switch(reg2){
+                                    case "000001":
+                                        a = Integer.parseInt(dx.getContent(), 2);
+                                        b = Integer.parseInt(ax.getContent(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DX", "AX", dx.getContent(), ax.getContent(), "/");
+                                        Thread.sleep(1000);
+                                        dx.setContent(r);
+                                        accion.setText("Dividir el registro DX con AX");
+                                        dibujarResultado(dx.getContent(), "DX");
+                                        break;
+                                    case "000010":
+                                        a = Integer.parseInt(dx.getContent(), 2);
+                                        b = Integer.parseInt(bx.getContent(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DX", "BX", dx.getContent(), bx.getContent(), "/");
+                                        Thread.sleep(1000);
+                                        dx.setContent(r);
+                                        accion.setText("Dividir el registro DX con BX");
+                                        dibujarResultado(dx.getContent(), "DX");
+                                        break;
+                                    case "000011":
+                                        a = Integer.parseInt(dx.getContent(), 2);
+                                        b = Integer.parseInt(cx.getContent(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DX", "CX", dx.getContent(), cx.getContent(), "/");
+                                        Thread.sleep(1000);
+                                        dx.setContent(r);
+                                        accion.setText("Dividir el registro DX con CX");
+                                        dibujarResultado(dx.getContent(), "DX");
+                                        break;
+                                }
+                                break;
+                                 //Registro AH
+                             case "000101":
+                                 switch(reg2){
+                                     case "000110":
+                                        a = Integer.parseInt(ax.getAh(), 2);
+                                        b = Integer.parseInt(ax.getAl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AH", "AL", ax.getAh(), ax.getAl(), "/");
+                                        Thread.sleep(1000);
+                                        ax.setAh(r);
+                                        accion.setText("Dividir el registro AH con AL");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "000111":
+                                        a = Integer.parseInt(ax.getAh(), 2);
+                                        b = Integer.parseInt(bx.getBh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AH", "BH", ax.getAh(), bx.getBh(), "/");
+                                        Thread.sleep(1000);
+                                        ax.setAh(r);
+                                        accion.setText("Dividir el registro AH con BH");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001000":
+                                        a = Integer.parseInt(ax.getAh(), 2);
+                                        b = Integer.parseInt(bx.getBl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AH", "BL", ax.getAh(), bx.getBl(), "/");
+                                        Thread.sleep(1000);
+                                        ax.setAh(r);
+                                        accion.setText("Dividir el registro AH con BL");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001001":
+                                        a = Integer.parseInt(ax.getAh(), 2);
+                                        b = Integer.parseInt(cx.getCh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AH", "CH", ax.getAh(), cx.getCh(), "/");
+                                        Thread.sleep(1000);
+                                        ax.setAh(r);
+                                        accion.setText("Dividir el registro AH con CH");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001010":
+                                        a = Integer.parseInt(ax.getAh(), 2);
+                                        b = Integer.parseInt(cx.getCl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AH", "CL", ax.getAh(), cx.getCl(), "/");
+                                        Thread.sleep(1000);
+                                        ax.setAh(r);
+                                        accion.setText("Dividir el registro AH con CL");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001011":
+                                        a = Integer.parseInt(ax.getAh(), 2);
+                                        b = Integer.parseInt(dx.getDh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AH", "DH", ax.getAh(), dx.getDh(), "/");
+                                        Thread.sleep(1000);
+                                        ax.setAh(r);
+                                        accion.setText("Dividir el registro AH con DH");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                     case "001100":
+                                        a = Integer.parseInt(ax.getAh(), 2);
+                                        b = Integer.parseInt(dx.getDl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AH", "DL", ax.getAh(), dx.getDl(), "/");
+                                        Thread.sleep(1000);
+                                        ax.setAh(r);
+                                        accion.setText("Dividir el registro AH con DL");
+                                        dibujarResultado(ax.getAh(), "AH");
+                                         break;
+                                               
+                                 }
+                             //Registro AL
+                             case "000110":
+                                 switch(reg2){
+                                     case "000101":
+                                        a = Integer.parseInt(ax.getAl(), 2);
+                                        b = Integer.parseInt(ax.getAh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AL", "AH", ax.getAl(), ax.getAh(), "/");
+                                        Thread.sleep(1000);
+                                        ax.setAl(r);
+                                        accion.setText("Dividir el registro AL con AH");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "000111":
+                                        a = Integer.parseInt(ax.getAl(), 2);
+                                        b = Integer.parseInt(bx.getBh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AL", "BH", ax.getAl(), bx.getBh(), "/");
+                                        Thread.sleep(1000);
+                                        ax.setAl(r);
+                                        accion.setText("Dividir el registro AL con BH");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001000":
+                                        a = Integer.parseInt(ax.getAl(), 2);
+                                        b = Integer.parseInt(bx.getBl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AL", "BL", ax.getAl(), bx.getBl(), "/");
+                                        Thread.sleep(1000);
+                                        ax.setAl(r);
+                                        accion.setText("Dividir el registro AL con BL");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001001":
+                                        a = Integer.parseInt(ax.getAl(), 2);
+                                        b = Integer.parseInt(cx.getCh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AL", "CH", ax.getAl(), cx.getCh(), "/");
+                                        Thread.sleep(1000);
+                                        ax.setAl(r);
+                                        accion.setText("Dividir el registro AL con CH");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001010":
+                                        a = Integer.parseInt(ax.getAl(), 2);
+                                        b = Integer.parseInt(cx.getCl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AL", "CL", ax.getAl(), cx.getCl(), "/");
+                                        Thread.sleep(1000);
+                                        ax.setAl(r);
+                                        accion.setText("Dividir el registro AL con CL");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                        
+                                         break;
+                                     case "001011":
+                                        a = Integer.parseInt(ax.getAl(), 2);
+                                        b = Integer.parseInt(dx.getDh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AL", "DH", ax.getAl(), dx.getDh(), "/");
+                                        Thread.sleep(1000);
+                                        ax.setAl(r);
+                                        accion.setText("Dividir el registro AL con DH");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                     case "001100":
+                                        a = Integer.parseInt(ax.getAl(), 2);
+                                        b = Integer.parseInt(dx.getDl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("AL", "DL", ax.getAl(), dx.getDl(), "/");
+                                        Thread.sleep(1000);
+                                        ax.setAl(r);
+                                        accion.setText("Dividir el registro AL con DL");
+                                        dibujarResultado(ax.getAl(), "AL");
+                                         break;
+                                 }
+                             //Registro BH
+                             case "000111":
+                                 switch(reg2){
+                                     case "000101":
+                                        a = Integer.parseInt(bx.getBh(), 2);
+                                        b = Integer.parseInt(ax.getAh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BH", "AH", bx.getBh(), ax.getAh(), "/");
+                                        Thread.sleep(1000);
+                                        bx.setBh(r);
+                                        accion.setText("Dividir el registro BH con AH");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "000110":
+                                        a = Integer.parseInt(bx.getBh(), 2);
+                                        b = Integer.parseInt(ax.getAl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BH", "AL", bx.getBh(), ax.getAl(), "/");
+                                        Thread.sleep(1000);
+                                        bx.setBh(r);
+                                        accion.setText("Dividir el registro BH con AL");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001000":
+                                        a = Integer.parseInt(bx.getBh(), 2);
+                                        b = Integer.parseInt(bx.getBl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BH", "BL", bx.getBh(), bx.getBl(), "/");
+                                        Thread.sleep(1000);
+                                        bx.setBh(r);
+                                        accion.setText("Dividir el registro BH con BL");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001001":
+                                        a = Integer.parseInt(bx.getBh(), 2);
+                                        b = Integer.parseInt(cx.getCh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BH", "CH", bx.getBh(), cx.getCh(), "/");
+                                        Thread.sleep(1000);
+                                        bx.setBh(r);
+                                        accion.setText("Dividir el registro BH con CH");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001010":
+                                        a = Integer.parseInt(bx.getBh(), 2);
+                                        b = Integer.parseInt(cx.getCl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BH", "CL", bx.getBh(), cx.getCl(), "/");
+                                        Thread.sleep(1000);
+                                        bx.setBh(r);
+                                        accion.setText("Dividir el registro BH con CL");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001011":
+                                        a = Integer.parseInt(bx.getBh(), 2);
+                                        b = Integer.parseInt(dx.getDh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BH", "DH", bx.getBh(), dx.getDh(), "/");
+                                        Thread.sleep(1000);
+                                        bx.setBh(r);
+                                        accion.setText("Dividir el registro BH con DH");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                     case "001100":
+                                        a = Integer.parseInt(bx.getBh(), 2);
+                                        b = Integer.parseInt(dx.getDl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BH", "DL", bx.getBh(), dx.getDl(), "/");
+                                        Thread.sleep(1000);
+                                        bx.setBh(r);
+                                        accion.setText("Dividir el registro BH con DL");
+                                        dibujarResultado(bx.getBh(), "BH");
+                                         break;
+                                 }
+                             //Registro BL
+                             case "001000":
+                                 switch(reg2){
+                                     case "000101":
+                                        a = Integer.parseInt(bx.getBl(), 2);
+                                        b = Integer.parseInt(ax.getAh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BL", "AH", bx.getBl(), ax.getAh(), "/");
+                                        Thread.sleep(1000);
+                                        bx.setBl(r);
+                                        accion.setText("Dividir el registro BL con AH");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "000110":
+                                        a = Integer.parseInt(bx.getBl(), 2);
+                                        b = Integer.parseInt(ax.getAl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BL", "AL", bx.getBl(), ax.getAl(), "/");
+                                        Thread.sleep(1000);
+                                        bx.setBl(r);
+                                        accion.setText("Dividir el registro BL con AL");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "000111":
+                                        a = Integer.parseInt(bx.getBl(), 2);
+                                        b = Integer.parseInt(bx.getBh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BL", "BH", bx.getBl(), bx.getBh(), "/");
+                                        Thread.sleep(1000);
+                                        bx.setBl(r);
+                                        accion.setText("Dividir el registro BL con BH");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "001001":
+                                        a = Integer.parseInt(bx.getBl(), 2);
+                                        b = Integer.parseInt(cx.getCh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BL", "CH", bx.getBl(), cx.getCh(), "/");
+                                        Thread.sleep(1000);
+                                        bx.setBl(r);
+                                        accion.setText("Dividir el registro BL con CH");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "001010":
+                                        a = Integer.parseInt(bx.getBl(), 2);
+                                        b = Integer.parseInt(cx.getCl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BL", "CL", bx.getBl(), cx.getCl(), "/");
+                                        Thread.sleep(1000);
+                                        bx.setBl(r);
+                                        accion.setText("Dividir el registro BL con CL");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "001011":
+                                        a = Integer.parseInt(bx.getBl(), 2);
+                                        b = Integer.parseInt(dx.getDh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BL", "DH", bx.getBl(), dx.getDh(), "/");
+                                        Thread.sleep(1000);
+                                        bx.setBl(r);
+                                        accion.setText("Dividir el registro BL con DH");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                     case "001100":
+                                        a = Integer.parseInt(bx.getBl(), 2);
+                                        b = Integer.parseInt(dx.getDl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("BL", "DL", bx.getBl(), dx.getDl(), "/");
+                                        Thread.sleep(1000);
+                                        bx.setBl(r);
+                                        accion.setText("Dividir el registro BL con DL");
+                                        dibujarResultado(bx.getBl(), "BL");
+                                         break;
+                                 }
+                             // Registro CH
+                             case "001001":
+                                 switch(reg2){
+                                     case "000101":
+                                        a = Integer.parseInt(cx.getCh(), 2);
+                                        b = Integer.parseInt(ax.getAh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CH", "AH", cx.getCh(), ax.getAh(), "/");
+                                        Thread.sleep(1000);
+                                        cx.setCh(r);
+                                        accion.setText("Dividir el registro CH con AH");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "000110":
+                                        a = Integer.parseInt(cx.getCh(), 2);
+                                        b = Integer.parseInt(ax.getAl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CH", "AL", cx.getCh(), ax.getAl(), "/");
+                                        Thread.sleep(1000);
+                                        cx.setCh(r);
+                                        accion.setText("Dividir el registro CH con AL");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "000111":
+                                        a = Integer.parseInt(cx.getCh(), 2);
+                                        b = Integer.parseInt(bx.getBh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CH", "BH", cx.getCh(), bx.getBh(), "/");
+                                        Thread.sleep(1000);
+                                        cx.setCh(r);
+                                        accion.setText("Dividir el registro CH con BH");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "001000":
+                                        a = Integer.parseInt(cx.getCh(), 2);
+                                        b = Integer.parseInt(bx.getBl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CH", "BL", cx.getCh(), bx.getBl(), "/");
+                                        Thread.sleep(1000);
+                                        cx.setCh(r);
+                                        accion.setText("Dividir el registro CH con BL");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "001010":
+                                        a = Integer.parseInt(cx.getCh(), 2);
+                                        b = Integer.parseInt(cx.getCl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CH", "CL", cx.getCh(), cx.getCl(), "/");
+                                        Thread.sleep(1000);
+                                        cx.setCh(r);
+                                        accion.setText("Dividir el registro CH con CL");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "001011":
+                                        a = Integer.parseInt(cx.getCh(), 2);
+                                        b = Integer.parseInt(dx.getDh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CH", "DH", cx.getCh(), dx.getDh(), "/");
+                                        Thread.sleep(1000);
+                                        cx.setCh(r);
+                                        accion.setText("Dividir el registro CH con DH");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                     case "001100":
+                                        a = Integer.parseInt(cx.getCh(), 2);
+                                        b = Integer.parseInt(dx.getDl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CH", "DL", cx.getCh(), dx.getDl(), "/");
+                                        Thread.sleep(1000);
+                                        cx.setCh(r);
+                                        accion.setText("Dividir el registro CH con DL");
+                                        dibujarResultado(cx.getCh(), "CH");
+                                         break;
+                                 }
+                             //Registro CL
+                             case "001010":
+                                 switch(reg2){
+                                     case "000101":
+                                        a = Integer.parseInt(cx.getCl(), 2);
+                                        b = Integer.parseInt(ax.getAh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CL", "AH", cx.getCl(), ax.getAh(), "/");
+                                        Thread.sleep(1000);
+                                        cx.setCl(r);
+                                        accion.setText("Dividir el registro CL con AH");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "000110":
+                                        a = Integer.parseInt(cx.getCl(), 2);
+                                        b = Integer.parseInt(ax.getAl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CL", "AL", cx.getCl(), ax.getAl(), "/");
+                                        Thread.sleep(1000);
+                                        cx.setCl(r);
+                                        accion.setText("Dividir el registro CL con AL");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "000111":
+                                        a = Integer.parseInt(cx.getCl(), 2);
+                                        b = Integer.parseInt(bx.getBh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CL", "BH", cx.getCl(), bx.getBh(), "/");
+                                        Thread.sleep(1000);
+                                        cx.setCl(r);
+                                        accion.setText("Dividir el registro CL con BH");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "001000":
+                                        a = Integer.parseInt(cx.getCl(), 2);
+                                        b = Integer.parseInt(bx.getBl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CL", "BL", cx.getCl(), bx.getBl(), "/");
+                                        Thread.sleep(1000);
+                                        cx.setCl(r);
+                                        accion.setText("Dividir el registro CL con BL");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "001001":
+                                        a = Integer.parseInt(cx.getCl(), 2);
+                                        b = Integer.parseInt(cx.getCh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CL", "CH", cx.getCl(), cx.getCh(), "/");
+                                        Thread.sleep(1000);
+                                        cx.setCl(r);
+                                        accion.setText("Dividir el registro CL con CH");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "001011":
+                                        a = Integer.parseInt(cx.getCl(), 2);
+                                        b = Integer.parseInt(dx.getDh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CL", "DH", cx.getCl(), dx.getDh(), "/");
+                                        Thread.sleep(1000);
+                                        cx.setCl(r);
+                                        accion.setText("Dividir el registro CL con DH");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                     case "001100":
+                                        a = Integer.parseInt(cx.getCl(), 2);
+                                        b = Integer.parseInt(dx.getDl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("CL", "DL", cx.getCl(), dx.getDl(), "/");
+                                        Thread.sleep(1000);
+                                        cx.setCl(r);
+                                        accion.setText("Dividir el registro CL con DL");
+                                        dibujarResultado(cx.getCl(), "CL");
+                                         break;
+                                 }
+                             //Registro DH
+                             case "001011":
+                                 switch(reg2){
+                                     case "000101":
+                                        a = Integer.parseInt(dx.getDh(), 2);
+                                        b = Integer.parseInt(ax.getAh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DH", "AH", dx.getDh(), ax.getAh(), "/");
+                                        Thread.sleep(1000);
+                                        dx.setDh(r);
+                                        accion.setText("Dividir el registro DH con AH");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "000110":
+                                        a = Integer.parseInt(dx.getDh(), 2);
+                                        b = Integer.parseInt(ax.getAl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DH", "AL", dx.getDh(), ax.getAl(), "/");
+                                        Thread.sleep(1000);
+                                        dx.setDh(r);
+                                        accion.setText("Dividir el registro DH con AL");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "000111":
+                                        a = Integer.parseInt(dx.getDh(), 2);
+                                        b = Integer.parseInt(bx.getBh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DH", "BH", dx.getDh(), bx.getBh(), "/");
+                                        Thread.sleep(1000);
+                                        dx.setDh(r);
+                                        accion.setText("Dividir el registro DH con BH");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "001000":
+                                        a = Integer.parseInt(dx.getDh(), 2);
+                                        b = Integer.parseInt(bx.getBl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DH", "BL", dx.getDh(), bx.getBl(), "/");
+                                        Thread.sleep(1000);
+                                        dx.setDh(r);
+                                        accion.setText("Dividir el registro DH con BL");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "001001":
+                                        a = Integer.parseInt(dx.getDh(), 2);
+                                        b = Integer.parseInt(cx.getCh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DH", "CH", dx.getDh(), cx.getCh(), "/");
+                                        Thread.sleep(1000);
+                                        dx.setDh(r);
+                                        accion.setText("Dividir el registro DH con CH");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "001010":
+                                        a = Integer.parseInt(dx.getDh(), 2);
+                                        b = Integer.parseInt(cx.getCl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DH", "CL", dx.getDh(), cx.getCl(), "/");
+                                        Thread.sleep(1000);
+                                        dx.setDh(r);
+                                        accion.setText("Dividir el registro DH con CL");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                     case "001100":
+                                        a = Integer.parseInt(dx.getDh(), 2);
+                                        b = Integer.parseInt(dx.getDl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DH", "DL", dx.getDh(), dx.getDl(), "/");
+                                        Thread.sleep(1000);
+                                        dx.setDh(r);
+                                        accion.setText("Dividir el registro DH con DL");
+                                        dibujarResultado(dx.getDh(), "DH");
+                                         break;
+                                 }
+                             //Registro DL
+                             case "001100":
+                                 switch(reg2){
+                                     case "000101":
+                                        a = Integer.parseInt(dx.getDl(), 2);
+                                        b = Integer.parseInt(ax.getAh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DL", "AH", dx.getDl(), ax.getAh(), "/");
+                                        Thread.sleep(1000);
+                                        dx.setDl(r);
+                                        accion.setText("Dividir el registro DL con AH");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "000110":
+                                        a = Integer.parseInt(dx.getDl(), 2);
+                                        b = Integer.parseInt(ax.getAl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DL", "AL", dx.getDl(), ax.getAl(), "/");
+                                        Thread.sleep(1000);
+                                        dx.setDl(r);
+                                        accion.setText("Dividir el registro DL con AL");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "000111":
+                                        a = Integer.parseInt(dx.getDl(), 2);
+                                        b = Integer.parseInt(bx.getBh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DL", "BH", dx.getDl(), bx.getBh(), "/");
+                                        Thread.sleep(1000);
+                                        dx.setDl(r);
+                                        accion.setText("Dividir el registro DL con BH");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "001000":
+                                        a = Integer.parseInt(dx.getDl(), 2);
+                                        b = Integer.parseInt(bx.getBl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DL", "BL", dx.getDl(), bx.getBl(), "/");
+                                        Thread.sleep(1000);
+                                        dx.setDl(r);
+                                        accion.setText("Dividir el registro DL con Bl");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "001001":
+                                        a = Integer.parseInt(dx.getDl(), 2);
+                                        b = Integer.parseInt(cx.getCh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DL", "CH", dx.getDl(), cx.getCh(), "/");
+                                        Thread.sleep(1000);
+                                        dx.setDl(r);
+                                        accion.setText("Dividir el registro DL con CH");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "001010":
+                                        a = Integer.parseInt(dx.getDl(), 2);
+                                        b = Integer.parseInt(cx.getCl(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DL", "CL", dx.getDl(), cx.getCl(), "/");
+                                        Thread.sleep(1000);
+                                        dx.setDl(r);
+                                        accion.setText("Dividir el registro DL con CL");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                     case "001011":
+                                        a = Integer.parseInt(dx.getDl(), 2);
+                                        b = Integer.parseInt(dx.getDh(), 2);
+                                        c = a / b;
+                                        r = Integer.toString(c, 2);
+                                        dibujarCadenas("DL", "DH", dx.getDl(), dx.getDh(), "/");
+                                        Thread.sleep(1000);
+                                        dx.setDl(r);
+                                        accion.setText("Dividir el registro DL con DH");
+                                        dibujarResultado(dx.getDl(), "DL");
+                                         break;
+                                 }
+                             
+                        }
                         break;
                     case "0100":
-                        marField1.setText(dir);
-                        accion.setText("Cargar en AC desde memoria (LOAD)");
-                        Thread.sleep(3000);
-                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
-                        mbrField1.setText(mbr.getDireccion());
-                        ac.setDato(mbr.getDireccion());
+                        //LOAD
+                        String load1 = "";
+                        String auxi = registerIR.getText();
+                        for(int ca = 4; ca <= auxi.length()-1; ca++){
+                            load1 += auxi.charAt(ca);
+                        }
+                        int numero = Integer.parseInt(load1, 2);
+                        load = inicializar();
+                        String vec = buscar(numero, load);
+                        ac.setDato(vec);
                         acumulador.setText(ac.getDato());
+                        accion.setText("Cargar en AC el contenido de una dirección de memoria");
+                        g.setColor(Color.yellow);
+                        g.fillRect(777, 165, 225, 25);
+                        g.setColor(Color.GREEN);
+                        g.drawRect(777, 165, 225, 25);
+                        g.drawRect(1000, 100, 35, 550);
                         Thread.sleep(3000);
+                        g.setColor(Color.yellow);
+                        g.drawRect(777, 165, 225, 25);
+                        g.setColor(Color.white);
+                        g.drawRect(1000, 100, 35, 550);
+                        g.setColor(Color.yellow);
+                        g.fillRect(1036, 190, 165, 25);
+                        g.setColor(Color.green);
+                        g.drawRect(1036, 190, 165, 25);
+                        g.drawRect(1200, 90, 95, 400);
+                        Thread.sleep(3000);
+                        g.setColor(Color.white);
+                        g.drawRect(1200, 90, 95, 400);
+                        g.setColor(Color.yellow);
+                        g.drawRect(1036, 190, 165, 25);
+                        g.fillRect(1105,325, 95, 25);
+                        g.setColor(Color.green);
+                        g.drawRect(1105,325, 95, 25);
+                        g.drawRect(1070, 100, 35, 550);
+                        Thread.sleep(3000);
+                        g.setColor(Color.yellow);
+                        g.drawRect(1105, 325, 95, 25);
+                        g.setColor(Color.white);
+                        g.drawRect(1070, 100, 35, 550);
+                        g.setColor(Color.yellow);
+                        g.fillRect(800, 375, 270, 25);
+                        g.setColor(Color.green);
+                        g.drawRect(800, 375, 270, 25);
+                        g.setColor(Color.BLUE);
+                        g.fillRect(650, 360, 150, 50);
+                        g.setColor(Color.green);
+                        g.drawRect(650, 360, 150, 50);
+                        g.drawString("MBR", 715, 370);
+                        g.drawString(ac.getDato(), 675, 380);
+                        mbrField1.setText(ac.getDato());
+                        Thread.sleep(3000);
+                        g.setColor(Color.yellow);
+                        g.drawRect(800, 375, 270, 25);
+                        g.setColor(Color.blue);
+                        g.drawRect(650, 360, 150, 50);
+                        g.setColor(Color.yellow);
+                        g.fillRect(600, 375, 50, 25);
+                        g.setColor(Color.green);
+                        g.drawRect(600, 375, 50, 25);
+                        g.setColor(Color.blue);
+                        g.fillRect(450, 360, 150, 50);
+                        g.setColor(Color.green);
+                        g.drawRect(450, 360, 150, 50);
+                        g.drawString("AC", 515, 370);
+                        g.drawString(ac.getDato(), 455, 380);
+                        
+                        
+                        
+                        
+                        
+                        
+                        
                         break;
                     case "0101":
-                        marField1.setText(dir);
-                        accion.setText("Incrementar el contenido de MBR en uno y guardar en AC");
-                        Thread.sleep(3000);
-                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
-                        mbrField1.setText(mbr.getDireccion());
-                        ac.inc(mbr.getDireccion());
-                        acumulador.setText(ac.getDato());
-                        Thread.sleep(3000);
+                        //INCREMENTAR
+                        switch(reg1){
+                            //Registro AX
+                            case "000001":
+                                a = Integer.parseInt(ax.getContent(), 2);
+                                b = Integer.parseInt("000001", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("AX", ax.getContent(), "+");
+                                ax.setContent(r);
+                                accion.setText("Incrementa en 1 el registro AX");
+                                resultOneRegister("AX", ax.getContent());
+                                
+                                break;
+                            //Registro BX
+                            case "000010":
+                                a = Integer.parseInt(bx.getContent(), 2);
+                                b = Integer.parseInt("000001", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("BX", bx.getContent(), "+");
+                                bx.setContent(r);
+                                accion.setText("Incrementa en 1 el registro BX");
+                                resultOneRegister("BX", bx.getContent());
+                                break;
+                            //Registro CX
+                            case "000011":
+                                a = Integer.parseInt(cx.getContent(), 2);
+                                b = Integer.parseInt("000001", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("CX", cx.getContent(), "+");
+                                cx.setContent(r);
+                                accion.setText("Incrementa en 1 el registro CX");
+                                resultOneRegister("CX", cx.getContent());
+                                break;
+                            //Registro DX
+                            case "000100":
+                                a = Integer.parseInt(dx.getContent(), 2);
+                                b = Integer.parseInt("000001", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("DX", dx.getContent(), "+");
+                                dx.setContent(r);
+                                accion.setText("Incrementa en 1 el registro DX");
+                                resultOneRegister("DX", dx.getContent());
+                                break;
+                            //Registro AH
+                            case "000101":
+                                a = Integer.parseInt(ax.getAh(), 2);
+                                b = Integer.parseInt("000001", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("AH", ax.getAh(), "+");
+                                ax.setAh(r);
+                                accion.setText("Incrementa en 1 el registro AH");
+                                resultOneRegister("AH", ax.getAh());
+                                break;
+                            //Registro AL
+                            case "000110":
+                                a = Integer.parseInt(ax.getAl(), 2);
+                                b = Integer.parseInt("000001", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("AL", ax.getAl(), "+");
+                                ax.setAl(r);
+                                accion.setText("Incrementa en 1 el registro AL");
+                                resultOneRegister("AL", ax.getAl());
+                                break;
+                            //Registro BH
+                            case "000111":
+                                a = Integer.parseInt(bx.getBh(), 2);
+                                b = Integer.parseInt("000001", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("BH", bx.getBh(), "+");
+                                bx.setBh(r);
+                                accion.setText("Incrementa en 1 el registro BH");
+                                resultOneRegister("BH", bx.getBh());
+                                break;
+                            //Registro BL
+                            case "001000":
+                                a = Integer.parseInt(bx.getBl(), 2);
+                                b = Integer.parseInt("000001", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("BL", bx.getBl(), "+");
+                                bx.setBl(r);
+                                accion.setText("Incrementa en 1 el registro BL");
+                                resultOneRegister("BL", bx.getBl());
+                                break;
+                            //Registro CH
+                            case "001001":
+                                a = Integer.parseInt(cx.getCh(), 2);
+                                b = Integer.parseInt("000001", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("CH", cx.getCh(), "+");
+                                cx.setCh(r);
+                                accion.setText("Incrementa en 1 el registro CH");
+                                resultOneRegister("CH", cx.getCh());
+                                break;
+                            //Registro CL
+                            case "001010":
+                                a = Integer.parseInt(cx.getCl(), 2);
+                                b = Integer.parseInt("000001", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("CL", cx.getCl(), "+");
+                                cx.setCl(r);
+                                accion.setText("Incrementa en 1 el registro CL");
+                                resultOneRegister("CL", cx.getCl());
+                                break;
+                            //Registro DH
+                            case "001011":
+                                a = Integer.parseInt(dx.getDh(), 2);
+                                b = Integer.parseInt("000001", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("DH", dx.getDh(), "+");
+                                dx.setDh(r);
+                                accion.setText("Incrementa en 1 el registro DH");
+                                resultOneRegister("DH", dx.getDh());
+                                break;
+                            //Registro DL
+                            case "001100":
+                                a = Integer.parseInt(dx.getDl(), 2);
+                                b = Integer.parseInt("000001", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("DL", dx.getDl(), "+");
+                                dx.setDl(r);
+                                accion.setText("Incrementa en 1 el registro DL");
+                                resultOneRegister("DL", dx.getDl());
+                                break;
+                        }
+                        
                         break;
                     case "0110":
-                        marField1.setText(dir);
-                        accion.setText("Decrementar el contenido de MBR en uno y guardar en AC");
-                        Thread.sleep(3000);
-                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
-                        mbrField1.setText(mbr.getDireccion());
-                        ac.dec(mbr.getDireccion());
-                        acumulador.setText(ac.getDato());
-                        Thread.sleep(3000);
+                        //DECREMENTAR
+                        
+                        switch(reg1){
+                            //Registro AX|
+                            case "000001":
+                               
+                                a = Integer.parseInt(ax.getContent(), 2);
+                                b = Integer.parseInt("111111", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("AX", ax.getContent(), "-");
+                                ax.setContent(r);
+                                accion.setText("Decrementa en 1 el registro AX");
+                                resultOneRegister("AX", ax.getContent());
+                                break;
+                            //Registro BX
+                            case "000010":
+                                a = Integer.parseInt(bx.getContent(), 2);
+                                b = Integer.parseInt("111111", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("BX", bx.getContent(), "-");
+                                bx.setContent(r);
+                                accion.setText("Decrementa en 1 el registro BX");
+                                resultOneRegister("BX", bx.getContent());
+                                break;
+                            //Registro CX
+                            case "000011":
+                                a = Integer.parseInt(cx.getContent(), 2);
+                                b = Integer.parseInt("111111", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("CX", cx.getContent(), "-");
+                                cx.setContent(r);
+                                accion.setText("Decrementa en 1 el registro CX");
+                                resultOneRegister("CX", cx.getContent());
+                                break;
+                            //Registro DX
+                            case "000100":
+                                a = Integer.parseInt(dx.getContent(), 2);
+                                b = Integer.parseInt("111111", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("DX", dx.getContent(), "-");
+                                dx.setContent(r);
+                                accion.setText("Decrementa en 1 el registro DX");
+                                resultOneRegister("DX", dx.getContent());
+                                break;
+                            //Registro AH
+                            case "000101":
+                                a = Integer.parseInt(ax.getAh(), 2);
+                                b = Integer.parseInt("111111", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("AH", ax.getAh(), "-");
+                                ax.setAh(r);
+                                accion.setText("Decrementa en 1 el registro AH");
+                                resultOneRegister("AH", ax.getAh());
+                                break;
+                            //Registro AL
+                            case "000110":
+                                a = Integer.parseInt(ax.getAl(), 2);
+                                b = Integer.parseInt("111111", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("AL", ax.getAl(), "-");
+                                ax.setAl(r);
+                                accion.setText("Decrementa en 1 el registro AL");
+                                resultOneRegister("AL", ax.getAl());
+                                break;
+                            //Registro BH
+                            case "000111":
+                                a = Integer.parseInt(bx.getBh(), 2);
+                                b = Integer.parseInt("111111", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("BH", bx.getBh(), "-");
+                                bx.setBh(r);
+                                accion.setText("Decrementa en 1 el registro BH");
+                                resultOneRegister("BH", bx.getBh());
+                                break;
+                            //Registro BL
+                            case "001000":
+                                a = Integer.parseInt(bx.getBl(), 2);
+                                b = Integer.parseInt("111111", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("BL", bx.getBl(), "-");
+                                bx.setBl(r);
+                                accion.setText("Decrementa en 1 el registro BL");
+                                resultOneRegister("BL", bx.getBl());
+                                break;
+                            //Registro CH
+                            case "001001":
+                                a = Integer.parseInt(cx.getCh(), 2);
+                                b = Integer.parseInt("111111", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("CH", cx.getCh(), "-");
+                                cx.setCh(r);
+                                accion.setText("Decrementa en 1 el registro CH");
+                                resultOneRegister("CH", cx.getCh());
+                                break;
+                            //Registro CL
+                            case "001010":
+                                a = Integer.parseInt(cx.getCl(), 2);
+                                b = Integer.parseInt("111111", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("CL", cx.getCl(), "-");
+                                cx.setCl(r);
+                                accion.setText("Decrementa en 1 el registro CL");
+                                resultOneRegister("CL", cx.getCl());
+                                break;
+                            //Registro DH
+                            case "001011":
+                                a = Integer.parseInt(dx.getDh(), 2);
+                                b = Integer.parseInt("111111", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("DH", dx.getDh(), "-");
+                                dx.setDh(r);
+                                accion.setText("Decrementa en 1 el registro DH");
+                                resultOneRegister("DH", dx.getDh());
+                                break;
+                            //Registro DL
+                            case "001100":
+                                a = Integer.parseInt(dx.getDl(), 2);
+                                b = Integer.parseInt("111111", 2);
+                                c = a + b;
+                                r = Integer.toString(c, 2);
+                                oneRegister("DL", dx.getDl(), "-");
+                                dx.setDl(r);
+                                accion.setText("Decrementa en 1 el registro DL");
+                                resultOneRegister("DL", dx.getDl());
+                                break;
+                        }
+                        
                         break;
                     case "0111":
-                        marField1.setText(dir);
-                        accion.setText("Negar: Cambiar cada bit del registro MBR");
-                        Thread.sleep(3000);
-                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
-                        mbrField1.setText(mbr.getDireccion());
-                        ac.negar(mbr.getDireccion());
-                        acumulador.setText(ac.getDato());
-                        Thread.sleep(3000);
+                        //NOT
+                        switch(reg1){
+                            //Registro AX|
+                            case "000001":
+                                ax.setContent("0000000000111111");
+                                    w = ax.getContent();
+                                     negado = "";
+                                    for( h = 0; h < ax.getContent().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                notRegister("AX", ax.getContent());
+                                ax.setContent(negado);
+                                accion.setText("Complemento a 1 de AX");
+                                resultNot("AX", ax.getContent());
+                                break;
+                            //Registro BX
+                            case "000010":
+                                
+                                     w = bx.getContent();
+                                     negado = "";
+                                    for( h = 0; h < ax.getContent().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                notRegister("BX", bx.getContent());
+                                bx.setContent(negado);
+                                accion.setText("Complemento a 1 de BX");
+                                resultNot("BX", bx.getContent());
+                                                                
+                                break;
+                            //Registro CX
+                            case "000011":
+                                
+                                     w = cx.getContent();
+                                     negado = "";
+                                    for( h = 0; h < ax.getContent().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                notRegister("CX", cx.getContent());
+                                cx.setContent(negado);
+                                accion.setText("Complemento a 1 de CX");
+                                resultNot("CX", cx.getContent());
+                                                             
+                                break;
+                            //Registro DX
+                            case "000100":
+                                     w = dx.getContent();
+                                     negado = "";
+                                    for( h = 0; h < ax.getContent().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    notRegister("DX", dx.getContent());
+                                dx.setContent(negado);
+                                accion.setText("Complemento a 1 de DX");
+                                resultNot("DX", dx.getContent());
+                                                               
+                                break;
+                            //Registro AH
+                            case "000101":
+                                    w = ax.getAh();
+                                    negado = "";
+                                    for( h = 0; h < ax.getAh().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    notRegister("AH", ax.getAh());
+                                ax.setAh(negado);
+                                accion.setText("Complemento a 1 de AH");
+                                resultNot("AH", ax.getAh());
+                                                                
+                                break;
+                            //Registro AL
+                            case "000110":
+                                    w = ax.getAl();
+                                    negado = "";
+                                    for( h = 0; h < ax.getAl().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    notRegister("AL", ax.getAl());
+                                ax.setAl(negado);
+                                accion.setText("Complemento a 1 de AL");
+                                resultNot("AL", ax.getAl());
+                                                                
+                                break;
+                            //Registro BH
+                            case "000111":
+                                w = bx.getBh();
+                                    negado = "";
+                                    for( h = 0; h < bx.getBh().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    notRegister("BH", bx.getBh());
+                                bx.setBh(negado);
+                                accion.setText("Complemento a 1 de BH");
+                                resultNot("BH", bx.getBh());
+                                                                
+                                break;
+                            //Registro BL
+                            case "001000":
+                                w = bx.getBl();
+                                    negado = "";
+                                    for( h = 0; h < bx.getBl().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    notRegister("BL", bx.getBl());
+                                bx.setBl(negado);
+                                accion.setText("Complemento a 1 de BL");
+                                resultNot("BL", bx.getBl());
+                                                                
+                                break;
+                            //Registro CH
+                            case "001001":
+                                    w = cx.getCh();
+                                    negado = "";
+                                    for( h = 0; h < cx.getCh().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    notRegister("CH", cx.getCh());
+                                cx.setCh(negado);
+                                accion.setText("Complemento a 1 de CH");
+                                resultNot("CH", cx.getCh());
+                                                              
+                                break;
+                            //Registro CL
+                            case "001010":
+                                w = cx.getCl();
+                                    negado = "";
+                                    for( h = 0; h < cx.getCl().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    notRegister("CL", cx.getCl());
+                                cx.setCl(negado);
+                                accion.setText("Complemento a 1 de CL");
+                                resultNot("CL", cx.getCl());
+                                                                
+                                break;
+                            //Registro DH
+                            case "001011":
+                                w = dx.getDh();
+                                    negado = "";
+                                    for( h = 0; h < dx.getDh().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    notRegister("DH", dx.getDh());
+                                dx.setDh(negado);
+                                accion.setText("Complemento a 1 de DH");
+                                resultNot("DH", dx.getDh());
+                                                              
+                                break;
+                            //Registro DL
+                            case "001100":
+                                
+                                w = dx.getDl();
+                                    negado = "";
+                                    for( h = 0; h < dx.getDl().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    notRegister("DL", dx.getDl());
+                                dx.setDl(negado);
+                                accion.setText("Complemento a 1 de DL");
+                                resultNot("DL", dx.getDl());
+                                break;
+                        }
+                        
                         break;
                     case "1000":
-                        marField1.setText(dir);
-                        accion.setText("Clear: Reinicia a ceros el contenido en MBR");
-                        Thread.sleep(3000);
-                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
-                        mbrField1.setText(mbr.getDireccion());
-                        mbr.clear();
-                        Thread.sleep(3000);
-                        mbrField1.setText(mbr.getDireccion());
-                        Thread.sleep(3000);
+                        //CLEAR
+                        switch(reg1){
+                            //Registro AX|
+                            case "000001":
+                                    notRegister("AX", ax.getContent());
+                                    ax.setContent("0000000000000000");
+                                    accion.setText("Pone a CERO el contenido de AX");
+                                    resultNot("AX", ax.getContent());
+                                    
+                                break;
+                            //Registro BX
+                            case "000010":
+                                notRegister("BX", bx.getContent());
+                                bx.setContent("0000000000000000");
+                                accion.setText("Pone a CERO el contenido de BX");
+                                resultNot("BX", bx.getContent());
+                                                               
+                                break;
+                            //Registro CX
+                            case "000011":
+                                notRegister("CX", cx.getContent());
+                                cx.setContent("0000000000000000");
+                                accion.setText("Pone a CERO el contenido de CX");
+                                resultNot("CX", cx.getContent());
+                                                                
+                                break;
+                            //Registro DX
+                            case "000100":
+                                notRegister("DX", dx.getContent());
+                                dx.setContent("0000000000000000");
+                                accion.setText("Pone a CERO el contenido de DX");
+                                resultNot("DX", dx.getContent());
+                                                                
+                                break;
+                            //Registro AH
+                            case "000101":
+                                notRegister("AH", ax.getAh());
+                                ax.setAh("00000000");
+                                accion.setText("Pone a CERO el contenido de AH");
+                                resultNot("AH", ax.getAh());
+                                                                
+                                break;
+                            //Registro AL
+                            case "000110":
+                                notRegister("AL", ax.getAl());
+                                ax.setAl("00000000");
+                                accion.setText("Pone a CERO el contenido de AL");
+                                resultNot("AL", ax.getAl());
+                                                                
+                                break;
+                            //Registro BH
+                            case "000111":
+                                notRegister("BH", bx.getBh());
+                                bx.setBh("00000000");
+                                accion.setText("Pone a CERO el contenido de BH");
+                                resultNot("BH", bx.getBh());
+                                                                
+                                break;
+                            //Registro BL
+                            case "001000":
+                                notRegister("BL", bx.getBl());
+                                bx.setBl("00000000");
+                                accion.setText("Pone a CERO el contenido de BL");
+                                resultNot("BL", bx.getBl());
+                                                                
+                                break;
+                            //Registro CH
+                            case "001001":
+                                notRegister("CH", cx.getCh());
+                                cx.setCh("00000000");
+                                accion.setText("Pone a CERO el contenido de CH");
+                                resultNot("CH", cx.getCh());
+                                                                
+                                break;
+                            //Registro CL
+                            case "001010":
+                                notRegister("CL", cx.getCl());
+                                cx.setCl("00000000");
+                                accion.setText("Pone a CERO el contenido de CL");
+                                resultNot("CL", cx.getCl());
+                                break;
+                            //Registro DH
+                            case "001011":
+                                notRegister("DH", dx.getDh());
+                                dx.setDh("00000000");
+                                accion.setText("Pone a CERO el contenido de DH");
+                                resultNot("DH", dx.getDh());
+                                                               
+                                break;
+                            //Registro DL
+                            case "001100":
+                                notRegister("DL", dx.getDl());
+                                dx.setDl("00000000");
+                                accion.setText("Pone a CERO el contenido de DL");
+                                resultNot("DL", dx.getDl());
+                                break;
+                        }
                         
                         break;
                     case "1001":
-                        marField1.setText(dir);
-                        accion.setText("Set: Pone a unos el contenido en MBR");
-                        Thread.sleep(3000);
-                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
-                        mbrField1.setText(mbr.getDireccion());
-                        mbr.set();
-                        Thread.sleep(3000);
-                        mbrField1.setText(mbr.getDireccion());
-                        Thread.sleep(3000);
-                        break;
-                    case "1010":
-                        marField1.setText(dir);
-                        accion.setText("Valor absoluto del registro AC");
-                        Thread.sleep(3000);
-                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
-                        mbrField1.setText(mbr.getDireccion());
-                        ac.vAbsoluto(mbr.getDireccion());
-                        acumulador.setText(ac.getDato());
-                        Thread.sleep(3000);
-                        break;
-                    case "1011":
-                        marField1.setText(dir);
-                        accion.setText("Convertir: Convierte a decimal el valor que se encuentra en el registro MBR");
-                        Thread.sleep(3000);
-                        mbr.setDireccion(mp.buscar(ac.binarioDecimal(dir)));
-                        mbrField1.setText(mbr.getDireccion());
-                        ac.setDato(Integer.toString(mbr.binarioDecimal(mbr.getDireccion())));
-                        acumulador.setText(ac.getDato());
-                        Thread.sleep(3000);
-                        break;
-                    case "1100":
-                        marField1.setText(dir);
+                        //SET
+                        switch(reg1){
+                            //Registro AX|
+                            case "000001":
+                                    notRegister("AX", ax.getContent());
+                                    ax.setContent("1111111111111111");
+                                    accion.setText("Pone a UNO el contenido de AX");
+                                    resultNot("AX", ax.getContent());
+                                    break;
+                            //Registro BX
+                            case "000010":
+                                notRegister("BX", bx.getContent());
+                                bx.setContent("1111111111111111");
+                                accion.setText("Pone a UNO el contenido de BX");
+                                resultNot("BX", bx.getContent());
+                                                               
+                                break;
+                            //Registro CX
+                            case "000011":
+                                notRegister("CX", cx.getContent());
+                                cx.setContent("1111111111111111");
+                                accion.setText("Pone a UNO el contenido de CX");
+                                resultNot("CX", cx.getContent());
+                                                                
+                                break;
+                            //Registro DX
+                            case "000100":
+                                notRegister("DX", dx.getContent());
+                                dx.setContent("1111111111111111");
+                                accion.setText("Pone a UNO el contenido de DX");
+                                resultNot("DX", dx.getContent());
+                                                             
+                                break;
+                            //Registro AH
+                            case "000101":
+                                notRegister("AH", ax.getAh());
+                                ax.setAh("11111111");
+                                accion.setText("Pone a UNO el contenido de AH");
+                                resultNot("AH", ax.getAh());
+                                                                
+                                break;
+                            //Registro AL
+                            case "000110":
+                                notRegister("AL", ax.getAl());
+                                ax.setAl("11111111");
+                                accion.setText("Pone a UNO el contenido de AL");
+                                resultNot("AL", ax.getAl());
+                                                                
+                                break;
+                            //Registro BH
+                            case "000111":
+                                notRegister("BH", bx.getBh());
+                                bx.setBh("11111111");
+                                accion.setText("Pone a UNO el contenido de BH");
+                                resultNot("BH", bx.getBh());
+                                                              
+                                break;
+                            //Registro BL
+                            case "001000":
+                                notRegister("BL", bx.getBl());
+                                bx.setBl("11111111");
+                                accion.setText("Pone a UNO el contenido de BL");
+                                resultNot("BL", bx.getBl());
+                                                              
+                                break;
+                            //Registro CH
+                            case "001001":
+                                notRegister("CH", cx.getCh());
+                                cx.setCh("11111111");
+                                accion.setText("Pone a UNO el contenido de CH");
+                                resultNot("CH", cx.getCh());
+                                                              
+                                break;
+                            //Registro CL
+                            case "001010":
+                                notRegister("CL", cx.getCl());
+                                cx.setCl("11111111");
+                                accion.setText("Pone a UNO el contenido de CL");
+                                resultNot("CL", cx.getCl());
+                                                                
+                                break;
+                            //Registro DH
+                            case "001011":
+                                notRegister("DH", dx.getDh());
+                                dx.setDh("11111111");
+                                accion.setText("Pone a UNO el contenido de DH");
+                                resultNot("DH", dx.getDh());
+                                                              
+                                break;
+                            //Registro DL
+                            case "001100":
+                                notRegister("DL", dx.getDl());
+                                dx.setDl("11111111");
+                                accion.setText("Pone a UNO el contenido de DL");
+                                resultNot("DL", dx.getDl());
+                                break;
+                        }
                         
                         break;
+                    case "1010":
+                        //ABS
+                        switch(reg1){
+                            //Registro AX|
+                            case "000001":
+                                notRegister("AX", ax.getContent());
+                                abs = ax.getContent();
+                                j = "";
+                                j += "0";
+                                for ( f = 1; f <= 15; f++){
+                                    j += abs.charAt(f);
+                                }
+                                ax.setContent(j);
+                                accion.setText("Valor absoluto de AX");
+                                resultNot("AX", ax.getContent());
+                                break;
+                            //Registro BX
+                            case "000010":
+                                notRegister("BX", bx.getContent());
+                                abs = bx.getContent();
+                                j = "";
+                                j += "0";
+                                for ( f = 1; f <= 15; f++){
+                                    j += abs.charAt(f);
+                                }
+                                bx.setContent(j);
+                                accion.setText("Valor absoluto de BX");
+                                resultNot("BX", bx.getContent());
+                                                              
+                                break;
+                            //Registro CX
+                            case "000011":
+                                notRegister("CX", cx.getContent());
+                                abs = cx.getContent();
+                                j = "";
+                                j += "0";
+                                for ( f = 1; f <= 15; f++){
+                                    j += abs.charAt(f);
+                                }
+                                cx.setContent(j);
+                                accion.setText("Valor absoluto de CX");
+                                resultNot("CX", cx.getContent());
+                                                              
+                                break;
+                            //Registro DX
+                            case "000100":
+                                notRegister("DX", dx.getContent());
+                                abs = dx.getContent();
+                                j = "";
+                                j += "0";
+                                for ( f = 1; f <= 15; f++){
+                                    j += abs.charAt(f);
+                                }
+                                dx.setContent(j);
+                                accion.setText("Valor absoluto de DX");
+                                resultNot("DX", dx.getContent());
+                                
+                                
+                                break;
+                            //Registro AH
+                            case "000101":
+                                notRegister("AH", ax.getAh());
+                                abs = ax.getAh();
+                                j = "";
+                                j += "0";
+                                for ( f = 1; f <= ax.getAh().length(); f++){
+                                    j += abs.charAt(f);
+                                }
+                                ax.setAh(j);
+                                accion.setText("Valor absoluto de AH");
+                                resultNot("AH", ax.getAh());
+                                break;
+                            //Registro AL
+                            case "000110":
+                                notRegister("AL", ax.getAl());
+                                abs = ax.getAl();
+                                j = "";
+                                j += "0";
+                                for ( f = 1; f <= ax.getAl().length(); f++){
+                                    j += abs.charAt(f);
+                                }
+                                ax.setAl(j);
+                                accion.setText("Valor absoluto de AL");
+                                resultNot("AL", ax.getAl());
+                                break;
+                            //Registro BH
+                            case "000111":
+                                notRegister("BH", bx.getBh());
+                                abs = bx.getBh();
+                                j = "";
+                                j += "0";
+                                for ( f = 1; f < bx.getBh().length(); f++){
+                                    j += abs.charAt(f);
+                                }
+                                bx.setBh(j);
+                                accion.setText("Valor absoluto de BH");
+                                resultNot("BH", bx.getBh());
+                                                               
+                                break;
+                            //Registro BL
+                            case "001000":
+                                notRegister("BL", bx.getBl());
+                                abs = bx.getBl();
+                                j = "";
+                                j += "0";
+                                for ( f = 1; f < bx.getBl().length(); f++){
+                                    j += abs.charAt(f);
+                                }
+                                bx.setBl(j);
+                                accion.setText("Valor absoluto de BL");
+                                resultNot("BL", bx.getBl());
+                                                                
+                                break;
+                            //Registro CH
+                            case "001001":
+                                notRegister("CH", cx.getCh());
+                                abs = cx.getCh();
+                                j = "";
+                                j += "0";
+                                for ( f = 1; f < cx.getCh().length(); f++){
+                                    j += abs.charAt(f);
+                                }
+                                cx.setCh(j);
+                                accion.setText("Valor absoluto de CH");
+                                resultNot("CH", cx.getCh());
+                                                                
+                                break;
+                            //Registro CL
+                            case "001010":
+                                notRegister("CL", cx.getCl());
+                                abs = cx.getCl();
+                                j = "";
+                                j += "0";
+                                for ( f = 1; f < cx.getCl().length(); f++){
+                                    j += abs.charAt(f);
+                                }
+                                cx.setCl(j);
+                                accion.setText("Valor absoluto de CL");
+                                resultNot("CL", cx.getCl());
+                                                               
+                                break;
+                            //Registro DH
+                            case "001011":
+                                notRegister("DH", dx.getDh());
+                                abs = dx.getDh();
+                                j = "";
+                                j += "0";
+                                for ( f = 1; f < dx.getDh().length(); f++){
+                                    j += abs.charAt(f);
+                                }
+                                dx.setDh(j);
+                                accion.setText("Valor absoluto de DH");
+                                resultNot("DH", dx.getDh());
+                                                              
+                                break;
+                            //Registro DL
+                            case "001100":
+                                notRegister("DL", dx.getDl());
+                                abs = dx.getDl();
+                                j = "";
+                                j += "0";
+                                for ( f = 1; f < dx.getDl().length(); f++){
+                                    j += abs.charAt(f);
+                                }
+                                dx.setDl(j);
+                                accion.setText("Valor absoluto de DL");
+                                resultNot("DL", dx.getDl());
+                                break;
+                        }
+                        
+                        break;
+                    case "1011":
+                        //STORE
+                        
+                        break;
+                    case "1100":
+                        //MOV
+                        switch(reg1){
+                            //AX
+                            case "000001":
+                                switch(reg2){
+                                    case "000010":
+                                        
+                                        Mover("AX", ax.getContent(), "BX", bx.getContent());
+                                        ax.setContent(bx.getContent());
+                                        accion.setText("Mueve a AX el contenido de BX");
+                                        Mover2("AX", ax.getContent(), "BX", bx.getContent());
+                                        break;
+                                    case "000011":
+                                        Mover("AX", ax.getContent(), "CX", cx.getContent());
+                                        ax.setContent(cx.getContent());
+                                        accion.setText("Mueve a AX el contenido de CX");
+                                        Mover2("AX", ax.getContent(), "CX", cx.getContent());
+                                        break;
+                                    case "000100":
+                                        Mover("AX", ax.getContent(), "DX", dx.getContent());
+                                        ax.setContent(dx.getContent());
+                                        accion.setText("Mueve a AX el contenido de DX");
+                                        Mover2("AX", ax.getContent(), "DX", dx.getContent());
+                                        break;
+                                }
+                                break;
+                            //BX
+                            case "000010":
+                                switch(reg2){
+                                    case "000001":
+                                        Mover("BX", bx.getContent(), "AX", ax.getContent());
+                                        bx.setContent(ax.getContent());
+                                        accion.setText("Mueve a BX el contenido de AX");
+                                        Mover2("BX", bx.getContent(), "AX", ax.getContent());
+                                        break;
+                                    case "000011":
+                                        Mover("BX", bx.getContent(), "CX", cx.getContent());
+                                        bx.setContent(cx.getContent());
+                                        accion.setText("Mueve a BX el contenido de CX");
+                                        Mover2("BX", bx.getContent(), "CX", cx.getContent());
+                                        break;
+                                    case "000100":
+                                        Mover("BX", bx.getContent(), "DX", dx.getContent());
+                                        bx.setContent(dx.getContent());
+                                        accion.setText("Mueve a BX el contenido de DX");
+                                        Mover2("BX", bx.getContent(), "DX", dx.getContent());
+                                        break;
+                                }
+                                break;
+                            //CX
+                            case "000011":
+                                switch(reg2){
+                                    case "000001":
+                                        Mover("CX", cx.getContent(), "AX", ax.getContent());
+                                        cx.setContent(ax.getContent());
+                                        accion.setText("Mueve a CX el contenido de AX");
+                                        Mover2("CX", cx.getContent(), "AX", ax.getContent());
+                                        break;
+                                    case "000010":
+                                        Mover("CX", cx.getContent(), "BX", bx.getContent());
+                                        bx.setContent(bx.getContent());
+                                        accion.setText("Mueve a CX el contenido de BX");
+                                        Mover2("CX", cx.getContent(), "BX", bx.getContent());
+                                        break;
+                                    case "000100":
+                                        Mover("CX", cx.getContent(), "DX", dx.getContent());
+                                        bx.setContent(dx.getContent());
+                                        accion.setText("Mueve a CX el contenido de DX");
+                                        Mover2("CX", cx.getContent(), "DX", dx.getContent());
+                                        break;
+                                }
+                                break;
+                             //DX
+                             case "000100":
+                                 
+                                switch(reg2){
+                                    case "000001":
+                                        Mover("DX",dx.getContent(), "AX", ax.getContent());
+                                        dx.setContent(ax.getContent());
+                                        accion.setText("Mueve a DX el contenido de AX");
+                                        Mover2("DX", dx.getContent(), "AX", ax.getContent());
+                                        break;
+                                    case "000010":
+                                        Mover("DX",dx.getContent(), "BX", bx.getContent());
+                                        dx.setContent(bx.getContent());
+                                        accion.setText("Mueve a DX el contenido de BX");
+                                        Mover2("DX", dx.getContent(), "BX", bx.getContent());
+                                        break;
+                                    case "000011":
+                                        Mover("DX",dx.getContent(), "CX", cx.getContent());
+                                        dx.setContent(cx.getContent());
+                                        accion.setText("Mueve a DX el contenido de CX");
+                                        Mover2("DX", dx.getContent(), "DX", dx.getContent());
+                                        break;
+                                }
+                                
+                                break;
+                             //AH
+                             case "000101":
+                                 switch(reg2){
+                                     case "000110":
+                                         Mover("AH",ax.getAh(), "AL", ax.getAl());
+                                         ax.setAh(ax.getAl());
+                                         accion.setText("Mueve a AH el contenido de Al");
+                                         Mover2("AH", ax.getAh(), "AL", ax.getAl());
+                                         break;
+                                     case "000111":
+                                         Mover("AH",ax.getAh(), "BH", bx.getBh());
+                                         ax.setAh(bx.getBh());
+                                         accion.setText("Mueve a AH el contenido de BH");
+                                         Mover2("AH", ax.getAh(), "BH", bx.getBh());
+                                         break;
+                                     case "001000":
+                                         Mover("AH",ax.getAh(), "BL", bx.getBl());
+                                         ax.setAh(bx.getBl());
+                                         accion.setText("Mueve a AH el contenido de BL");
+                                         Mover2("AH", ax.getAh(), "BL", bx.getBl());
+                                         break;
+                                     case "001001":
+                                         Mover("AH",ax.getAh(), "CH", cx.getCh());
+                                         ax.setAh(cx.getCh());
+                                         accion.setText("Mueve a AH el contenido de CH");
+                                         Mover2("AH", ax.getAh(), "CH", cx.getCh());
+                                         break;
+                                     case "001010":
+                                         Mover("AH",ax.getAh(), "CL", cx.getCl());
+                                         ax.setAh(cx.getCl());
+                                         accion.setText("Mueve a AH el contenido de CL");
+                                         Mover2("AH", ax.getAh(), "CL", cx.getCl());
+                                         break;
+                                     case "001011":
+                                         Mover("AH",ax.getAh(), "DH", dx.getDh());
+                                         ax.setAh(dx.getDh());
+                                         accion.setText("Mueve a AH el contenido de DH");
+                                         Mover2("AH", ax.getAh(), "DH", dx.getDh());
+                                         break;
+                                     case "001100":
+                                         Mover("AH",ax.getAh(), "DL", dx.getDl());
+                                         ax.setAh(dx.getDl());
+                                         accion.setText("Mueve a AH el contenido de DL");
+                                         Mover2("AH", ax.getAh(), "DL", dx.getDl());
+                                         break;
+                                               
+                                 }
+                             //AL
+                             case "000110":
+                                 switch(reg2){
+                                     case "000101":
+                                         Mover("AL",ax.getAl(), "AH", ax.getAh());
+                                         ax.setAl(ax.getAh());
+                                         accion.setText("Mueve a AL el contenido de AH");
+                                         Mover2("Al", ax.getAl(), "AH", ax.getAh());
+                                         break;
+                                     case "000111":
+                                         Mover("AL",ax.getAl(), "BH", bx.getBh());
+                                         ax.setAl(bx.getBh());
+                                         accion.setText("Mueve a AL el contenido de BH");
+                                         Mover2("Al", ax.getAl(), "BH", bx.getBh());
+                                         break;
+                                     case "001000":
+                                         Mover("AL",ax.getAl(), "BL", bx.getBl());
+                                         ax.setAl(bx.getBl());
+                                         accion.setText("Mueve a AL el contenido de BL");
+                                         Mover2("Al", ax.getAl(), "BL", bx.getBl());
+                                         break;
+                                     case "001001":
+                                         Mover("AL",ax.getAl(), "CH", cx.getCh());
+                                         ax.setAl(cx.getCh());
+                                         accion.setText("Mueve a AL el contenido de CH");
+                                         Mover2("Al", ax.getAl(), "CH", cx.getCh());
+                                         break;
+                                     case "001010":
+                                         Mover("AL",ax.getAl(), "CL", cx.getCl());
+                                         ax.setAl(cx.getCl());
+                                         accion.setText("Mueve a AL el contenido de CL");
+                                         Mover2("Al", ax.getAl(), "CL", cx.getCl());
+                                         break;
+                                     case "001011":
+                                         Mover("AL",ax.getAl(), "DH", dx.getDh());
+                                         ax.setAl(dx.getDh());
+                                         accion.setText("Mueve a AL el contenido de DH");
+                                         Mover2("Al", ax.getAl(), "DH", dx.getDh());
+                                         break;
+                                     case "001100":
+                                         Mover("AL",ax.getAl(), "DL", dx.getDl());
+                                         ax.setAl(dx.getDl());
+                                         accion.setText("Mueve a AL el contenido de DL");
+                                         Mover2("Al", ax.getAl(), "DL", dx.getDl());
+                                         break;
+                                 }
+                             //BH
+                             case "000111":
+                                 switch(reg2){
+                                     case "000101":
+                                         Mover("BH",bx.getBh(), "AH", ax.getAh());
+                                         bx.setBh(ax.getAh());
+                                         accion.setText("Mueve a BH el contenido de AH");
+                                         Mover2("BH", bx.getBh(), "AH", ax.getAh());
+                                         break;
+                                     case "000110":
+                                         Mover("BH",bx.getBh(), "AL", ax.getAl());
+                                         bx.setBh(ax.getAl());
+                                         accion.setText("Mueve a BH el contenido de AL");
+                                         Mover2("BH", bx.getBh(), "AL", ax.getAl());
+                                         break;
+                                     case "001000":
+                                         Mover("BH",bx.getBh(), "BL", bx.getBl());
+                                         bx.setBh(bx.getBl());
+                                         accion.setText("Mueve a BH el contenido de BL");
+                                         Mover2("BH", bx.getBh(), "BL", bx.getBl());
+                                         break;
+                                     case "001001":
+                                         Mover("BH",bx.getBh(), "CH", cx.getCh());
+                                         bx.setBh(cx.getCh());
+                                         accion.setText("Mueve a BH el contenido de CH");
+                                         Mover2("BH", bx.getBh(), "CH", cx.getCh());
+                                         break;
+                                     case "001010":
+                                         Mover("BH",bx.getBh(), "CL", cx.getCl());
+                                         bx.setBh(cx.getCl());
+                                         accion.setText("Mueve a BH el contenido de CL");
+                                         Mover2("BH", bx.getBh(), "CL", cx.getCl());
+                                         break;
+                                     case "001011":
+                                         Mover("BH",bx.getBh(), "DH", dx.getDh());
+                                         bx.setBh(dx.getDh());
+                                         accion.setText("Mueve a BH el contenido de DH");
+                                         Mover2("BH", bx.getBh(), "DH", dx.getDh());
+                                         break;
+                                     case "001100":
+                                         Mover("BH",bx.getBh(), "DL", dx.getDl());
+                                         bx.setBh(dx.getDl());
+                                         accion.setText("Mueve a BH el contenido de DL");
+                                         Mover2("BH", bx.getBh(), "DL", dx.getDl());
+                                         break;
+                                 }
+                             //BL
+                             case "001000":
+                                 switch(reg2){
+                                     case "000101":
+                                         Mover("BL",bx.getBl(), "AH", ax.getAh());
+                                         bx.setBl(ax.getAh());
+                                         accion.setText("Mueve a BL el contenido de AH");
+                                         Mover2("BL", bx.getBl(), "AH", ax.getAh());
+                                         break;
+                                     case "000110":
+                                         Mover("BL",bx.getBl(), "AL", ax.getAl());
+                                         bx.setBl(ax.getAl());
+                                         accion.setText("Mueve a BL el contenido de AL");
+                                         Mover2("BL", bx.getBl(), "AL", ax.getAl());
+                                         break;
+                                     case "000111":
+                                         Mover("BL",bx.getBl(), "BH", bx.getBh());
+                                         bx.setBl(bx.getBh());
+                                         accion.setText("Mueve a BL el contenido de BH");
+                                         Mover2("BL", bx.getBl(), "BH", bx.getBh());
+                                         break;
+                                     case "001001":
+                                         Mover("BL",bx.getBl(), "CH", cx.getCh());
+                                         bx.setBl(cx.getCh());
+                                         accion.setText("Mueve a BL el contenido de CH");
+                                         Mover2("BL", bx.getBl(), "CH", cx.getCh());
+                                         break;
+                                     case "001010":
+                                         Mover("BL",bx.getBl(), "CL", cx.getCl());
+                                         bx.setBl(cx.getCl());
+                                         accion.setText("Mueve a BL el contenido de CL");
+                                         Mover2("BL", bx.getBl(), "CL", cx.getCl());
+                                         break;
+                                     case "001011":
+                                         Mover("BL",bx.getBl(), "DH", dx.getDh());
+                                         bx.setBl(dx.getDh());
+                                         accion.setText("Mueve a BL el contenido de DH");
+                                         Mover2("BL", bx.getBl(), "DH", dx.getDh());
+                                         break;
+                                     case "001100":
+                                         Mover("BL",bx.getBl(), "DL", dx.getDl());
+                                         bx.setBl(dx.getDl());
+                                         accion.setText("Mueve a BL el contenido de DL");
+                                         Mover2("BL", bx.getBl(), "DL", dx.getDl());
+                                         break;
+                                 }
+                             //CH
+                             case "001001":
+                                 switch(reg2){
+                                     case "000101":
+                                         Mover("CH",cx.getCh(), "AH", ax.getAh());
+                                         cx.setCh(ax.getAh());
+                                         accion.setText("Mueve a CH el contenido de AH");
+                                         Mover2("CH", cx.getCh(), "AH", ax.getAh());
+                                         break;
+                                     case "000110":
+                                         Mover("CH",cx.getCh(), "AL", ax.getAl());
+                                         cx.setCh(ax.getAl());
+                                         accion.setText("Mueve a CH el contenido de AL");
+                                         Mover2("CH", cx.getCh(), "AL", ax.getAl());
+                                         break;
+                                     case "000111":
+                                         Mover("CH",cx.getCh(), "BH", bx.getBh());
+                                         cx.setCh(bx.getBh());
+                                         accion.setText("Mueve a CH el contenido de BH");
+                                         Mover2("CH", cx.getCh(), "BH", bx.getBh());
+                                         break;
+                                     case "001000":
+                                         Mover("CH",cx.getCh(), "BL", bx.getBl());
+                                         cx.setCh(bx.getBl());
+                                         accion.setText("Mueve a CH el contenido de BL");
+                                         Mover2("CH", cx.getCh(), "BL", bx.getBl());
+                                         break;
+                                     case "001010":
+                                         Mover("CH",cx.getCh(), "CL", cx.getCl());
+                                         cx.setCh(cx.getCl());
+                                         accion.setText("Mueve a CH el contenido de CL");
+                                         Mover2("CH", cx.getCh(), "CL", cx.getCl());
+                                         break;
+                                     case "001011":
+                                         Mover("CH",cx.getCh(), "DH", dx.getDh());
+                                         cx.setCh(dx.getDh());
+                                         accion.setText("Mueve a CH el contenido de DH");
+                                         Mover2("CH", cx.getCh(), "DH", dx.getDh());
+                                         break;
+                                     case "001100":
+                                         Mover("CH",cx.getCh(), "DL", dx.getDl());
+                                         cx.setCh(dx.getDl());
+                                         accion.setText("Mueve a CH el contenido de DL");
+                                         Mover2("CH", cx.getCh(), "Dl", dx.getDl());
+                                         break;
+                                 }
+                             //CL
+                             case "001010":
+                                 switch(reg2){
+                                     case "000101":
+                                         Mover("CL",cx.getCl(), "AH", ax.getAh());
+                                         cx.setCl(ax.getAh());
+                                         accion.setText("Mueve a CL el contenido de AH");
+                                         Mover2("CL", cx.getCl(), "AH", ax.getAh());
+                                         break;
+                                     case "000110":
+                                         Mover("CL",cx.getCl(), "AL", ax.getAl());
+                                         cx.setCl(ax.getAl());
+                                         accion.setText("Mueve a CL el contenido de AL");
+                                         Mover2("CL", cx.getCl(), "AL", ax.getAl());
+                                         break;
+                                     case "000111":
+                                         Mover("CL",cx.getCl(), "BH", bx.getBh());
+                                         cx.setCl(bx.getBh());
+                                         accion.setText("Mueve a CL el contenido de BH");
+                                         Mover2("CL", cx.getCl(), "BH", bx.getBh());
+                                         break;
+                                     case "001000":
+                                         Mover("CL",cx.getCl(), "BL", bx.getBl());
+                                         cx.setCl(bx.getBl());
+                                         accion.setText("Mueve a CL el contenido de BL");
+                                         Mover2("CL", cx.getCl(), "BL", bx.getBl());
+                                         break;
+                                     case "001001":
+                                         Mover("CL",cx.getCl(), "CH", cx.getCh());
+                                         cx.setCl(cx.getCh());
+                                         accion.setText("Mueve a CL el contenido de CH");
+                                         Mover2("CL", cx.getCl(), "CH", cx.getCh());
+                                         break;
+                                     case "001011":
+                                         Mover("CL",cx.getCl(), "DH", dx.getDh());
+                                         cx.setCl(dx.getDh());
+                                         accion.setText("Mueve a CL el contenido de DH");
+                                         Mover2("CL", cx.getCl(), "DH", dx.getDh());
+                                         break;
+                                     case "001100":
+                                         Mover("CL",cx.getCl(), "DL", dx.getDl());
+                                         cx.setCl(dx.getDl());
+                                         accion.setText("Mueve a CL el contenido de DL");
+                                         Mover2("CL", cx.getCl(), "DL", dx.getDl());
+                                         break;
+                                 }
+                             //DH
+                             case "001011":
+                                 switch(reg2){
+                                     case "000101":
+                                         Mover("DH",dx.getDh(), "AH", ax.getAh());
+                                         dx.setDh(ax.getAh());
+                                         accion.setText("Mueve a DH el contenido de AH");
+                                         Mover2("DH", dx.getDh(), "AH", ax.getAh());
+                                         break;
+                                     case "000110":
+                                         Mover("DH",dx.getDh(), "AL", ax.getAl());
+                                         dx.setDh(ax.getAl());
+                                         accion.setText("Mueve a DH el contenido de AL");
+                                         Mover2("DH", dx.getDh(), "AL", ax.getAl());
+                                         break;
+                                     case "000111":
+                                         Mover("DH",dx.getDh(), "BH", bx.getBh());
+                                         dx.setDh(bx.getBh());
+                                         accion.setText("Mueve a DH el contenido de BH");
+                                         Mover2("DH", dx.getDh(), "BH", bx.getBh());
+                                         break;
+                                     case "001000":
+                                         Mover("DH",dx.getDh(), "BL", bx.getBl());
+                                         dx.setDh(bx.getBl());
+                                         accion.setText("Mueve a DH el contenido de BL");
+                                         Mover2("DH", dx.getDh(), "BL", bx.getBl());
+                                         break;
+                                     case "001001":
+                                         Mover("DH",dx.getDh(), "CH", cx.getCh());
+                                         dx.setDh(cx.getCh());
+                                         accion.setText("Mueve a DH el contenido de CH");
+                                         Mover2("DH", dx.getDh(), "CH", cx.getCh());
+                                         break;
+                                     case "001010":
+                                         Mover("DH",dx.getDh(), "CL", cx.getCl());
+                                         dx.setDh(cx.getCl());
+                                         accion.setText("Mueve a DH el contenido de CL");
+                                         Mover2("DH", dx.getDh(), "CL", cx.getCl());
+                                         break;
+                                     case "001100":
+                                         Mover("DH",dx.getDh(), "DL", dx.getDl());
+                                         dx.setDh(dx.getDl());
+                                         accion.setText("Mueve a DH el contenido de DL");
+                                         Mover2("DH", dx.getDh(), "DL", dx.getDl());
+                                         break;
+                                 }
+                             //DL
+                             case "001100":
+                                 switch(reg2){
+                                     case "000101":
+                                         Mover("DL",dx.getDl(), "AH", ax.getAh());
+                                         dx.setDl(ax.getAh());
+                                         accion.setText("Mueve a DL el contenido de AH");
+                                         Mover2("DL", dx.getDl(), "AH", ax.getAh());
+                                         break;
+                                     case "000110":
+                                         Mover("DL",dx.getDl(), "AL", ax.getAl());
+                                         dx.setDl(ax.getAl());
+                                         accion.setText("Mueve a DL el contenido de AL");
+                                         Mover2("DL", dx.getDl(), "AL", ax.getAl());
+                                         break;
+                                     case "000111":
+                                         Mover("DL",dx.getDl(), "BH", bx.getBh());
+                                         dx.setDl(bx.getBh());
+                                         accion.setText("Mueve a DL el contenido de BH");
+                                         Mover2("DL", dx.getDl(), "BH", bx.getBh());
+                                         break;
+                                     case "001000":
+                                         Mover("DL",dx.getDl(), "BL", bx.getBl());
+                                         dx.setDl(bx.getBl());
+                                         accion.setText("Mueve a DL el contenido de BL");
+                                         Mover2("DL", dx.getDl(), "BL", bx.getBl());
+                                         break;
+                                     case "001001":
+                                         Mover("DL",dx.getDl(), "CH", cx.getCh());
+                                         dx.setDl(cx.getCh());
+                                         accion.setText("Mueve a DL el contenido de CH");
+                                         Mover2("DL", dx.getDl(), "CH", cx.getCh());
+                                         break;
+                                     case "001010":
+                                         Mover("DL",dx.getDl(), "CL", cx.getCl());
+                                         dx.setDl(cx.getCl());
+                                         accion.setText("Mueve a DL el contenido de CL");
+                                         Mover2("DL", dx.getDl(), "CL", cx.getCl());
+                                         break;
+                                     case "001011":
+                                         Mover("DL",dx.getDl(), "DH", dx.getDh());
+                                         dx.setDl(dx.getDh());
+                                         accion.setText("Mueve a DL el contenido de DH");
+                                         Mover2("DL", dx.getDl(), "DH", dx.getDh());
+                                         break;
+                                 }
+                             
+                        }
+
+                        break;
                     case "1101":
-                        marField1.setText(dir);
+                        //PUSH
+                        switch(reg1){
+                            //Registro AX|
+                            case "000001":
+                                                                   
+                                    ss.push(ax.getContent());
+                                    accion.setText("Ingresa un elemento a la pila");
+                                    Push(ax.getContent());
+                                
+                                break;
+                            //Registro BX
+                            case "000010":
+                                ss.push(bx.getContent());
+                                accion.setText("Ingresa un elemento a la pila");
+                                Push(bx.getContent());
+                                
+                                
+                                break;
+                            //Registro CX
+                            case "000011":
+                                ss.push(cx.getContent());
+                                accion.setText("Ingresa un elemento a la pila");
+                                Push(cx.getContent());
+                                
+                                
+                                
+                                break;
+                            //Registro DX
+                            case "000100":
+                                ss.push(dx.getContent());
+                                accion.setText("Ingresa un elemento a la pila");
+                                Push(dx.getContent());
+                                
+                                
+                                
+                                break;
+                            //Registro AH
+                            case "000101":
+                                ss.push(ax.getAh());
+                                accion.setText("Ingresa un elemento a la pila");
+                                Push(ax.getAh());
+                                
+                                
+                                
+                                break;
+                            //Registro AL
+                            case "000110":
+                                ss.push(ax.getAl());
+                                accion.setText("Ingresa un elemento a la pila");
+                                Push(ax.getAl());
+                                
+                                break;
+                            //Registro BH
+                            case "000111":
+                                ss.push(bx.getBh());
+                                accion.setText("Ingresa un elemento a la pila");
+                                Push(bx.getBh());
+                                                             
+                                break;
+                            //Registro BL
+                            case "001000":
+                                ss.push(bx.getBl());
+                                accion.setText("Ingresa un elemento a la pila");
+                                Push(bx.getBl());
+                                break;
+                            //Registro CH
+                            case "001001":
+                                ss.push(cx.getCh());
+                                accion.setText("Ingresa un elemento a la pila");
+                                Push(cx.getCh());
+                                                                 
+                                break;
+                            //Registro CL
+                            case "001010":
+                                ss.push(cx.getCl());
+                                accion.setText("Ingresa un elemento a la pila");
+                                Push(cx.getCl());
+                                                                
+                                break;
+                            //Registro DH
+                            case "001011":
+                                ss.push(dx.getDh());
+                                accion.setText("Ingresa un elemento a la pila");
+                                Push(dx.getDh());
+                                                                
+                                break;
+                            //Registro DL
+                            case "001100":
+                                ss.push(dx.getDl());
+                                accion.setText("Ingresa un elemento a la pila");
+                                Push(dx.getDl());
+                                                                
+                                break;
+                        }
+                        
                         break;
                     case "1110":
-                        marField1.setText(dir);
+                        //POP
+                        switch(reg1){
+                            //Registro AX|
+                            case "000001":
+                                ax.setContent(ss.pop());
+                                if(ax.getContent().isEmpty()){
+                                    JOptionPane.showMessageDialog(null, "Hubo subdesbordamiento");
+                                }else{
+                                    JOptionPane.showMessageDialog(null, ax.getContent());
+                                }
+                                accion.setText("Saca de la pila");
+                                Pop(ax.getContent(), "AX");
+                                break;
+                            //Registro BX
+                            case "000010":
+                                
+                                bx.setContent(ss.pop());
+                                if(bx.getContent().isEmpty()){
+                                    JOptionPane.showMessageDialog(null, "Hubo subdesbordamiento");
+                                }else{
+                                    JOptionPane.showMessageDialog(null, bx.getContent());
+                                }
+                                
+                                accion.setText("Saca de la pila");
+                                Pop(bx.getContent(), "BX");
+                                break;
+                            //Registro CX
+                            case "000011":
+                                
+                                
+                                cx.setContent(ss.pop());
+                                if(cx.getContent().isEmpty()){
+                                    JOptionPane.showMessageDialog(null, "Hubo subdesbordamiento");
+                                }else{
+                                    JOptionPane.showMessageDialog(null, cx.getContent());
+                                }
+                                accion.setText("Saca de la pila");
+                                Pop(cx.getContent(), "CX");
+                                break;
+                            //Registro DX
+                            case "000100":
+                                  
+                                
+                                dx.setContent(ss.pop());
+                                if(dx.getContent().isEmpty()){
+                                    JOptionPane.showMessageDialog(null, "Hubo subdesbordamiento");
+                                }else{
+                                    JOptionPane.showMessageDialog(null, dx.getContent());
+                                }
+                                accion.setText("Saca de la pila");
+                                Pop(dx.getContent(), "DX");
+                                break;
+                            //Registro AH
+                            case "000101":
+                                   
+                                
+                                ax.setAh(ss.pop());
+                                if(ax.getAh().isEmpty()){
+                                    JOptionPane.showMessageDialog(null, "Hubo subdesbordamiento");
+                                }else{
+                                    JOptionPane.showMessageDialog(null, ax.getAh());
+                                }
+                                accion.setText("Saca de la pila");
+                                Pop(ax.getAh(), "AH");
+                                break;
+                            //Registro AL
+                            case "000110":
+                                
+                                ax.setAl(ss.pop());
+                                if(ax.getAl().isEmpty()){
+                                    JOptionPane.showMessageDialog(null, "Hubo subdesbordamiento");
+                                }else{
+                                    JOptionPane.showMessageDialog(null, ax.getAl());
+                                }    
+                                accion.setText("Saca de la pila");
+                                Pop(ax.getAl(), "AL");
+                                break;
+                            //Registro BH
+                            case "000111":
+                                    
+                                
+                                bx.setBh(ss.pop());
+                                if(bx.getBh().isEmpty()){
+                                    JOptionPane.showMessageDialog(null, "Hubo subdesbordamiento");
+                                }else{
+                                    JOptionPane.showMessageDialog(null, bx.getBh());
+                                }
+                                accion.setText("Saca de la pila");
+                                Pop(bx.getBh(), "BH");
+                                break;
+                            //Registro BL
+                            case "001000":
+                                
+                                bx.setContent(ss.pop());
+                                if(bx.getBl().isEmpty()){
+                                    JOptionPane.showMessageDialog(null, "Hubo subdesbordamiento");
+                                }else{
+                                    JOptionPane.showMessageDialog(null, bx.getBl());
+                                }
+                                accion.setText("Saca de la pila");
+                                Pop(bx.getBl(), "BL");
+                                break;
+                            //Registro CH
+                            case "001001":
+                                
+                                cx.setCh(ss.pop());
+                                if(cx.getCh().isEmpty()){
+                                    JOptionPane.showMessageDialog(null, "Hubo subdesbordamiento");
+                                }else{
+                                    JOptionPane.showMessageDialog(null, cx.getCh());
+                                }    
+                                accion.setText("Saca de la pila");
+                                Pop(cx.getCh(), "CH");
+                                break;
+                            //Registro CL
+                            case "001010":
+                                
+                                cx.setCl(ss.pop());
+                                if(cx.getCl().isEmpty()){
+                                    JOptionPane.showMessageDialog(null, "Hubo subdesbordamiento");
+                                }else{
+                                    JOptionPane.showMessageDialog(null, cx.getCl());
+                                }
+                                accion.setText("Saca de la pila");
+                                Pop(cx.getCl(), "CL");
+                                break;
+                            //Registro DH
+                            case "001011":
+                                    
+                                
+                                dx.setDh(ss.pop());
+                                if(dx.getDh().isEmpty()){
+                                    JOptionPane.showMessageDialog(null, "Hubo subdesbordamiento");
+                                }else{
+                                    JOptionPane.showMessageDialog(null, dx.getDh());
+                                }
+                                accion.setText("Saca de la pila");
+                                Pop(dx.getDh(), "DH");
+                                break;
+                            //Registro DL
+                            case "001100":
+                                
+                                
+                                dx.setDl(ss.pop());
+                                if(dx.getDl().isEmpty()){
+                                    JOptionPane.showMessageDialog(null, "Hubo subdesbordamiento");
+                                }else{
+                                    JOptionPane.showMessageDialog(null, dx.getDl());
+                                }
+                                accion.setText("Saca de la pila");
+                                Pop(dx.getDl(), "DL");
+                                break;
+                        }
+                        
                         break;
                     case "1111":
-                        marField1.setText(dir);
+                        //NEG
+                        switch(reg1){
+                            //Registro AX|
+                            case "000001":
+                                    w = ax.getContent();
+                                    a = Integer.parseInt("0001", 2);
+                                     negado = "";
+                                    for( h = 0; h < ax.getContent().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    b =Integer.parseInt(negado, 2);
+                                    auxNeg = b + a;
+                                    r = Integer.toString(auxNeg, 2);
+                                    notRegister("AX", ax.getContent());
+                                    ax.setContent(r);
+                                    accion.setText("Complemento a dos");
+                                    resultNot("AX", ax.getContent());
+                                
+                                break;
+                            //Registro BX
+                            case "000010":
+                                bx.setContent("0000110100100011");
+                                w = bx.getContent();
+                                    a = Integer.parseInt("0001", 2);
+                                     negado = "";
+                                    for( h = 0; h < bx.getContent().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    b =Integer.parseInt(negado, 2);
+                                    auxNeg = b + a;
+                                    r = Integer.toString(auxNeg, 2);
+                                    notRegister("BX", bx.getContent());
+                                    bx.setContent(r);
+                                    accion.setText("Complemento a dos");
+                                    resultNot("BX", bx.getContent());
+                                                               
+                                break;
+                            //Registro CX
+                            case "000011":
+                                cx.setContent("0000110100100011");
+                                w = cx.getContent();
+                                    a = Integer.parseInt("0001", 2);
+                                     negado = "";
+                                    for( h = 0; h < cx.getContent().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    b =Integer.parseInt(negado, 2);
+                                    auxNeg = b + a;
+                                    r = Integer.toString(auxNeg, 2);
+                                    notRegister("CX", cx.getContent());
+                                    cx.setContent(r);
+                                    accion.setText("Complemento a dos");
+                                    resultNot("CX", cx.getContent());
+                                                                
+                                break;
+                            //Registro DX
+                            case "000100":
+                                   dx.setContent("0000110100100011");
+                                w = dx.getContent();
+                                    a = Integer.parseInt("0001", 2);
+                                     negado = "";
+                                    for( h = 0; h < dx.getContent().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    b =Integer.parseInt(negado, 2);
+                                    auxNeg = b + a;
+                                    r = Integer.toString(auxNeg, 2);
+                                    notRegister("DX", dx.getContent());
+                                    bx.setContent(r);
+                                    accion.setText("Complemento a dos");
+                                    resultNot("DX", dx.getContent());
+                                                                
+                                break;
+                            //Registro AH
+                            case "000101":
+                                    ax.setAh("00011010");
+                                    w = ax.getAh();
+                                    a = Integer.parseInt("0001", 2);
+                                     negado = "";
+                                    for( h = 0; h < ax.getAh().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    b =Integer.parseInt(negado, 2);
+                                    auxNeg = b + a;
+                                    r = Integer.toString(auxNeg, 2);
+                                    notRegister("AH", ax.getAh());
+                                    ax.setAh(r);
+                                    accion.setText("Complemento a dos");
+                                    resultNot("AH", ax.getAh());
+                                                                
+                                break;
+                            //Registro AL
+                            case "000110":
+                                    ax.setAl("00011010");
+                                    w = ax.getAl();
+                                    a = Integer.parseInt("0001", 2);
+                                     negado = "";
+                                    for( h = 0; h < ax.getAl().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    b =Integer.parseInt(negado, 2);
+                                    auxNeg = b + a;
+                                    r = Integer.toString(auxNeg, 2);
+                                    notRegister("AL", ax.getAl());
+                                    ax.setAl(r);
+                                    accion.setText("Complemento a dos");
+                                    resultNot("AL", ax.getAl());
+                                    break;
+                            //Registro BH
+                            case "000111":
+                                    bx.setBh("00011010");
+                                    w = bx.getBh();
+                                    a = Integer.parseInt("0001", 2);
+                                     negado = "";
+                                    for( h = 0; h < bx.getBh().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    b =Integer.parseInt(negado, 2);
+                                    auxNeg = b + a;
+                                    r = Integer.toString(auxNeg, 2);
+                                    notRegister("BH", bx.getBh());
+                                    bx.setBh(r);
+                                    accion.setText("Complemento a dos");
+                                    resultNot("BH", bx.getBh());
+                                                               
+                                break;
+                            //Registro BL
+                            case "001000":
+                                bx.setBl("00011010");
+                                    w = bx.getBl();
+                                    a = Integer.parseInt("0001", 2);
+                                     negado = "";
+                                    for( h = 0; h < bx.getBl().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    b =Integer.parseInt(negado, 2);
+                                    auxNeg = b + a;
+                                    r = Integer.toString(auxNeg, 2);
+                                    notRegister("BL", bx.getBl());
+                                    bx.setBl(r);
+                                    accion.setText("Complemento a dos");
+                                    resultNot("BL", bx.getBl());
+                                    break;
+                            //Registro CH
+                            case "001001":
+                                    cx.setCh("00011010");
+                                    w = cx.getCh();
+                                    a = Integer.parseInt("0001", 2);
+                                     negado = "";
+                                    for( h = 0; h < cx.getCh().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    b =Integer.parseInt(negado, 2);
+                                    auxNeg = b + a;
+                                    r = Integer.toString(auxNeg, 2);
+                                    notRegister("CH", cx.getCh());
+                                    cx.setCh(r);
+                                    accion.setText("Complemento a dos");
+                                    resultNot("CH", cx.getCh());
+                                    break;
+                            //Registro CL
+                            case "001010":
+                                cx.setCl("00011010");
+                                    w = cx.getCl();
+                                    a = Integer.parseInt("0001", 2);
+                                     negado = "";
+                                    for( h = 0; h < cx.getCl().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    b =Integer.parseInt(negado, 2);
+                                    auxNeg = b + a;
+                                    r = Integer.toString(auxNeg, 2);
+                                    notRegister("CL", cx.getCl());
+                                    cx.setCl(r);
+                                    accion.setText("Complemento a dos");
+                                    resultNot("CL", cx.getCl());
+                                    break;
+                            //Registro DH
+                            case "001011":
+                                    dx.setDh("00011010");
+                                    w = dx.getDh();
+                                    a = Integer.parseInt("0001", 2);
+                                     negado = "";
+                                    for( h = 0; h < dx.getDh().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    b =Integer.parseInt(negado, 2);
+                                    auxNeg = b + a;
+                                    r = Integer.toString(auxNeg, 2);
+                                    notRegister("DH", dx.getDh());
+                                    dx.setDh(r);
+                                    accion.setText("Complemento a dos");
+                                    resultNot("DH", dx.getDh());
+                                           
+                                break;
+                            //Registro DL
+                            case "001100":
+                                dx.setDl("01011011");
+                                    w = dx.getDl();
+                                    a = Integer.parseInt("0001", 2);
+                                     negado = "";
+                                    for( h = 0; h < dx.getDl().length(); h++){
+                                        if(w.charAt(h) == '0'){
+                                            negado += "1";
+                                        }else{
+                                            negado += "0";
+                                        }
+                                    }
+                                    b =Integer.parseInt(negado, 2);
+                                    auxNeg = b + a;
+                                    r = Integer.toString(auxNeg, 2);
+                                    notRegister("DL", dx.getDl());
+                                    dx.setDl(r);
+                                    accion.setText("Complemento a dos");
+                                    resultNot("DL", dx.getDl());
+                                     break;
+                        }
+                        
                         break;
                       
                 }
                 Thread.sleep(3000);
-            } catch (InterruptedException ex) {
+                if(banIn == true){
+                    Interrupcion i = new Interrupcion();
+                    i.setVisible(true);
+                    i.dirTextField.setText(pc.getDireccion());
+                    i.marIn.setText(marField1.getText());
+                    i.mbrIn.setText(mbrField1.getText());
+                    dispose();
+                }else{
+                    InterfaceDeCodigo in = new InterfaceDeCodigo();
+                    in.setVisible(true);
+                    dispose();
+                }
+                
+            }catch (InterruptedException ex) {
                 Logger.getLogger(Ejecucion.class.getName()).log(Level.SEVERE, null, ex);
             }
             
         }
         
     }
+    
     //***************************************MÉTODO PARA CARGAR MEMORIA****************************************************
     private ArrayList<String> inicializar(){
         ArrayList<String> array = new ArrayList<String>();
@@ -581,22 +5212,158 @@ public class Ejecucion extends javax.swing.JFrame {
         }
         return array;
     }
-
-
-
+    
+    private String buscar(int s, ArrayList<String> c){
+        return c.get(s);
+    }
+    
+    private void dibujarCadenas(String nombreReg1, String nombreReg2, String contenidoReg1, String contenidoReg2, String operacion){
+        Graphics g = getGraphics();
+        g.setColor(Color.black);
+        g.drawString(nombreReg1, 450, 300);
+        g.drawString(nombreReg2, 450, 325);
+        g.drawString(contenidoReg1, 480, 300);
+        g.drawString(contenidoReg2, 480, 325);
+        g.drawString(operacion, 600, 325);
+        g.drawLine(479, 327, 600, 327);
+        
+               
+    }
+    
+    private void dibujarResultado(String resultado, String registroResultado){
+        Graphics g = getGraphics();
+        g.setColor(Color.black);
+        g.drawString(registroResultado, 450, 339);
+        g.drawString(resultado, 480, 339);
+    }
+    
+    private void oneRegister(String registro, String registroContenido, String operando){
+        Graphics g = getGraphics();
+        g.setColor(Color.black);
+        g.drawString(registro, 450, 300);
+        g.drawString(registroContenido, 480, 300);
+        g.drawString("1", 480, 325);
+        g.drawString(operando, 600, 325);
+        g.drawLine(479, 327, 600, 327);
+    }
+    
+    private void resultOneRegister(String registro, String contenidoResultado){
+        Graphics g = getGraphics();
+        g.setColor(Color.black);
+        g.drawString(registro, 450, 339);
+        g.drawString(contenidoResultado, 480, 339);
+                
+    }
+    
+    private void notRegister(String registro, String contenidoRegistro){
+        Graphics g = getGraphics();
+        g.setColor(Color.black);
+        g.drawString(registro, 450, 300);
+        g.drawString(contenidoRegistro, 480, 300);
+        g.drawLine(479, 310, 600, 310);
+    }
+    
+    private void resultNot(String registro, String resultado){
+        Graphics g = getGraphics();
+        g.setColor(Color.black);
+        g.drawString(registro, 450, 339);
+        g.drawString(resultado, 480, 339);
+    }
+            
+    private void Push(String Contenido){
+        Graphics g1 = getGraphics();
+        
+        g1.setColor(Color.blue);
+        g1.fillRect(450, 300, 150, 50);
+        g1.setColor(Color.green);
+        g1.drawRect(450, 300, 150, 50);
+        g1.drawString("SS", 500, 320);
+        g1.drawString(Contenido, 460, 340);
+    }
+    
+    private void Pop(String contenido, String registro){
+        Graphics g1 = getGraphics();
+        g1.setColor(Color.blue);
+        g1.fillRect(450, 300, 150, 50);
+        g1.setColor(Color.green);
+        g1.drawRect(450, 300, 150, 50);
+        g1.drawString(registro , 500, 320);
+        g1.drawString(contenido, 460, 340);
+       
+        
+    }
+    
+    private void Mover(String registro, String contenido, String registro2, String contenido2){
+        Graphics g = getGraphics();
+        g.setColor(Color.GRAY);
+        g.fillRect(450, 300, 120, 50);
+        g.setColor(Color.BLACK);
+        g.drawString(registro , 450, 320);
+        g.drawString(contenido, 450, 340);
+        
+        g.setColor(Color.GRAY);
+        g.fillRect(590, 300, 120, 50);
+        g.setColor(Color.BLACK);
+        g.drawString(registro2, 595, 320);
+        g.drawString(contenido2, 595, 340);
+       
+    }
+    
+    private void Mover2(String registro, String contenido, String registro2, String contenido2){
+        Graphics g = getGraphics();
+        g.setColor(Color.GRAY);
+        g.fillRect(450, 400, 120, 50);
+        g.setColor(Color.BLACK);
+        g.drawString(registro , 450, 420);
+        g.drawString(contenido, 450, 440);
+        
+        g.setColor(Color.GRAY);
+        g.fillRect(590, 400, 120, 50);
+        g.setColor(Color.BLACK);
+        g.drawString(registro2 , 595, 420);
+        g.drawString(contenido2, 595, 440);
+       
+    }
+    
+    private String sumar(String contenido1, String contenido2){
+        int a;
+        int b;
+        int c;
+        String r = "";
+        a = Integer.parseInt(contenido1, 2);
+        b = Integer.parseInt(contenido2, 2);
+        c = a + b;
+        r = Integer.toString(c, 2);
+        return r;
+    }
+    
+    private String restar(String contenido1, String contenido2){
+        int a;
+        int b;
+        int c;
+        String r = "";
+        a = Integer.parseInt(contenido1, 2);
+        b = Integer.parseInt(contenido2, 2);
+        c = a - b;
+        r = Integer.toString(c, 2);
+        return r;
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField accion;
     private javax.swing.JTextField acumulador;
+    private javax.swing.JButton btnI;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JTextField marField1;
     private javax.swing.JTextField mbrField1;
     public javax.swing.JTextField registerIR;
